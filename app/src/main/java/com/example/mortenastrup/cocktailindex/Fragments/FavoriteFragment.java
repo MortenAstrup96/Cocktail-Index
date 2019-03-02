@@ -1,5 +1,6 @@
 package com.example.mortenastrup.cocktailindex.Fragments;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mortenastrup.cocktailindex.Database.Cocktail;
+import com.example.mortenastrup.cocktailindex.CocktailIndex;
 import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
 import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,7 +26,9 @@ public class FavoriteFragment extends Fragment {
     private OnItemClickListener listener;
 
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
-    private List<String> cocktailList = new ArrayList<>();
+    private List<Cocktail> cocktailList;
+
+    private FavouriteAdapter mAdapter;
 
     /**
      * Creates the Fragment and sets up listeners
@@ -38,8 +42,9 @@ public class FavoriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite,container,false);
 
-
-        cocktailList.add("French 75");
+        // Gets global class to update the cocktailList
+        Application application = (getActivity().getApplication());
+        cocktailList = ((CocktailIndex) application).getCocktailList();
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -54,7 +59,7 @@ public class FavoriteFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        FavouriteAdapter mAdapter = new FavouriteAdapter(cocktailList, listener);
+        mAdapter = new FavouriteAdapter(cocktailList, listener);
         recyclerView.setAdapter(mAdapter);
 
         return view;
@@ -94,5 +99,10 @@ public class FavoriteFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void favoriteFragmentInteractionListener(String task);
+    }
+
+    public void updateCocktailList(List<Cocktail> cocktailList) {
+        this.cocktailList = cocktailList;
+        mAdapter.notifyDataSetChanged();
     }
 }

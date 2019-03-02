@@ -79,6 +79,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         public MyViewHolder(final View view, OnItemClickListener itemClickListener) {
             super(view);
             this.itemClickListener = itemClickListener;
+
            // name =  view.findViewById(R.id.cocktail_name);
 
             view.setOnClickListener(this);

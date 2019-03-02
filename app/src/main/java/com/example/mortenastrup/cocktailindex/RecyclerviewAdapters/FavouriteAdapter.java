@@ -1,5 +1,6 @@
 package com.example.mortenastrup.cocktailindex.RecyclerviewAdapters;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mortenastrup.cocktailindex.Database.Cocktail;
 import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
 
@@ -26,14 +29,14 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
 
     // The list containing all the objects with the required information for at piece.
-    private List<String> stringList;
+    private List<Cocktail> cocktailList;
 
     private OnItemClickListener itemClickListener;
 
 
     // Initialises the string list
-    public FavouriteAdapter(List<String> stringList, OnItemClickListener itemClickListener) {
-        this.stringList = stringList;
+    public FavouriteAdapter(List<Cocktail> cocktailList, OnItemClickListener itemClickListener) {
+        this.cocktailList = cocktailList;
         this.itemClickListener = itemClickListener;
     }
 
@@ -49,13 +52,20 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     @Override
     @NonNull
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        String stringName = stringList.get(position);
-        // holder.name.setText(stringName);
+        Cocktail cocktail = cocktailList.get(position);
+
+        String name = cocktail.getName();
+        String recipe = cocktail.getRecipe();
+        Bitmap image = cocktail.getImage();
+
+        holder.name.setText(name);
+        holder.description.setText(recipe);
+        holder.imageView.setImageBitmap(image);
     }
 
     @Override
     public int getItemCount() {
-        return stringList.size();
+        return cocktailList.size();
     }
 
     /**
@@ -65,12 +75,16 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
         private OnItemClickListener itemClickListener;
         private TextView name;
+        private TextView description;
+        private ImageView imageView;
 
 
         public MyViewHolder(final View view, OnItemClickListener itemClickListener) {
             super(view);
             this.itemClickListener = itemClickListener;
-           // name =  view.findViewById(R.id.cocktail_name);
+            name =  view.findViewById(R.id.favourites_section_header);
+            description =  view.findViewById(R.id.favourites_section_description);
+            imageView =  view.findViewById(R.id.favourites_section_image_cocktail);
 
             view.setOnClickListener(this);
 

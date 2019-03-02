@@ -1,7 +1,6 @@
 package com.example.mortenastrup.cocktailindex.Fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mortenastrup.cocktailindex.CocktailAdapter;
+import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
 import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
+import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.IndexAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +40,7 @@ public class IndexFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_index,container,false);
 
 
-        cocktailList.add("Hello");
-        cocktailList.add("Hello");
-        cocktailList.add("Hello");
-        cocktailList.add("Hello");
+        cocktailList.add("French 75");
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -57,7 +54,7 @@ public class IndexFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        CocktailAdapter mAdapter = new CocktailAdapter(cocktailList, listener);
+        IndexAdapter mAdapter = new IndexAdapter(cocktailList, listener);
         recyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment
@@ -99,4 +96,9 @@ public class IndexFragment extends Fragment {
         // TODO: Update argument type and name
         void indexFragmentInteractionListener(String task);
     }
+
+
 }
+
+
+

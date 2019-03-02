@@ -1,12 +1,16 @@
-package com.example.mortenastrup.cocktailindex;
+package com.example.mortenastrup.cocktailindex.RecyclerviewAdapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import com.example.mortenastrup.cocktailindex.OnItemClickListener;
+import com.example.mortenastrup.cocktailindex.R;
 
 import java.util.List;
 
@@ -17,7 +21,7 @@ import java.util.List;
  *
  * @author Morten Astrup
  */
-public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.MyViewHolder> {
+public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyViewHolder> {
 
 
 
@@ -28,16 +32,16 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.MyView
 
 
     // Initialises the string list
-    public CocktailAdapter(List<String> stringList, OnItemClickListener itemClickListener) {
+    public FavouriteAdapter(List<String> stringList, OnItemClickListener itemClickListener) {
         this.stringList = stringList;
         this.itemClickListener = itemClickListener;
     }
 
     @Override
     @NonNull
-    public CocktailAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavouriteAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cocktail_list, parent, false);
+                .inflate(R.layout.recycler_view_favourites, parent, false);
 
         return new MyViewHolder(itemView, itemClickListener);
     }
@@ -46,7 +50,7 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.MyView
     @NonNull
     public void onBindViewHolder(MyViewHolder holder, int position) {
         String stringName = stringList.get(position);
-        holder.name.setText(stringName);
+        // holder.name.setText(stringName);
     }
 
     @Override
@@ -63,12 +67,25 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.MyView
         private TextView name;
 
 
-        public MyViewHolder(View view, OnItemClickListener itemClickListener) {
+        public MyViewHolder(final View view, OnItemClickListener itemClickListener) {
             super(view);
             this.itemClickListener = itemClickListener;
-            name =  view.findViewById(R.id.books_name);
+           // name =  view.findViewById(R.id.cocktail_name);
 
             view.setOnClickListener(this);
+
+            /**
+             * Switches checkbox from red to black in (checked/unchecked mode)
+             */
+            final CheckBox checkBox = view.findViewById(R.id.checkBox);
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b) {
+                    } else {
+                    }
+                }
+            });
         }
 
         /**
@@ -80,4 +97,5 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.MyView
             itemClickListener.onItemClick(view, getAdapterPosition());
         }
     }
+
 }

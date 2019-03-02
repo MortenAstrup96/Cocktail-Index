@@ -3,6 +3,8 @@
     <color name="colorPrimary">#272F32</color>
     <color name="colorPrimaryDark">#272F32</color>
     <color name="colorPrimaryFaded">#96272f32</color>
-    <color name="colorGrey">#49787878</color>
+    <color name="colorGrey">#444444</color>
+    <color name="colorTransparentBlack">#23000000</color>
     <color name="colorAccent">#f53a2d</color>
+    <color name="colorRed">#C21B11</color>
 </resources>

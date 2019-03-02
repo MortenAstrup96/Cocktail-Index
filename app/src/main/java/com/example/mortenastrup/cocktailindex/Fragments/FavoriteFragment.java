@@ -1,18 +1,30 @@
 package com.example.mortenastrup.cocktailindex.Fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
+import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FavoriteFragment extends Fragment {
     OnFragmentInteractionListener mListener;
+
+    private OnItemClickListener listener;
+
+    // Field variables for RecyclerView - The taskList will be shown in RecyclerView
+    private List<String> cocktailList = new ArrayList<>();
 
     /**
      * Creates the Fragment and sets up listeners
@@ -27,7 +39,24 @@ public class FavoriteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorite,container,false);
 
 
-        // Inflate the layout for this fragment
+        cocktailList.add("French 75");
+
+        // Item click listener
+        listener = new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+        };
+
+        // Recyclerview setup
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.Favorite_RecyclerView);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        FavouriteAdapter mAdapter = new FavouriteAdapter(cocktailList, listener);
+        recyclerView.setAdapter(mAdapter);
+
         return view;
     }
 

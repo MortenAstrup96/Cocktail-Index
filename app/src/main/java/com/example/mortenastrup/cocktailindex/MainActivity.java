@@ -1,8 +1,12 @@
 package com.example.mortenastrup.cocktailindex;
 
 import android.app.Activity;
+import android.arch.persistence.room.Room;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,18 +18,31 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.mortenastrup.cocktailindex.Database.Cocktail;
+import com.example.mortenastrup.cocktailindex.Database.AppDatabase;
 import com.example.mortenastrup.cocktailindex.Fragments.FavoriteFragment;
 import com.example.mortenastrup.cocktailindex.Fragments.IdeaFragment;
 import com.example.mortenastrup.cocktailindex.Fragments.IndexFragment;
+import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import static java.lang.System.in;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -46,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements
     private Fragment fragmentFavorite;
     private Fragment fragmentIdea;
 
+    private List<Cocktail> cocktailList;
+    private Map<Integer, Bitmap> imageMap;
+
+    AppDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +76,16 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Get lists from global application class
+        cocktailList = ((CocktailIndex)getApplication()).getCocktailList();
+        imageMap = ((CocktailIndex)getApplication()).getImageMap();
+
         SetupViews();   // FAB & BNV
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "database-name").build();
+
+
 
         // Instantiates the 3 base fragments (Index, Favourite & Idea)
         fragmentIndex = new IndexFragment();
@@ -65,6 +96,18 @@ public class MainActivity extends AppCompatActivity implements
         setCurrentFragment(fragmentIndex);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    public List<Cocktail> getCocktailList() {
+        return cocktailList;
+    }
+
+    public Map<Integer, Bitmap> getCocktailImages() {
+        return imageMap;
+    }
 
     /**
      * OnActivityResult has 1 type of result; New Cocktail Recipe.
@@ -78,8 +121,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Field Variable
-        Cocktail cocktail;
+        final Cocktail cocktail;
 
         //Detects request codes
         if(requestCode==NEW_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {
@@ -87,10 +129,15 @@ public class MainActivity extends AppCompatActivity implements
             // Object and Uri are retrieved from NewCocktailActivity
             cocktail = (Cocktail)data.getSerializableExtra("cocktail");
             Uri selectedImage = Uri.parse(data.getStringExtra("image"));
+
+
             try {
                 // Decodes the image and sets the cocktail object to this.
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                cocktail.setImage(bitmap);
+
+                String path = saveToInternalStorage(bitmap, cocktail.id);
+                saveToThumbnailInternalStorage(bitmap, cocktail.id);    // Saves a smaller version
+                cocktail.imagePath = path;
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -98,9 +145,122 @@ public class MainActivity extends AppCompatActivity implements
                 e.printStackTrace();
             }
 
-            // Add to global list
-            ((CocktailIndex) this.getApplication()).addCocktail(cocktail);
+            Executor myExecutor = Executors.newSingleThreadExecutor();
+            myExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    db.cocktailDBDao().insertOne(cocktail);
+                }
+            });
+
+            cocktailList.add(cocktail);
         }
+    }
+
+
+    /**
+     * https://stackoverflow.com/questions/17674634/saving-and-reading-bitmaps-images-from-internal-memory-in-android
+     * @param bitmapImage
+     * @return
+     */
+    private String saveToInternalStorage(Bitmap bitmapImage, int id){
+        // Decrease size
+        Bitmap scaledImage;
+
+        Double height = (double) bitmapImage.getHeight();
+        Double width = (double) bitmapImage.getWidth();
+        Double difference = height/width;
+
+        width = 800.0;
+        height = width*difference;
+        int heightInt = height.intValue();
+        int widthInt = width.intValue();
+        scaledImage = Bitmap.createScaledBitmap(bitmapImage, widthInt, heightInt, false);
+
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,"image_" + id + ".jpeg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            scaledImage.compress(Bitmap.CompressFormat.JPEG, 70, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
+
+    /**
+     * https://stackoverflow.com/questions/17674634/saving-and-reading-bitmaps-images-from-internal-memory-in-android
+     * @param bitmapImage
+     * @return
+     */
+    private String saveToThumbnailInternalStorage(Bitmap bitmapImage, int id){
+        // Decrease size
+        Bitmap scaledImage;
+
+        Double height = (double) bitmapImage.getHeight();
+        Double width = (double) bitmapImage.getWidth();
+        Double difference = height/width;
+
+        width = 200.0;
+        height = width*difference;
+        int heightInt = height.intValue();
+        int widthInt = width.intValue();
+        scaledImage = Bitmap.createScaledBitmap(bitmapImage, widthInt, heightInt, false);
+
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,"thumbnail_" + id + ".jpeg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            scaledImage.compress(Bitmap.CompressFormat.JPEG, 60, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
+
+    /**
+     * Takes the path and unique ID from an image saved in the database and retrieves the
+     * actual image from internal storage.
+     *
+     * @param path Path of the image
+     * @param id The image ID
+     * @return  Returns a Bitmap with the desired picture
+     */
+    private Bitmap retrieveImageFromDirectory(String path, int id) {
+        try {
+            Log.d("File", "Loading from directory: " + path);
+
+            File file = new File(path, "image_" + id + ".jpeg");
+            Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
+            return bitmap;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -162,7 +322,6 @@ public class MainActivity extends AppCompatActivity implements
         }
         return true;
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

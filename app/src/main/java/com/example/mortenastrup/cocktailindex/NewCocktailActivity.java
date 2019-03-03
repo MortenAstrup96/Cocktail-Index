@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.mortenastrup.cocktailindex.Database.Cocktail;
+import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -61,9 +61,10 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
                 String recipe = recipeEditText.getText().toString();
 
 
-                Cocktail cocktail = new Cocktail(name, recipe, null, null, false, false);
+                Cocktail cocktail = new Cocktail(name, "Ingredients", recipe, "Comments", null, false, false);
+
                 Intent intent = new Intent();
-                intent.putExtra("cocktail", cocktail);
+                intent.putExtra("cocktail", cocktail); // TODO: Might be causing problems due to serialization
                 intent.putExtra("image", selectedImage.toString());
                 setResult(Activity.RESULT_OK, intent);
                 finish();

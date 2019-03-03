@@ -1,6 +1,7 @@
 package com.example.mortenastrup.cocktailindex.Fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mortenastrup.cocktailindex.MainActivity;
+import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
 import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
 import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
@@ -17,6 +20,7 @@ import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.IndexAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class IndexFragment extends Fragment {
@@ -25,7 +29,8 @@ public class IndexFragment extends Fragment {
     private OnItemClickListener listener;
 
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
-    private List<String> cocktailList = new ArrayList<>();
+    private List<Cocktail> cocktailList;
+    private Map<Integer, Bitmap> imageMap;
 
     /**
      * Creates the Fragment and sets up listeners
@@ -39,8 +44,8 @@ public class IndexFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_index,container,false);
 
-
-        cocktailList.add("French 75");
+        cocktailList = ((MainActivity) getActivity()).getCocktailList();
+        imageMap = ((MainActivity) getActivity()).getCocktailImages();
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -54,7 +59,7 @@ public class IndexFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        IndexAdapter mAdapter = new IndexAdapter(cocktailList, listener);
+        IndexAdapter mAdapter = new IndexAdapter(cocktailList, imageMap, listener);
         recyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment

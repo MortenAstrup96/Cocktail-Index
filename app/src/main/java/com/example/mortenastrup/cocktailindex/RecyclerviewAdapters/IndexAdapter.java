@@ -1,6 +1,9 @@
 package com.example.mortenastrup.cocktailindex.RecyclerviewAdapters;
 
+import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -10,6 +13,7 @@ import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +22,21 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mortenastrup.cocktailindex.CocktailIndex;
+import com.example.mortenastrup.cocktailindex.ImageLoader;
+import com.example.mortenastrup.cocktailindex.MainActivity;
+import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
 import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -31,18 +46,21 @@ import java.util.List;
  * @author Morten Astrup
  */
 public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder> {
+    private Context mContext;
 
 
 
     // The list containing all the objects with the required information for at piece.
-    private List<String> stringList;
+    private List<Cocktail> cocktailList;
+    private Map<Integer, Bitmap> imageMap;
 
     private OnItemClickListener itemClickListener;
 
 
     // Initialises the string list
-    public IndexAdapter(List<String> stringList, OnItemClickListener itemClickListener) {
-        this.stringList = stringList;
+    public IndexAdapter(List<Cocktail> cocktailList, Map<Integer, Bitmap> imageMap, OnItemClickListener itemClickListener) {
+        this.cocktailList = cocktailList;
+        this.imageMap = imageMap;
         this.itemClickListener = itemClickListener;
     }
 
@@ -57,14 +75,30 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
     @Override
     @NonNull
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        String stringName = stringList.get(position);
-        // holder.name.setText(stringName);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        final Cocktail cocktail = cocktailList.get(position);
+
+        String name = cocktail.name;
+        String recipe = cocktail.recipe;
+
+        // Get image from internal storage
+        holder.name.setText(name);
+
+        String[] array = new String[2];
+        array[0] = cocktail.imagePath;
+        array[1] = ""+cocktail.id;
+        if(holder.imageView != null) {
+            new ImageLoader(holder.imageView).execute(array);
+        }
     }
+
 
     @Override
     public int getItemCount() {
-        return stringList.size();
+        if(cocktailList != null) {
+            return cocktailList.size();
+        }
+        return 0;
     }
 
     /**
@@ -74,14 +108,16 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
         private OnItemClickListener itemClickListener;
         private TextView name;
+        private ImageView imageView;
 
 
         public MyViewHolder(final View view, OnItemClickListener itemClickListener) {
             super(view);
             this.itemClickListener = itemClickListener;
 
-           // name =  view.findViewById(R.id.cocktail_name);
 
+            name =  view.findViewById(R.id.index_section_header);
+            imageView =  view.findViewById(R.id.index_section_image_cocktail);
             view.setOnClickListener(this);
 
             /**

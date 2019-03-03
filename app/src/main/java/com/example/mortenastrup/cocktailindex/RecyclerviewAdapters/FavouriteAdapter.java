@@ -1,8 +1,10 @@
 package com.example.mortenastrup.cocktailindex.RecyclerviewAdapters;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +13,14 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.mortenastrup.cocktailindex.Database.Cocktail;
+import com.example.mortenastrup.cocktailindex.ImageLoader;
+import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
 import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 
@@ -30,7 +36,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
     // The list containing all the objects with the required information for at piece.
     private List<Cocktail> cocktailList;
-
     private OnItemClickListener itemClickListener;
 
 
@@ -54,18 +59,48 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Cocktail cocktail = cocktailList.get(position);
 
-        String name = cocktail.getName();
-        String recipe = cocktail.getRecipe();
-        Bitmap image = cocktail.getImage();
+        String name = cocktail.name;
+        String recipe = cocktail.recipe;
 
+        // Get image from internal storage
         holder.name.setText(name);
         holder.description.setText(recipe);
-        holder.imageView.setImageBitmap(image);
+
+        String[] array = new String[2];
+        array[0] = cocktail.imagePath;
+        array[1] = ""+cocktail.id;
+        if(holder.imageView != null) {
+            new ImageLoader(holder.imageView).execute(array);
+        }
+    }
+
+    /**
+     * Takes the path and unique ID from an image saved in the database and retrieves the
+     * actual image from internal storage.
+     *
+     * @param path Path of the image
+     * @param id The image ID
+     * @return  Returns a Bitmap with the desired picture
+     */
+    private Bitmap retrieveImageFromDirectory(String path, int id) {
+        try {
+            Log.d("File", "Loading from directory: " + path);
+
+            File file = new File(path, "image_" + id + ".jpeg");
+            Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
+            return bitmap;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public int getItemCount() {
-        return cocktailList.size();
+        if(cocktailList != null) {
+            return cocktailList.size();
+        }
+        return 0;
     }
 
     /**

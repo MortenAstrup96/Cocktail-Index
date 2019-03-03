@@ -1,6 +1,5 @@
 package com.example.mortenastrup.cocktailindex.Fragments;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mortenastrup.cocktailindex.Database.Cocktail;
-import com.example.mortenastrup.cocktailindex.CocktailIndex;
+import com.example.mortenastrup.cocktailindex.MainActivity;
+import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
 import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
 import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
@@ -42,10 +41,6 @@ public class FavoriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite,container,false);
 
-        // Gets global class to update the cocktailList
-        Application application = (getActivity().getApplication());
-        cocktailList = ((CocktailIndex) application).getCocktailList();
-
         // Item click listener
         listener = new OnItemClickListener() {
             @Override
@@ -53,6 +48,8 @@ public class FavoriteFragment extends Fragment {
 
             }
         };
+
+        cocktailList = ((MainActivity) getActivity()).getCocktailList();
 
         // Recyclerview setup
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.Favorite_RecyclerView);
@@ -63,6 +60,13 @@ public class FavoriteFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mAdapter.notifyDataSetChanged();
     }
 
     /** ==== STANDARD FRAGMENT METHODS ==== */
@@ -99,10 +103,5 @@ public class FavoriteFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void favoriteFragmentInteractionListener(String task);
-    }
-
-    public void updateCocktailList(List<Cocktail> cocktailList) {
-        this.cocktailList = cocktailList;
-        mAdapter.notifyDataSetChanged();
     }
 }

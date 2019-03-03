@@ -13,7 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.mortenastrup.cocktailindex.ImageLoader;
 import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
 import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
@@ -32,10 +31,9 @@ import java.util.List;
  */
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyViewHolder> {
 
-
-
     // The list containing all the objects with the required information for at piece.
     private List<Cocktail> cocktailList;
+
     private OnItemClickListener itemClickListener;
 
 
@@ -57,21 +55,19 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     @Override
     @NonNull
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Cocktail cocktail = cocktailList.get(position);
+            Cocktail cocktail = cocktailList.get(position);
+            String name = cocktail.name;
+            String recipe = cocktail.recipe;
 
-        String name = cocktail.name;
-        String recipe = cocktail.recipe;
+            // Get image from internal storage
+            holder.name.setText(name);
+            holder.description.setText(recipe);
 
-        // Get image from internal storage
-        holder.name.setText(name);
-        holder.description.setText(recipe);
-
-        String[] array = new String[2];
-        array[0] = cocktail.imagePath;
-        array[1] = ""+cocktail.id;
-        if(holder.imageView != null) {
-            new ImageLoader(holder.imageView).execute(array);
-        }
+            if(holder.imageView.getDrawable() == null) {
+                Log.d("HolderThing", "I am null again");
+                Bitmap image = retrieveImageFromDirectory(cocktail.imagePath, cocktail.id);
+                holder.imageView.setImageBitmap(image);
+            }
     }
 
     /**

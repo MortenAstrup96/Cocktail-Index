@@ -1,19 +1,9 @@
 package com.example.mortenastrup.cocktailindex.RecyclerviewAdapters;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.support.annotation.NonNull;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,21 +12,12 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.mortenastrup.cocktailindex.CocktailIndex;
-import com.example.mortenastrup.cocktailindex.ImageLoader;
-import com.example.mortenastrup.cocktailindex.MainActivity;
 import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
 import com.example.mortenastrup.cocktailindex.OnItemClickListener;
 import com.example.mortenastrup.cocktailindex.R;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
 /**
@@ -58,10 +39,11 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
 
     // Initialises the string list
-    public IndexAdapter(List<Cocktail> cocktailList, Map<Integer, Bitmap> imageMap, OnItemClickListener itemClickListener) {
+    public IndexAdapter(List<Cocktail> cocktailList, Map<Integer, Bitmap> thumbnailMap, OnItemClickListener itemClickListener) {
         this.cocktailList = cocktailList;
-        this.imageMap = imageMap;
+        this.imageMap = thumbnailMap;
         this.itemClickListener = itemClickListener;
+
     }
 
     @Override
@@ -76,20 +58,19 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
     @Override
     @NonNull
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final Cocktail cocktail = cocktailList.get(position);
 
-        String name = cocktail.name;
-        String recipe = cocktail.recipe;
+            final Cocktail cocktail = cocktailList.get(position);
+            String name = cocktail.name;
+            String recipe = cocktail.recipe;
 
-        // Get image from internal storage
-        holder.name.setText(name);
+            // Get image from internal storage
+            holder.name.setText(name);
 
-        String[] array = new String[2];
-        array[0] = cocktail.imagePath;
-        array[1] = ""+cocktail.id;
-        if(holder.imageView != null) {
-            new ImageLoader(holder.imageView).execute(array);
+        if(holder.imageView.getDrawable() == null) {
+            Bitmap image = imageMap.get(cocktail.id);
+            holder.imageView.setImageBitmap(image);
         }
+
     }
 
 
@@ -143,28 +124,4 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             itemClickListener.onItemClick(view, getAdapterPosition());
         }
     }
-
-
-    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        final float roundPx = 12;
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
-    }
-
 }

@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private List<Cocktail> cocktailList;
     private Map<Integer, Bitmap> imageMap;
+    private Map<Integer, Bitmap> thumbnailMap;
 
     AppDatabase db;
 
@@ -76,15 +77,12 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Get lists from global application class
-        cocktailList = ((CocktailIndex)getApplication()).getCocktailList();
-        imageMap = ((CocktailIndex)getApplication()).getImageMap();
-
         SetupViews();   // FAB & BNV
 
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name").build();
 
+        loadImages();
 
 
         // Instantiates the 3 base fragments (Index, Favourite & Idea)
@@ -94,6 +92,50 @@ public class MainActivity extends AppCompatActivity implements
 
         // Sets starting fragment TODO: Have user decide the starting fragment, or possibly start at Favourites
         setCurrentFragment(fragmentIndex);
+    }
+
+    private void loadImages() {
+        cocktailList = new ArrayList<>();
+        imageMap = new HashMap<>();
+        thumbnailMap = new HashMap<>();
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "database-name").build();
+
+        Executor myExecutor = Executors.newSingleThreadExecutor();
+        myExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                cocktailList = db.cocktailDBDao().getAll();
+
+                for(Cocktail cocktail : cocktailList) {
+                    String path = cocktail.imagePath;
+                    int id = cocktail.id;
+
+                    Log.d("LoadImages", "Id, Path: " + id + " - " + path);
+
+                    Bitmap image = retrieveImageFromDirectory(path, id);
+                    Bitmap thumbnail = retrieveThumbnailFromDirectory(path, id);
+                    Log.d("LoadImages", "Height: " + image.getHeight());
+
+                    // Put the image in the imageMap - Else put custom drawable in place
+                    if(image != null && thumbnail != null) {
+                        imageMap.put(id, image);
+                        thumbnailMap.put(id, thumbnail);
+                    } else {
+                        image = BitmapFactory.decodeResource(getResources(),
+                                R.drawable.ic_launcher_background);
+
+                        thumbnail = BitmapFactory.decodeResource(getResources(),
+                                R.drawable.ic_launcher_background);
+
+                        imageMap.put(id, image);
+                        thumbnailMap.put(id, thumbnail);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -171,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements
         Double width = (double) bitmapImage.getWidth();
         Double difference = height/width;
 
-        width = 800.0;
+        width = 600.0;
         height = width*difference;
         int heightInt = height.intValue();
         int widthInt = width.intValue();
@@ -187,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements
         try {
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream
-            scaledImage.compress(Bitmap.CompressFormat.JPEG, 70, fos);
+            scaledImage.compress(Bitmap.CompressFormat.JPEG, 60, fos);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -213,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements
         Double width = (double) bitmapImage.getWidth();
         Double difference = height/width;
 
-        width = 200.0;
+        width = 10.0;
         height = width*difference;
         int heightInt = height.intValue();
         int widthInt = width.intValue();
@@ -229,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements
         try {
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream
-            scaledImage.compress(Bitmap.CompressFormat.JPEG, 60, fos);
+            scaledImage.compress(Bitmap.CompressFormat.JPEG, 1, fos);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -255,6 +297,28 @@ public class MainActivity extends AppCompatActivity implements
             Log.d("File", "Loading from directory: " + path);
 
             File file = new File(path, "image_" + id + ".jpeg");
+            Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
+            return bitmap;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * Takes the path and unique ID from an image saved in the database and retrieves the
+     * actual image from internal storage.
+     *
+     * @param path Path of the image
+     * @param id The image ID
+     * @return  Returns a Bitmap with the desired picture
+     */
+    private Bitmap retrieveThumbnailFromDirectory(String path, int id) {
+        try {
+            Log.d("File", "Loading from directory: " + path);
+
+            File file = new File(path, "thumbnail_" + id + ".jpeg");
             Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
             return bitmap;
         } catch (FileNotFoundException e) {

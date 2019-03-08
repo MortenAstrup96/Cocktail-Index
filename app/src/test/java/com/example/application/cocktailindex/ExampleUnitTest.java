@@ -1,4 +1,4 @@
-package com.example.mortenastrup.cocktailindex;
+package com.example.application.cocktailindex;
 
 import org.junit.Test;
 

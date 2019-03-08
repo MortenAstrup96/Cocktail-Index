@@ -1,8 +1,9 @@
-package com.example.mortenastrup.cocktailindex.RecyclerviewAdapters;
+package com.example.application.cocktailindex.RecyclerviewAdapters;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +14,12 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
-import com.example.mortenastrup.cocktailindex.OnItemClickListener;
-import com.example.mortenastrup.cocktailindex.R;
+import com.bumptech.glide.Glide;
+import com.example.application.cocktailindex.Objects.Cocktail;
+import com.example.application.cocktailindex.OnItemClickListener;
+import com.example.application.cocktailindex.R;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,14 +33,16 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
     // The list containing all the objects with the required information for at piece.
     private List<Cocktail> cocktailList;
-
     private OnItemClickListener itemClickListener;
-
+    private Context context;
 
     // Initialises the string list
-    public FavouriteAdapter(List<Cocktail> cocktailList, OnItemClickListener itemClickListener) {
+    public FavouriteAdapter(List<Cocktail> cocktailList, OnItemClickListener itemClickListener, Context context) {
         this.cocktailList = cocktailList;
+
+
         this.itemClickListener = itemClickListener;
+        this.context = context;
     }
 
     @Override
@@ -55,40 +57,21 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     @Override
     @NonNull
     public void onBindViewHolder(MyViewHolder holder, int position) {
-            Cocktail cocktail = cocktailList.get(position);
-            String name = cocktail.name;
-            String recipe = cocktail.recipe;
+        Log.d("PositionHolder", "Position: " + position);
 
-            // Get image from internal storage
-            holder.name.setText(name);
-            holder.description.setText(recipe);
+        Cocktail cocktail = cocktailList.get(position);
+        String name = cocktail.name;
+        String ingredients = cocktail.ingredients;
 
-            if(holder.imageView.getDrawable() == null) {
-                Log.d("HolderThing", "I am null again");
-                Bitmap image = retrieveImageFromDirectory(cocktail.imagePath, cocktail.id);
-                holder.imageView.setImageBitmap(image);
-            }
-    }
+        // Get image from internal storage
+        holder.name.setText(name);
+        holder.ingredients.setText(ingredients);
 
-    /**
-     * Takes the path and unique ID from an image saved in the database and retrieves the
-     * actual image from internal storage.
-     *
-     * @param path Path of the image
-     * @param id The image ID
-     * @return  Returns a Bitmap with the desired picture
-     */
-    private Bitmap retrieveImageFromDirectory(String path, int id) {
-        try {
-            Log.d("File", "Loading from directory: " + path);
 
-            File file = new File(path, "image_" + id + ".jpeg");
-            Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
-            return bitmap;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+        Glide.with(context)
+                .load(Uri.parse(cocktail.imagePath))
+                .into(holder.imageView);
     }
 
     @Override
@@ -106,28 +89,45 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
         private OnItemClickListener itemClickListener;
         private TextView name;
-        private TextView description;
+        private TextView ingredients;
         private ImageView imageView;
+        private CardView cardView;
+        private CheckBox favourite;
 
 
-        public MyViewHolder(final View view, OnItemClickListener itemClickListener) {
+        public MyViewHolder(final View view, final OnItemClickListener itemClickListener) {
             super(view);
             this.itemClickListener = itemClickListener;
             name =  view.findViewById(R.id.favourites_section_header);
-            description =  view.findViewById(R.id.favourites_section_description);
+            ingredients =  view.findViewById(R.id.favourites_section_ingredients);
             imageView =  view.findViewById(R.id.favourites_section_image_cocktail);
+            cardView = view.findViewById(R.id.favourites_section_cardview);
+
 
             view.setOnClickListener(this);
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemClickListener.onItemClick(view, getAdapterPosition()); // Might be wrong view
+                }
+            });
 
             /**
              * Switches checkbox from red to black in (checked/unchecked mode)
              */
-            final CheckBox checkBox = view.findViewById(R.id.checkBox);
+            final CheckBox checkBox = view.findViewById(R.id.favourites_section_favourite);
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    Cocktail cocktail = cocktailList.get(getAdapterPosition());
+                    cocktail.favourite = b;
+
                     if(b) {
+                        cocktailList.add(cocktail);
+                        cocktailList.add(cocktail);
                     } else {
+                        cocktailList.remove(cocktail);
+                        cocktailList.remove(cocktail);
                     }
                 }
             });
@@ -142,5 +142,4 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
             itemClickListener.onItemClick(view, getAdapterPosition());
         }
     }
-
 }

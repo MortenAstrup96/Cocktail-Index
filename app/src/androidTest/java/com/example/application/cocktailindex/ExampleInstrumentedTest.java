@@ -1,4 +1,4 @@
-package com.example.mortenastrup.cocktailindex;
+package com.example.application.cocktailindex;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

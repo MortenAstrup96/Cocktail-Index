@@ -1,14 +1,13 @@
-package com.example.mortenastrup.cocktailindex.Fragments;
+package com.example.application.cocktailindex.Fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mortenastrup.cocktailindex.R;
+import com.example.application.cocktailindex.R;
 
 
 public class IdeaFragment extends Fragment {

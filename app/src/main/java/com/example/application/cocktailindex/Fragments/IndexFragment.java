@@ -1,26 +1,31 @@
-package com.example.mortenastrup.cocktailindex.Fragments;
+package com.example.application.cocktailindex.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mortenastrup.cocktailindex.MainActivity;
-import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
-import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
-import com.example.mortenastrup.cocktailindex.OnItemClickListener;
-import com.example.mortenastrup.cocktailindex.R;
-import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.IndexAdapter;
+import com.example.application.cocktailindex.Activities.CocktailDetailsActivity;
+import com.example.application.cocktailindex.Activities.MainActivity;
+import com.example.application.cocktailindex.Objects.Cocktail;
+import com.example.application.cocktailindex.OnItemClickListener;
+import com.example.application.cocktailindex.R;
+import com.example.application.cocktailindex.RecyclerviewAdapters.IndexAdapter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 
 public class IndexFragment extends Fragment {
@@ -30,7 +35,9 @@ public class IndexFragment extends Fragment {
 
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
     private List<Cocktail> cocktailList;
-    private Map<Integer, Bitmap> imageMap;
+    private List<Cocktail> savedCocktailList;
+
+    private IndexAdapter mAdapter;
 
     /**
      * Creates the Fragment and sets up listeners
@@ -45,13 +52,20 @@ public class IndexFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_index,container,false);
 
         cocktailList = ((MainActivity) getActivity()).getCocktailList();
-        imageMap = ((MainActivity) getActivity()).getCocktailImages();
+        savedCocktailList = new ArrayList<>();
+        savedCocktailList.addAll(cocktailList);
 
         // Item click listener
         listener = new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
+                // Scales up the new activity from the cardview clicked
+                Activity activity = getActivity();
+                Intent intent = new Intent(activity, CocktailDetailsActivity.class);
+                Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
+                        view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
+                intent.putExtra("cocktail", cocktailList.get(position)); // TODO: Switch to using ID instead later
+                ActivityCompat.startActivity(activity, intent, options);
             }
         };
 
@@ -59,11 +73,32 @@ public class IndexFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        IndexAdapter mAdapter = new IndexAdapter(cocktailList, imageMap, listener);
+        mAdapter = new IndexAdapter(cocktailList, listener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+
+    public List<Cocktail> searchQuery(String s) {
+        cocktailList.clear();
+        cocktailList.addAll(savedCocktailList);
+        List<Cocktail> toRemove = new ArrayList<>();
+
+        for(Cocktail cocktail : cocktailList) {
+            String name = cocktail.name.toLowerCase();
+            String ingredients = cocktail.ingredients.toLowerCase();
+
+            if( !name.contains(s) &&
+                    !ingredients.contains(s)) {
+                toRemove.add(cocktail);
+            }
+        }
+
+        cocktailList.removeAll(toRemove);
+        mAdapter.notifyDataSetChanged();
+        return cocktailList;
     }
 
     /** ==== STANDARD FRAGMENT METHODS ==== */
@@ -73,6 +108,12 @@ public class IndexFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onAttach(Context context) {

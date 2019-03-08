@@ -8,7 +8,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.CardView
             android:id="@+id/favourites_section_cardview"
@@ -17,6 +17,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:clickable="true"
             android:focusable="true"
             android:innerRadius="0dp"
@@ -39,7 +40,7 @@
                 <ImageView
                     android:id="@+id/favourites_section_image_cocktail"
                     android:layout_width="0dp"
-                    android:layout_height="160dp"
+                    android:layout_height="200dp"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +62,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
-                        android:text="Smoked Bee's Knees"
+                        android:text="Missing name"
                         android:textColor="@color/colorGrey"
                         android:textSize="24sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,14 +71,14 @@
                         app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
-                        android:id="@+id/favourites_section_description"
+                        android:id="@+id/favourites_section_ingredients"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginBottom="8dp"
-                        android:text="One of my favourite cocktails. I drink it every second week. The tartness of the lemon combined with the honey is just fantastic."
+                        android:text="No ingredients"
                         android:textAlignment="viewStart"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -98,29 +99,28 @@
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/favourites_section_description" />
+                        app:layout_constraintTop_toBottomOf="@+id/favourites_section_ingredients" />
 
                     <ImageButton
                         android:id="@+id/favourites_section_imagebutton_settings"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:background="@drawable/ic_settings_vertical"
                         android:foreground="?attr/selectableItemBackground"
                         android:tint="@color/colorPrimaryDark"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:srcCompat="@android:color/transparent" />
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <CheckBox
-                        android:id="@+id/checkBox"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:id="@+id/favourites_section_favourite"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:background="@drawable/selector_fav"
-                        android:button="@android:color/transparent"
+                        android:button="@color/colorPrimaryDark"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/favourites_section_imagebutton_settings" />
 

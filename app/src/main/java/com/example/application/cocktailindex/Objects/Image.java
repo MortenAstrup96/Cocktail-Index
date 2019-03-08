@@ -1,4 +1,4 @@
-package com.example.mortenastrup.cocktailindex.Objects;
+package com.example.application.cocktailindex.Objects;
 
 import android.graphics.Bitmap;
 

@@ -1,20 +1,26 @@
-package com.example.mortenastrup.cocktailindex.Fragments;
+package com.example.application.cocktailindex.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mortenastrup.cocktailindex.MainActivity;
-import com.example.mortenastrup.cocktailindex.Objects.Cocktail;
-import com.example.mortenastrup.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
-import com.example.mortenastrup.cocktailindex.OnItemClickListener;
-import com.example.mortenastrup.cocktailindex.R;
+import com.example.application.cocktailindex.Activities.CocktailDetailsActivity;
+import com.example.application.cocktailindex.Activities.MainActivity;
+import com.example.application.cocktailindex.Objects.Cocktail;
+import com.example.application.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
+import com.example.application.cocktailindex.OnItemClickListener;
+import com.example.application.cocktailindex.R;
 
 import java.util.List;
 
@@ -46,20 +52,36 @@ public class FavoriteFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
 
+                // Scales up the new activity from the cardview clicked
+                Activity activity = getActivity();
+                Intent intent = new Intent(activity, CocktailDetailsActivity.class);
+                Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
+                        view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
+                intent.putExtra("cocktail", cocktailList.get(position)); // TODO: Switch to using ID instead later
+                ActivityCompat.startActivity(activity, intent, options);
             }
         };
 
-        cocktailList = ((MainActivity) getActivity()).getCocktailList();
+        try {
+            cocktailList = ((MainActivity) getActivity()).getCocktailList();
+        } catch (NullPointerException e) {
+            Log.e("ApplicationError", "Nullpointer " + e);
+        }
+            // Gets the cocktailList
+        setupRecyclerView(view);
 
+        return view;
+    }
+
+
+    private void setupRecyclerView(View view) {
         // Recyclerview setup
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.Favorite_RecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new FavouriteAdapter(cocktailList, listener);
+        mAdapter = new FavouriteAdapter(cocktailList, listener, getContext());
         recyclerView.setAdapter(mAdapter);
-
-        return view;
     }
 
     @Override

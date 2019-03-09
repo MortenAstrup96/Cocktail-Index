@@ -1,6 +1,7 @@
 package com.example.application.cocktailindex.Fragments;
 
 import android.app.Activity;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.application.cocktailindex.Activities.CocktailDetailsActivity;
 import com.example.application.cocktailindex.Activities.MainActivity;
+import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
+import com.example.application.cocktailindex.OnItemLongClickListener;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IndexAdapter;
 
@@ -26,18 +30,24 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class IndexFragment extends Fragment {
     OnFragmentInteractionListener mListener;
 
     private OnItemClickListener listener;
+    private OnItemLongClickListener longClickListener;
 
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
     private List<Cocktail> cocktailList;
     private List<Cocktail> savedCocktailList;
 
     private IndexAdapter mAdapter;
+
+    private AppDatabase db;
+
 
     /**
      * Creates the Fragment and sets up listeners
@@ -54,6 +64,29 @@ public class IndexFragment extends Fragment {
         cocktailList = ((MainActivity) getActivity()).getCocktailList();
         savedCocktailList = new ArrayList<>();
         savedCocktailList.addAll(cocktailList);
+
+        // Setup of database
+        db = Room.databaseBuilder(getContext(),
+                AppDatabase.class, "database-name").build();
+
+        longClickListener = new OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                final Cocktail removingCocktail = savedCocktailList.get(position);
+
+                cocktailList.remove(position);
+                savedCocktailList.remove(position);
+                mAdapter.notifyDataSetChanged();
+
+                Executor myExecutor = Executors.newSingleThreadExecutor();
+                myExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.cocktailDBDao().delete(removingCocktail);
+                    }
+                });
+            }
+        };
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -73,7 +106,7 @@ public class IndexFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new IndexAdapter(cocktailList, listener, getContext());
+        mAdapter = new IndexAdapter(cocktailList, listener, longClickListener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment

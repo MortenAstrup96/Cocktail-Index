@@ -23,17 +23,33 @@ import com.example.application.cocktailindex.R;
 public class CocktailDetailsActivity extends AppCompatActivity {
     private Cocktail cocktail;
 
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cocktail_details);
         setStatusBarTranslucent(true);
 
-
+        // Gets the specific cocktail
         Intent data = getIntent();
         cocktail = (Cocktail) data.getSerializableExtra("cocktail");
 
-        ImageView imageView = findViewById(R.id.details_section_image_cocktail);
+        setupViews();
+
+        // Set the image view to the decired picture
+        Glide.with(getApplicationContext())
+                .load(Uri.parse(cocktail.imagePath))
+                .into(imageView);
+
+
+    }
+
+    /**
+     * Sets up all of the basic views
+     */
+    private void setupViews() {
+        imageView = findViewById(R.id.details_section_image_cocktail);
         TextView header = findViewById(R.id.details_section_header);
         TextView ingredients = findViewById(R.id.details_section_ingredients);
 
@@ -47,14 +63,11 @@ public class CocktailDetailsActivity extends AppCompatActivity {
                 overridePendingTransition(0, R.anim.fade_out);
             }
         });
-
-        Glide.with(getApplicationContext())
-                .load(Uri.parse(cocktail.imagePath))
-                .into(imageView);
-
-
     }
 
+    /**
+     * When pressing back button, finish the activity with a fade out animation
+     */
     @Override
     public void onBackPressed()
     {

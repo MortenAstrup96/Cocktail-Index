@@ -68,17 +68,55 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         setOnClickListeners();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Resultcode", resultCode + "");
+
+        //Detects request codes
+        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            this.selectedImage = selectedImage;
+
+            Glide.with(this)
+                    .load(selectedImage)
+                    .override(400, 400)
+                    .centerInside()
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(thumbnail);
+
+        } else if(requestCode==ACTION_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+
+            Glide.with(this)
+                    .load(selectedImage)
+                    .override(400, 400)
+                    .centerInside()
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(thumbnail);
+        }
+
+        if(resultCode == Activity.RESULT_OK) {
+            pictureSelected = true;
+        }
+    }
+
+    /**
+     * Sets onClickListeners for choosing gallery or taking an image with the camera app
+     */
     private void setOnClickListeners() {
         // When clicking selectImageButton the users gallery is opened to select an image.
         selectImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                intent.setType("image/*");
+
+                // Sets an intent to find and open the desired image
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.setDataAndType(MediaStore.Images.Media.INTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(intent, GET_FROM_GALLERY); // Result is a Uri code for image
             }
         });
 
+        // Takes an image with the camera instead of choosing one TODO: After requesting permission app needs to restart!
         takeImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +166,10 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         });
     }
 
+    /**
+     * Takes the String Array and builds it into a single string TODO BuildIngredients not yet fully functional!
+     * @return
+     */
     private String buildIngredientList() {
         String ingredient1 = ingredient1EditText.getText().toString();
         String ingredient2 = ingredient2EditText.getText().toString();
@@ -136,7 +178,7 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
 
         String ingredientCondensed =
                 amount1 + "oz. " + ingredient1 + "\n" +
-                amount2 + "oz. " + ingredient2;
+                        amount2 + "oz. " + ingredient2;
 
         return ingredientCondensed;
     }
@@ -160,40 +202,6 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
     public static Uri getPhotoFile(Context context) {
         File file = new File(context.getExternalFilesDir("images/cocktails"), new Date().getTime() + "cocktail.jpeg");
         return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".my.package.name.provider", file);
-    }
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("Resultcode", resultCode + "");
-
-        //Detects request codes
-        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
-            this.selectedImage = selectedImage;
-
-            Glide.with(this)
-                    .load(selectedImage)
-                    .override(200, 200)
-                    .centerInside()
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(thumbnail);
-
-        } else if(requestCode==ACTION_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-
-            Glide.with(this)
-                    .load(selectedImage)
-                    .override(200, 200)
-                    .centerInside()
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(thumbnail);
-        }
-
-        if(resultCode == Activity.RESULT_OK) {
-            pictureSelected = true;
-        }
     }
 
 }

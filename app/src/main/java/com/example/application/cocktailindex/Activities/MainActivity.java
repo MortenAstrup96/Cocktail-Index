@@ -5,11 +5,8 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -37,17 +33,11 @@ import com.example.application.cocktailindex.Fragments.IdeaFragment;
 import com.example.application.cocktailindex.Fragments.IndexFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.R;
-import com.example.application.cocktailindex.RecyclerviewAdapters.IndexAdapter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -70,11 +60,13 @@ public class MainActivity extends AppCompatActivity implements
     private FavoriteFragment fragmentFavorite;
     private IdeaFragment fragmentIdea;
 
+    // Searching and Cocktails references
     private SearchView searchView;
     private List<Cocktail> cocktailList;
     private List<Cocktail> savedCocktailList;
 
-    AppDatabase db;
+    // Database
+    private AppDatabase db;
 
 
     @Override
@@ -86,9 +78,11 @@ public class MainActivity extends AppCompatActivity implements
 
         SetupViews();   // FAB & BNV
 
+        // Setup of database
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name").build();
 
+        // Request permission to read storage before loading images
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -97,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     3);
         } else {
-            loadImages();
+            loadData();
         }
 
         // Instantiates the 3 base fragments (Index, Favourite & Idea)
@@ -109,32 +103,24 @@ public class MainActivity extends AppCompatActivity implements
         setCurrentFragment(fragmentIndex);
     }
 
-    private void loadImages() {
+    /**
+     * Loads all data from database and adds to the listviews
+     */
+    private void loadData() {
+        // SavedCocktailList is a static list -> CocktalList dynamically changes (removes & adds)
         cocktailList = new ArrayList<>();
         savedCocktailList = new ArrayList<>();
 
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "database-name").build();
-
+        // Loads all images into the two lists from database
         Executor myExecutor = Executors.newSingleThreadExecutor();
         myExecutor.execute(new Runnable() {
             @Override
             public void run() {
-
-                savedCocktailList= db.cocktailDBDao().getAll();
+                savedCocktailList = db.cocktailDBDao().getAll();
                 cocktailList.addAll(savedCocktailList);
 
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    public List<Cocktail> getCocktailList() {
-        return cocktailList;
     }
 
 
@@ -234,6 +220,41 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    public void toggleCocktailFavourite(int id, boolean favourite) {
+        boolean found = false;
+        try {
+            for(final Cocktail cocktail : cocktailList) {
+                if(cocktail.id == id) {
+                    cocktail.favourite = favourite; // Update whether the cocktail is favourite
+
+                    // Updates the cocktail in the database
+                    Executor myExecutor = Executors.newSingleThreadExecutor();
+                    myExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.cocktailDBDao().updateOne(cocktail);
+                        }
+                    });
+                    found = true;
+                }
+            }
+        } catch (ConcurrentModificationException e) {
+            Toast.makeText(getApplicationContext(), "Error saving to Database", Toast.LENGTH_SHORT).show();
+        }
+
+        if(found) {
+            refreshCocktailList();
+        }
+
+    }
+
+
+    public void refreshCocktailList() {
+        // Updates the cocktailList
+        cocktailList.clear();
+        cocktailList.addAll(savedCocktailList);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -244,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements
         final MenuItem searchItem = menu.findItem(R.id.action_search);
 
         // https://stackoverflow.com/questions/27378981/how-to-use-searchview-in-toolbar-android <--- Search view
-        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+        final SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -287,6 +308,11 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public List<Cocktail> getCocktailList() {
+        return cocktailList;
     }
 
 

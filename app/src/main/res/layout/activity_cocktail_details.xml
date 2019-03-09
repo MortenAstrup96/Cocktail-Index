@@ -100,7 +100,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
-            android:id="@+id/favourites_section_favourite"
+            android:id="@+id/index_section_favourite"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="32dp"
@@ -122,7 +122,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:tint="@android:color/background_light"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/favourites_section_favourite" />
+            app:layout_constraintTop_toTopOf="@+id/index_section_favourite" />
 
     </android.support.constraint.ConstraintLayout>
 

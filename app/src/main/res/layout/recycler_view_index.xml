@@ -69,7 +69,7 @@
                     android:textColor="@color/colorGrey"
                     android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/favourites_section_favourite"
+                    app:layout_constraintEnd_toStartOf="@+id/index_section_favourite"
                     app:layout_constraintStart_toEndOf="@+id/index_section_image_cocktail"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -89,7 +89,7 @@
                     app:srcCompat="@android:color/transparent" />
 
                 <CheckBox
-                    android:id="@+id/favourites_section_favourite"
+                    android:id="@+id/index_section_favourite"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="16dp"

@@ -19,7 +19,6 @@ import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -115,7 +114,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
             /**
              * Switches checkbox from red to black in (checked/unchecked mode)
              */
-            final CheckBox checkBox = view.findViewById(R.id.favourites_section_favourite);
+            final CheckBox checkBox = view.findViewById(R.id.index_section_favourite);
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

@@ -114,7 +114,7 @@
                         app:layout_constraintEnd_toEndOf="parent" />
 
                     <CheckBox
-                        android:id="@+id/favourites_section_favourite"
+                        android:id="@+id/index_section_favourite"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginEnd="16dp"

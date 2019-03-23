@@ -120,14 +120,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     Cocktail cocktail = cocktailList.get(getAdapterPosition());
                     cocktail.favourite = b;
-
-                    if(b) {
-                        cocktailList.add(cocktail);
-                        cocktailList.add(cocktail);
-                    } else {
-                        cocktailList.remove(cocktail);
-                        cocktailList.remove(cocktail);
-                    }
                 }
             });
         }

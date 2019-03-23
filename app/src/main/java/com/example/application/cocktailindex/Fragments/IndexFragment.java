@@ -92,6 +92,8 @@ public class IndexFragment extends Fragment {
         listener = new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                java.util.Collections.sort(cocktailList);
+
                 // Scales up the new activity from the cardview clicked
                 Activity activity = getActivity();
                 Intent intent = new Intent(activity, CocktailDetailsActivity.class);
@@ -108,6 +110,9 @@ public class IndexFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new IndexAdapter(cocktailList, listener, longClickListener, getContext());
         recyclerView.setAdapter(mAdapter);
+
+        java.util.Collections.sort(cocktailList);
+        mAdapter.notifyDataSetChanged();
 
         // Inflate the layout for this fragment
         return view;
@@ -144,6 +149,7 @@ public class IndexFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
 
         mAdapter.notifyDataSetChanged();
     }

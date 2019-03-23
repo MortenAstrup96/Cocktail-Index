@@ -3,12 +3,13 @@ package com.example.application.cocktailindex.Objects;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 @Entity(tableName = "cocktail")
-public class Cocktail implements Serializable {
+public class Cocktail implements Serializable, Comparable {
 
     @PrimaryKey
     public int id;
@@ -43,5 +44,10 @@ public class Cocktail implements Serializable {
         this.imagePath = imagePath;
         this.favourite = favourite;
         this.idea = idea;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return this.name.compareTo(((Cocktail)o).name);
     }
 }

@@ -22,6 +22,7 @@ import com.example.application.cocktailindex.RecyclerviewAdapters.FavouriteAdapt
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,6 +33,7 @@ public class FavoriteFragment extends Fragment {
 
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
     private List<Cocktail> cocktailList;
+    private List<Cocktail> favouriteList;
 
     private FavouriteAdapter mAdapter;
 
@@ -46,6 +48,7 @@ public class FavoriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite,container,false);
+        favouriteList = new ArrayList<>();
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -57,7 +60,7 @@ public class FavoriteFragment extends Fragment {
                 Intent intent = new Intent(activity, CocktailDetailsActivity.class);
                 Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                         view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
-                intent.putExtra("cocktail", cocktailList.get(position)); // TODO: Switch to using ID instead later
+                intent.putExtra("cocktail", favouriteList.get(position)); // TODO: Switch to using ID instead later
                 ActivityCompat.startActivity(activity, intent, options);
             }
         };
@@ -67,7 +70,15 @@ public class FavoriteFragment extends Fragment {
         } catch (NullPointerException e) {
             Log.e("ApplicationError", "Nullpointer " + e);
         }
-            // Gets the cocktailList
+
+        for(Cocktail cocktail : cocktailList) {
+            if(cocktail.favourite) {
+                favouriteList.add(cocktail);
+            }
+        }
+        java.util.Collections.sort(favouriteList);
+
+        // Gets the cocktailList
         setupRecyclerView(view);
 
         return view;
@@ -80,7 +91,7 @@ public class FavoriteFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new FavouriteAdapter(cocktailList, listener, getContext());
+        mAdapter = new FavouriteAdapter(favouriteList, listener, getContext());
         recyclerView.setAdapter(mAdapter);
     }
 

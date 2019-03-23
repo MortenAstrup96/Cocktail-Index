@@ -99,8 +99,10 @@ public class MainActivity extends AppCompatActivity implements
         fragmentFavorite = new FavoriteFragment();
         fragmentIdea = new IdeaFragment();
 
+        java.util.Collections.sort(cocktailList);
         // Sets starting fragment TODO: Have user decide the starting fragment, or possibly start at Favourites
         setCurrentFragment(fragmentIndex);
+
     }
 
     /**
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements
             public void run() {
                 savedCocktailList = db.cocktailDBDao().getAll();
                 cocktailList.addAll(savedCocktailList);
-
+                java.util.Collections.sort(cocktailList);
             }
         });
     }

@@ -49,7 +49,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         this.itemClickListener = itemClickListener;
         this.itemLongClickListener = itemLongClickListener;
         this.context = context;
-
     }
 
     @Override
@@ -58,14 +57,16 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_index, parent, false);
 
+        java.util.Collections.sort(cocktailList);
+
         return new MyViewHolder(itemView, itemClickListener, itemLongClickListener);
     }
 
     @Override
     @NonNull
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-
-        final Cocktail cocktail = cocktailList.get(position);
+        java.util.Collections.sort(cocktailList);
+        Cocktail cocktail = cocktailList.get(position);
         String name = cocktail.name;
         String recipe = cocktail.recipe;
         boolean isChecked = cocktail.favourite;
@@ -134,6 +135,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             });
 
 
+            cocktailList = ((MainActivity)context).getCocktailList();
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

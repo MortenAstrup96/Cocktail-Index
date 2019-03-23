@@ -4,193 +4,150 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_new_cocktail"
     tools:context=".Activities.NewCocktailActivity">
 
-    <EditText
-        android:id="@+id/newCocktail_edit_ingredient3"
-        android:layout_width="wrap_content"
-        android:layout_height="46dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Ingredient"
-        android:inputType="textCapWords"
+    <ImageView
+        android:id="@+id/newCocktail_imageView_thumbnail"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newCocktail_edit_ingredient" />
-
-    <EditText
-        android:id="@+id/newCocktail_edit_amount2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Amount"
-        android:inputType="number"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
-        app:layout_constraintStart_toEndOf="@+id/newCocktail_edit_ingredient3"
-        app:layout_constraintTop_toBottomOf="@+id/newCocktail_edit_amount" />
+        app:layout_constraintTop_toBottomOf="@+id/newCocktail_header_cocktailName"
+        app:srcCompat="@drawable/ic_nopicture" />
 
     <Button
         android:id="@+id/newCocktail_button_finish"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_rounded"
         android:text="Create Cocktail"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/newCocktail_edit_name"
+    <TextView
+        android:id="@+id/newCocktail_header_cocktailName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Cocktail Name"
-        android:inputType="textCapWords"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:text="Nameless"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/newCocktail_imageView_thumbnail"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/newCocktail_edit_name"
-        app:srcCompat="@android:drawable/progress_indeterminate_horizontal" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newCocktail_imageView_thumbnail" />
-
-    <EditText
-        android:id="@+id/newCocktail_edit_ingredient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:hint="Ingredient"
-        android:inputType="textCapWords"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
-
-    <EditText
-        android:id="@+id/newCocktail_edit_amount"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:hint="Amount"
-        android:inputType="number"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/newCocktail_edit_ingredient"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
-        android:text="oz"
-        app:layout_constraintBottom_toBottomOf="@+id/newCocktail_edit_ingredient"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:text="oz"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <EditText
-        android:id="@+id/newCocktail_edit_recipe"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="Recipe"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <ImageButton
-        android:id="@+id/newCocktail_imagebutton_takeImage"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:drawable/ic_menu_camera"
-        app:layout_constraintBottom_toTopOf="@+id/newCocktail_edit_recipe"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newCocktail_edit_name" />
-
-    <ImageButton
-        android:id="@+id/newCocktail_imagebutton_chooseImage"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:drawable/ic_menu_gallery"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintStart_toEndOf="@+id/newCocktail_imagebutton_takeImage"
-        app:layout_constraintTop_toBottomOf="@+id/newCocktail_edit_name" />
-
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Favourite"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newCocktail_edit_recipe" />
-
-    <Button
-        android:id="@+id/newCocktail_button_ekstraIngredients"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="188dp"
-        android:text="+1 Ingredient"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newCocktail_edit_ingredient" />
-
-    <Button
-        android:id="@+id/newCocktail_button_crop"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:text="Crop"
-        app:layout_constraintEnd_toStartOf="@+id/newCocktail_imageView_thumbnail"
-        app:layout_constraintStart_toEndOf="@+id/newCocktail_imagebutton_chooseImage"
-        tools:layout_editor_absoluteY="95dp" />
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newCocktail_imageView_thumbnail">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView8"
+                app:srcCompat="@drawable/ic_indicator_done" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:text="Ingredients"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView8"
+                app:srcCompat="@drawable/ic_indicator_done" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:text="Recipe"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView8"
+                app:srcCompat="@drawable/ic_indicator_undone" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:text="Comments"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

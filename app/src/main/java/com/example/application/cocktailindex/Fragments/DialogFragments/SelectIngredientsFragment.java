@@ -1,0 +1,97 @@
+package com.example.application.cocktailindex.Fragments.DialogFragments;
+
+import android.content.Context;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.application.cocktailindex.Activities.NewCocktailActivity;
+import com.example.application.cocktailindex.Objects.Ingredient;
+import com.example.application.cocktailindex.R;
+import com.example.application.cocktailindex.RecyclerviewAdapters.IndexAdapter;
+import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
+
+import java.util.ArrayList;
+
+/**
+ * AssignmentEnterNew is used when the user wants to add an assignment to the Task. This is a
+ * popup window with a textview and two buttons.
+ *
+ * @author Morten Astrup
+ */
+public class SelectIngredientsFragment extends Fragment {
+
+    private OnFragmentInteractionListener mListener;
+    private Fragment thisFragment;
+
+    private RecyclerView recyclerView;
+    private IngredientsAddAdapter mAdapter;
+    private ArrayList<Ingredient> ingredients;
+
+
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        thisFragment = this;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.addcocktail_fragment_setingredients, container, false);
+
+        ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Whisky", "2oz"));
+        ingredients.add(new Ingredient("Lemon", "0.75oz"));
+        ingredients.add(new Ingredient("2:1 Simple Syrup", "0.5oz"));
+
+        recyclerView = view.findViewById(R.id.addcocktail_fragment_setingredients_recyclerview);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new IngredientsAddAdapter(ingredients, getContext());
+        recyclerView.setAdapter(mAdapter);
+
+        mAdapter.notifyDataSetChanged();
+
+        return view;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onPressingIngredientsButton(int button);
+    }
+}

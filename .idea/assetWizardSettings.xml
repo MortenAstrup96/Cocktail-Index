@@ -19,11 +19,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="32" />
-                            <entry key="outputName" value="ic_fav_red" />
+                            <entry key="height" value="200" />
+                            <entry key="outputName" value="ic_indicator_undone" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="D:\Programmer\Android\CocktailIndex\SVG Files\fav.svg" />
-                            <entry key="width" value="32" />
+                            <entry key="sourceFile" value="D:\Programmer\Android\CocktailIndex\SVG Files\indicator_undone.svg" />
+                            <entry key="width" value="200" />
                           </map>
                         </option>
                       </PersistentState>

@@ -45,6 +45,8 @@ public class SelectIngredientsFragment extends Fragment {
     private EditText editIngredients;
     private EditText editAmount;
 
+    private Button buttonNext;
+    private Button buttonSkip;
 
 
     @Override
@@ -75,8 +77,22 @@ public class SelectIngredientsFragment extends Fragment {
         buttonAddIngredient = view.findViewById(R.id.addcocktail_fragment_setingredients_button_add);
         editIngredients = view.findViewById(R.id.addcocktail_fragment_setingredients_edit_ingredient);
         editAmount = view.findViewById(R.id.addcocktail_fragment_setingredients_edit_amount);
+        buttonNext = view.findViewById(R.id.addcocktail_fragment_setingredients_button_next);
+        buttonSkip = view.findViewById(R.id.addcocktail_fragment_setingredients_button_skip);
 
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((NewCocktailActivity)getActivity()).onPressingIngredientsButton(3);
+            }
+        });
 
+        buttonSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((NewCocktailActivity)getActivity()).onPressingIngredientsButton(4);
+            }
+        });
         buttonAddIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,6 +123,7 @@ public class SelectIngredientsFragment extends Fragment {
                 editIngredients.requestFocus();
             }
         });
+
 
         return view;
     }

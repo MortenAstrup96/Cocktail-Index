@@ -25,8 +25,12 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.BuildConfig;
+import com.example.application.cocktailindex.Fragments.DialogFragments.OverviewFragment;
+import com.example.application.cocktailindex.Fragments.DialogFragments.SelectCommentsFragment;
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectImageFragment;
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectIngredientsFragment;
+import com.example.application.cocktailindex.Fragments.DialogFragments.SelectNameFragment;
+import com.example.application.cocktailindex.Fragments.DialogFragments.SelectRecipeFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.R;
 
@@ -39,7 +43,11 @@ import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
 public class NewCocktailActivity extends AppCompatActivity implements Serializable,
         SelectImageFragment.OnFragmentInteractionListener,
-        SelectIngredientsFragment.OnFragmentInteractionListener {
+        SelectIngredientsFragment.OnFragmentInteractionListener,
+        SelectRecipeFragment.OnFragmentInteractionListener,
+        SelectCommentsFragment.OnFragmentInteractionListener,
+        OverviewFragment.OnFragmentInteractionListener,
+        SelectNameFragment.OnFragmentInteractionListener {
 
     // On Activity result codes
     public static final int GET_FROM_GALLERY = 3;   // Getting images from gallery
@@ -62,8 +70,13 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
     private Button finishButton;
     private Button cropButton;
 
+    private SelectNameFragment fragmentName;
     private SelectImageFragment fragmentImage;
     private SelectIngredientsFragment fragmentIngredients;
+    private SelectRecipeFragment fragmentRecipe;
+    private SelectCommentsFragment fragmentComments;
+    private OverviewFragment fragmentOverview;
+
 
     private boolean pictureSelected = false;
 
@@ -77,11 +90,16 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
        initializeViews();
        // setOnClickListeners();
 
+        fragmentName = new SelectNameFragment();
         fragmentImage = new SelectImageFragment();
         fragmentIngredients = new SelectIngredientsFragment();
+        fragmentRecipe = new SelectRecipeFragment();
+        fragmentComments = new SelectCommentsFragment();
+        fragmentOverview = new OverviewFragment();
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentImage);
+        fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentName);
         fragmentTransaction.commit();
 
 
@@ -194,7 +212,7 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
     }
 
     private void initializeViews() {
-        thumbnail = findViewById(R.id.newCocktail_imageView_thumbnail);
+        //thumbnail = findViewById(R.id.newCocktail_imageView_thumbnail);
         /**
         cocktailNameView = findViewById(R.id.newCocktail_edit_name);
         recipeEditText = findViewById(R.id.newCocktail_edit_recipe);
@@ -208,14 +226,14 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         takeImageButton = findViewById(R.id.newCocktail_imagebutton_takeImage);
         finishButton = findViewById(R.id.newCocktail_button_finish);
         cropButton = findViewById(R.id.newCocktail_button_crop);
-         */
 
-        Glide.with(this)
-                .load(R.drawable.ic_nopicture)
-                .override(400, 400)
-                .centerInside()
-                .apply(RequestOptions.circleCropTransform())
-                .into(thumbnail);
+         Glide.with(this)
+         .load(R.drawable.ic_nopicture)
+         .override(400, 400)
+         .centerInside()
+         .apply(RequestOptions.circleCropTransform())
+         .into(thumbnail);
+         */
     }
 
     public Uri getSelectedImage() {
@@ -259,13 +277,129 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
                 fragmentTransaction.commit();
                 break;
         }
-
-
-
     }
 
     @Override
     public void onPressingIngredientsButton(int button) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentRecipe);
+                fragmentTransaction.commit();
+                break;
+            case 4:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentRecipe);
+                fragmentTransaction.commit();
+                break;
+        }
+    }
 
+    @Override
+    public void onPressingCommentsButton(int button) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentOverview);
+                fragmentTransaction.commit();
+                break;
+            case 4:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentOverview);
+                fragmentTransaction.commit();
+                break;
+        }
+    }
+
+    @Override
+    public void onPressingRecipeButton(int button) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentComments);
+                fragmentTransaction.commit();
+                break;
+            case 4:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentComments);
+                fragmentTransaction.commit();
+                break;
+        }
+    }
+
+    @Override
+    public void onPressingOverviewButton(int button) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                finish();
+                break;
+            case 4:
+
+                break;
+        }
+    }
+
+    @Override
+    public void onPressingNameButton(int button) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentImage);
+                fragmentTransaction.commit();
+                break;
+            case 4:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentImage);
+                fragmentTransaction.commit();
+                break;
+        }
     }
 }

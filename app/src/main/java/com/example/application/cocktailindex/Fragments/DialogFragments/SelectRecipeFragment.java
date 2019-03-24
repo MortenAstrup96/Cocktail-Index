@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.application.cocktailindex.Activities.MainActivity;
 import com.example.application.cocktailindex.Activities.NewCocktailActivity;
+import com.example.application.cocktailindex.Handlers.AddCocktailHandler;
 import com.example.application.cocktailindex.R;
 
 /**
@@ -25,6 +27,8 @@ public class SelectRecipeFragment extends Fragment {
     private Button skip;
     private Button next;
 
+    private AddCocktailHandler addCocktailHandler;
+
 
 
 
@@ -32,6 +36,7 @@ public class SelectRecipeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         thisFragment = this;
+        addCocktailHandler = ((MainActivity)getActivity()).getFragmentHandler();
     }
 
     @Override
@@ -50,14 +55,14 @@ public class SelectRecipeFragment extends Fragment {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((NewCocktailActivity)getActivity()).onPressingRecipeButton(4);
+                addCocktailHandler.onPressingRecipeButton(2); // Next
             }
         });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((NewCocktailActivity)getActivity()).onPressingRecipeButton(3);
+                addCocktailHandler.onPressingRecipeButton(1); // Next
             }
         });
     }

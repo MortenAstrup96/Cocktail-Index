@@ -41,13 +41,7 @@ import java.util.Date;
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
-public class NewCocktailActivity extends AppCompatActivity implements Serializable,
-        SelectImageFragment.OnFragmentInteractionListener,
-        SelectIngredientsFragment.OnFragmentInteractionListener,
-        SelectRecipeFragment.OnFragmentInteractionListener,
-        SelectCommentsFragment.OnFragmentInteractionListener,
-        OverviewFragment.OnFragmentInteractionListener,
-        SelectNameFragment.OnFragmentInteractionListener {
+public class NewCocktailActivity extends AppCompatActivity implements Serializable {
 
     // On Activity result codes
     public static final int GET_FROM_GALLERY = 3;   // Getting images from gallery
@@ -70,14 +64,6 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
     private Button finishButton;
     private Button cropButton;
 
-    private SelectNameFragment fragmentName;
-    private SelectImageFragment fragmentImage;
-    private SelectIngredientsFragment fragmentIngredients;
-    private SelectRecipeFragment fragmentRecipe;
-    private SelectCommentsFragment fragmentComments;
-    private OverviewFragment fragmentOverview;
-
-
     private boolean pictureSelected = false;
 
 
@@ -89,19 +75,6 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
 
        initializeViews();
        // setOnClickListeners();
-
-        fragmentName = new SelectNameFragment();
-        fragmentImage = new SelectImageFragment();
-        fragmentIngredients = new SelectIngredientsFragment();
-        fragmentRecipe = new SelectRecipeFragment();
-        fragmentComments = new SelectCommentsFragment();
-        fragmentOverview = new OverviewFragment();
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentName);
-        fragmentTransaction.commit();
-
 
     }
 
@@ -133,7 +106,7 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         }
 
         if(resultCode == Activity.RESULT_OK) {
-            fragmentImage.setThumbnail(selectedImage);
+            //fragmentImage.setThumbnail(selectedImage);
             pictureSelected = true;
         }
     }
@@ -244,162 +217,5 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".my.package.name.provider", file);
     }
 
-    /**
-     * 1 == Camera
-     * 2 == Gallery
-     * 3 == Next
-     * 4 == Skip
-     *
-     * @param button
-     */
-    @Override
-    public void onPressingImageButton(int button) {
 
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentIngredients);
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.remove(fragmentImage);
-                fragmentTransaction.commit();
-                break;
-        }
-    }
-
-    @Override
-    public void onPressingIngredientsButton(int button) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentRecipe);
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentRecipe);
-                fragmentTransaction.commit();
-                break;
-        }
-    }
-
-    @Override
-    public void onPressingCommentsButton(int button) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentOverview);
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentOverview);
-                fragmentTransaction.commit();
-                break;
-        }
-    }
-
-    @Override
-    public void onPressingRecipeButton(int button) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentComments);
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentComments);
-                fragmentTransaction.commit();
-                break;
-        }
-    }
-
-    @Override
-    public void onPressingOverviewButton(int button) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                finish();
-                break;
-            case 4:
-
-                break;
-        }
-    }
-
-    @Override
-    public void onPressingNameButton(int button) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentImage);
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentImage);
-                fragmentTransaction.commit();
-                break;
-        }
-    }
 }

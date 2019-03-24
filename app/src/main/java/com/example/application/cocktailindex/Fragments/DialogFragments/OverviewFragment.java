@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.application.cocktailindex.Activities.NewCocktailActivity;
+import com.example.application.cocktailindex.Activities.MainActivity;
+import com.example.application.cocktailindex.Handlers.AddCocktailHandler;
 import com.example.application.cocktailindex.R;
 
 /**
@@ -24,29 +25,34 @@ public class OverviewFragment extends Fragment {
 
     private Button finish;
 
+    private AddCocktailHandler addCocktailHandler;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         thisFragment = this;
+        addCocktailHandler = ((MainActivity)getActivity()).getFragmentHandler();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.addcocktail_fragment_overview, container, false);
+        final View view = inflater.inflate(R.layout.addcocktail_fragment_overview, container, false);
         finish = view.findViewById(R.id.addcocktail_fragment_overview_button_finish);
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((NewCocktailActivity)getActivity()).onPressingOverviewButton(3);
+                addCocktailHandler.onPressingOverviewButton(1); // Next
             }
         });
 
-
         return view;
+    }
+
+    private void blurBackground() {
+
     }
 
 

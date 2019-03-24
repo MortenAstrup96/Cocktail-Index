@@ -11,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -39,6 +41,9 @@ public class SelectIngredientsFragment extends Fragment {
     private IngredientsAddAdapter mAdapter;
     private ArrayList<Ingredient> ingredients;
 
+    private Button buttonAddIngredient;
+    private EditText editIngredients;
+    private EditText editAmount;
 
 
 
@@ -67,6 +72,41 @@ public class SelectIngredientsFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
+        buttonAddIngredient = view.findViewById(R.id.addcocktail_fragment_setingredients_button_add);
+        editIngredients = view.findViewById(R.id.addcocktail_fragment_setingredients_edit_ingredient);
+        editAmount = view.findViewById(R.id.addcocktail_fragment_setingredients_edit_amount);
+
+
+        buttonAddIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Initial checks for completeness
+                String ingredientString = editIngredients.getText().toString();
+                String amountString = editAmount.getText().toString();
+
+                if(ingredientString.isEmpty() || amountString.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please enter an ingredient & amount",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                if(ingredients.size() >= 8) {
+                    Toast.makeText(getActivity(), "Ingredient limit reached",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                Ingredient ingredientToAdd = new Ingredient(ingredientString, amountString);
+                ingredients.add(ingredientToAdd);
+                mAdapter.notifyDataSetChanged();
+
+                editIngredients.setText("");
+                editAmount.setText("");
+                editIngredients.requestFocus();
+            }
+        });
 
         return view;
     }

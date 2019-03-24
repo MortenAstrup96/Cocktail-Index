@@ -53,7 +53,7 @@ public class SelectImageFragment extends Fragment {
         thumbnail = view.findViewById(R.id.addcocktail_fragment_setimage_thumbnail);
         selectCamera = view.findViewById(R.id.addcocktail_fragment_setimage_imagebutton_camera);
         selectGallery = view.findViewById(R.id.addcocktail_fragment_setimage_imagebutton_gallery);
-        skip = view.findViewById(R.id.addcocktail_fragment_setimage_button_skip);
+        skip = view.findViewById(R.id.addcocktail_fragment_setingredients_button_skip);
         next = view.findViewById(R.id.addcocktail_fragment_setimage_button_next);
         setupListeners();
 

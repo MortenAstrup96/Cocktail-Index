@@ -33,7 +33,7 @@ public class SelectNameFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         thisFragment = this;
-        addCocktailHandler = ((MainActivity)getActivity()).getFragmentHandler();
+        addCocktailHandler = ((NewCocktailActivity)getActivity()).getFragmentHandler();
     }
 
     @Override

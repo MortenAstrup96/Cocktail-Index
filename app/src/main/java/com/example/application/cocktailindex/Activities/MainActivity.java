@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements
         SelectRecipeFragment.OnFragmentInteractionListener,
         SelectCommentsFragment.OnFragmentInteractionListener,
         OverviewFragment.OnFragmentInteractionListener,
-        SelectNameFragment.OnFragmentInteractionListener{
+        SelectNameFragment.OnFragmentInteractionListener {
 
     // On Activity result codes
     public static final int NEW_COCKTAIL_RECIPE = 1;   // Created new cocktail from NewCocktailActivity
@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         SetupViews();   // FAB & BNV
-        fragmentHandler = new AddCocktailHandler(this);    // Abstract Fragments away
 
         // Setup of database
         db = Room.databaseBuilder(getApplicationContext(),
@@ -126,10 +125,6 @@ public class MainActivity extends AppCompatActivity implements
 
     public FloatingActionButton getFab() {
         return fab;
-    }
-
-    public AddCocktailHandler getFragmentHandler() {
-        return fragmentHandler;
     }
 
 
@@ -219,7 +214,8 @@ public class MainActivity extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentHandler.beginAddCocktail();
+                Intent i = new Intent(getApplicationContext(), NewCocktailActivity.class);
+                startActivityForResult(i, 1);
             }
         });
     }

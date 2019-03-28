@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.application.cocktailindex.Activities.MainActivity;
+import com.example.application.cocktailindex.Activities.NewCocktailActivity;
 import com.example.application.cocktailindex.Handlers.AddCocktailHandler;
 import com.example.application.cocktailindex.R;
 
@@ -32,7 +33,7 @@ public class OverviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         thisFragment = this;
-        addCocktailHandler = ((MainActivity)getActivity()).getFragmentHandler();
+        addCocktailHandler = ((NewCocktailActivity)getActivity()).getFragmentHandler();
     }
 
     @Override

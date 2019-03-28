@@ -45,7 +45,7 @@ public class SelectImageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         thisFragment = this;
-        addCocktailHandler = ((MainActivity)getActivity()).getFragmentHandler();
+        addCocktailHandler = ((NewCocktailActivity)getActivity()).getFragmentHandler();
 //        selectedImage = ((NewCocktailActivity)getActivity()).getSelectedImage();
     }
 

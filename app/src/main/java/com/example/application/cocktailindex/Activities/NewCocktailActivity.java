@@ -31,6 +31,7 @@ import com.example.application.cocktailindex.Fragments.DialogFragments.SelectIma
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectIngredientsFragment;
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectNameFragment;
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectRecipeFragment;
+import com.example.application.cocktailindex.Handlers.AddCocktailHandler;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.R;
 
@@ -41,7 +42,14 @@ import java.util.Date;
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
-public class NewCocktailActivity extends AppCompatActivity implements Serializable {
+public class NewCocktailActivity extends AppCompatActivity implements
+        Serializable,
+        SelectImageFragment.OnFragmentInteractionListener,
+        SelectIngredientsFragment.OnFragmentInteractionListener,
+        SelectRecipeFragment.OnFragmentInteractionListener,
+        SelectCommentsFragment.OnFragmentInteractionListener,
+        OverviewFragment.OnFragmentInteractionListener,
+        SelectNameFragment.OnFragmentInteractionListener {
 
     // On Activity result codes
     public static final int GET_FROM_GALLERY = 3;   // Getting images from gallery
@@ -65,7 +73,7 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
     private Button cropButton;
 
     private boolean pictureSelected = false;
-
+    private AddCocktailHandler fragmentHandler;
 
 
     @Override
@@ -74,6 +82,8 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         setContentView(R.layout.activity_new_cocktail);
 
        initializeViews();
+       fragmentHandler = new AddCocktailHandler(this);    // Abstract Fragments away
+        fragmentHandler.beginAddCocktail();
        // setOnClickListeners();
 
     }
@@ -218,4 +228,38 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
     }
 
 
+    public AddCocktailHandler getFragmentHandler() {
+        return fragmentHandler;
+    }
+
+
+    @Override
+    public void onPressingOverviewButton(int button) {
+
+    }
+
+    @Override
+    public void onPressingCommentsButton(int button) {
+
+    }
+
+    @Override
+    public void onPressingImageButton(int button) {
+
+    }
+
+    @Override
+    public void onPressingIngredientsButton(int button) {
+
+    }
+
+    @Override
+    public void onPressingNameButton(int button) {
+
+    }
+
+    @Override
+    public void onPressingRecipeButton(int button) {
+
+    }
 }

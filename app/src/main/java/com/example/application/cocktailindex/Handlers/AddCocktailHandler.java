@@ -1,10 +1,12 @@
 package com.example.application.cocktailindex.Handlers;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.example.application.cocktailindex.Activities.MainActivity;
+import com.example.application.cocktailindex.Activities.NewCocktailActivity;
 import com.example.application.cocktailindex.Fragments.DialogFragments.OverviewFragment;
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectCommentsFragment;
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectImageFragment;
@@ -28,12 +30,12 @@ public class AddCocktailHandler implements
     private SelectCommentsFragment fragmentComments;
     private OverviewFragment fragmentOverview;
 
-    private MainActivity mainActivity;  // Important reference to MainActivity
+    private NewCocktailActivity cocktailActivity;  // Important reference to MainActivity
 
     private Fragment currentFragment;
 
-    public AddCocktailHandler(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public AddCocktailHandler(NewCocktailActivity cocktailActivity) {
+        this.cocktailActivity = cocktailActivity;
         fragmentName = new SelectNameFragment();
         fragmentImage = new SelectImageFragment();
         fragmentIngredients = new SelectIngredientsFragment();
@@ -41,30 +43,25 @@ public class AddCocktailHandler implements
         fragmentComments = new SelectCommentsFragment();
         fragmentOverview = new OverviewFragment();
     }
+    
 
     public void beginAddCocktail() {
-        mainActivity.getFab().hide();
         replaceNameFragment();
 
     }
 
     private void endAndSave() {
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        FragmentManager fragmentManager = cocktailActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(currentFragment);
         fragmentTransaction.commit();
-        mainActivity.getFab().show();
-    }
-
-    private void endAndDiscard() {
-        mainActivity.getFab().show();
     }
 
 
     /** Methods to replace the current fragment with the desired fragment */
     private void replaceNameFragment() {
         currentFragment = fragmentName;
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        FragmentManager fragmentManager = cocktailActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainactivity_toplayer, currentFragment);
         fragmentTransaction.setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out);
@@ -74,7 +71,7 @@ public class AddCocktailHandler implements
 
     private void replaceImageFragment() {
         currentFragment = fragmentImage;
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        FragmentManager fragmentManager = cocktailActivity.getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
         performTransaction(ft);
@@ -82,7 +79,7 @@ public class AddCocktailHandler implements
 
     private void replaceIngredientsFragment() {
         currentFragment = fragmentIngredients;
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        FragmentManager fragmentManager = cocktailActivity.getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
         performTransaction(ft);
@@ -90,7 +87,7 @@ public class AddCocktailHandler implements
 
     private void replaceRecipeFragment() {
         currentFragment = fragmentRecipe;
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        FragmentManager fragmentManager = cocktailActivity.getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
         performTransaction(ft);
@@ -98,7 +95,7 @@ public class AddCocktailHandler implements
 
     private void replaceCommentFragment() {
         currentFragment = fragmentComments;
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        FragmentManager fragmentManager = cocktailActivity.getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
         performTransaction(ft);
@@ -106,7 +103,7 @@ public class AddCocktailHandler implements
 
     private void replaceOverviewFragment() {
         currentFragment = fragmentOverview;
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        FragmentManager fragmentManager = cocktailActivity.getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
         performTransaction(ft);

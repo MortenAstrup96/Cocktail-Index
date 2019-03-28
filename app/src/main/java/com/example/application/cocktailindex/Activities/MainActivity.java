@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements
     private FloatingActionButton fab;
 
     private AddCocktailHandler fragmentHandler;
-
+    private ConstraintLayout mainTopLayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements
             loadData();
         }
 
+        mainTopLayer = findViewById(R.id.mainactivity_toplayer);
         // Instantiates the 3 base fragments (Index, Favourite & Idea)
         fragmentIndex = new IndexFragment();
         fragmentFavorite = new FavoriteFragment();
@@ -281,6 +282,14 @@ public class MainActivity extends AppCompatActivity implements
         // Updates the cocktailList
         cocktailList.clear();
         cocktailList.addAll(savedCocktailList);
+    }
+
+    public void toggleFrontLayerOpacity(boolean setting) {
+        if(setting) {
+            mainTopLayer.setBackgroundColor(getResources().getColor(R.color.black_overlay));
+        } else {
+            mainTopLayer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        }
     }
 
     @Override

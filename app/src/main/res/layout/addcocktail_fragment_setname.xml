@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.NewCocktailActivity"
+    android:background="@color/black_overlay"
     android:elevation="30dp"
     android:clickable="true"
     android:focusable="true"

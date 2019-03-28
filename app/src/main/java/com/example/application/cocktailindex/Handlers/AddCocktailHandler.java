@@ -113,8 +113,7 @@ public class AddCocktailHandler implements
     }
 
     private void performTransaction(FragmentTransaction ft) {
-        ft.setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out)
-                .replace(R.id.mainactivity_toplayer, currentFragment)
+        ft.replace(R.id.mainactivity_toplayer, currentFragment)
                 .addToBackStack(null)
                 .commit();
     }

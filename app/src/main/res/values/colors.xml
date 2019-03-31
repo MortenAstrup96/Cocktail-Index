@@ -8,5 +8,5 @@
     <color name="colorAccent">#f53a2d</color>
     <color name="colorRed">#C21B11</color>
 
-    <color name="black_overlay">#8D000000</color>
+    <color name="black_overlay">#66000000</color>
 </resources>

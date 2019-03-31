@@ -31,7 +31,6 @@ import com.example.application.cocktailindex.Fragments.DialogFragments.SelectIma
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectIngredientsFragment;
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectNameFragment;
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectRecipeFragment;
-import com.example.application.cocktailindex.Handlers.AddCocktailHandler;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.R;
 
@@ -42,8 +41,7 @@ import java.util.Date;
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
-public class NewCocktailActivity extends AppCompatActivity implements
-        Serializable,
+public class NewCocktailActivity extends AppCompatActivity implements Serializable,
         SelectImageFragment.OnFragmentInteractionListener,
         SelectIngredientsFragment.OnFragmentInteractionListener,
         SelectRecipeFragment.OnFragmentInteractionListener,
@@ -72,8 +70,16 @@ public class NewCocktailActivity extends AppCompatActivity implements
     private Button finishButton;
     private Button cropButton;
 
+    private SelectNameFragment fragmentName;
+    private SelectImageFragment fragmentImage;
+    private SelectIngredientsFragment fragmentIngredients;
+    private SelectRecipeFragment fragmentRecipe;
+    private SelectCommentsFragment fragmentComments;
+    private OverviewFragment fragmentOverview;
+
+
     private boolean pictureSelected = false;
-    private AddCocktailHandler fragmentHandler;
+
 
 
     @Override
@@ -82,9 +88,20 @@ public class NewCocktailActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_new_cocktail);
 
        initializeViews();
-       fragmentHandler = new AddCocktailHandler(this);    // Abstract Fragments away
-        fragmentHandler.beginAddCocktail();
        // setOnClickListeners();
+
+        fragmentName = new SelectNameFragment();
+        fragmentImage = new SelectImageFragment();
+        fragmentIngredients = new SelectIngredientsFragment();
+        fragmentRecipe = new SelectRecipeFragment();
+        fragmentComments = new SelectCommentsFragment();
+        fragmentOverview = new OverviewFragment();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentName);
+        fragmentTransaction.commit();
+
 
     }
 
@@ -116,7 +133,7 @@ public class NewCocktailActivity extends AppCompatActivity implements
         }
 
         if(resultCode == Activity.RESULT_OK) {
-            //fragmentImage.setThumbnail(selectedImage);
+            fragmentImage.setThumbnail(selectedImage);
             pictureSelected = true;
         }
     }
@@ -227,39 +244,162 @@ public class NewCocktailActivity extends AppCompatActivity implements
         return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".my.package.name.provider", file);
     }
 
-
-    public AddCocktailHandler getFragmentHandler() {
-        return fragmentHandler;
-    }
-
-
-    @Override
-    public void onPressingOverviewButton(int button) {
-
-    }
-
-    @Override
-    public void onPressingCommentsButton(int button) {
-
-    }
-
+    /**
+     * 1 == Camera
+     * 2 == Gallery
+     * 3 == Next
+     * 4 == Skip
+     *
+     * @param button
+     */
     @Override
     public void onPressingImageButton(int button) {
 
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentIngredients);
+                fragmentTransaction.commit();
+                break;
+            case 4:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(fragmentImage);
+                fragmentTransaction.commit();
+                break;
+        }
     }
 
     @Override
     public void onPressingIngredientsButton(int button) {
-
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentRecipe);
+                fragmentTransaction.commit();
+                break;
+            case 4:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentRecipe);
+                fragmentTransaction.commit();
+                break;
+        }
     }
 
     @Override
-    public void onPressingNameButton(int button) {
-
+    public void onPressingCommentsButton(int button) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentOverview);
+                fragmentTransaction.commit();
+                break;
+            case 4:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentOverview);
+                fragmentTransaction.commit();
+                break;
+        }
     }
 
     @Override
     public void onPressingRecipeButton(int button) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentComments);
+                fragmentTransaction.commit();
+                break;
+            case 4:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentComments);
+                fragmentTransaction.commit();
+                break;
+        }
+    }
 
+    @Override
+    public void onPressingOverviewButton(int button) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                finish();
+                break;
+            case 4:
+
+                break;
+        }
+    }
+
+    @Override
+    public void onPressingNameButton(int button) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (button) {
+            case 1:
+                activateCamera();
+                break;
+            case 2:
+                activateGallery();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentImage);
+                fragmentTransaction.commit();
+                break;
+            case 4:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentImage);
+                fragmentTransaction.commit();
+                break;
+        }
     }
 }

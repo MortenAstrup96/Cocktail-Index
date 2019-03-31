@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -29,16 +28,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.application.cocktailindex.Database.AppDatabase;
-import com.example.application.cocktailindex.Fragments.DialogFragments.OverviewFragment;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectCommentsFragment;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectImageFragment;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectIngredientsFragment;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectNameFragment;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectRecipeFragment;
 import com.example.application.cocktailindex.Fragments.FavoriteFragment;
 import com.example.application.cocktailindex.Fragments.IdeaFragment;
 import com.example.application.cocktailindex.Fragments.IndexFragment;
-import com.example.application.cocktailindex.Handlers.AddCocktailHandler;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.R;
 
@@ -55,13 +47,7 @@ public class MainActivity extends AppCompatActivity implements
         IndexFragment.OnFragmentInteractionListener,
         FavoriteFragment.OnFragmentInteractionListener,
         IdeaFragment.OnFragmentInteractionListener,
-        Serializable,
-        SelectImageFragment.OnFragmentInteractionListener,
-        SelectIngredientsFragment.OnFragmentInteractionListener,
-        SelectRecipeFragment.OnFragmentInteractionListener,
-        SelectCommentsFragment.OnFragmentInteractionListener,
-        OverviewFragment.OnFragmentInteractionListener,
-        SelectNameFragment.OnFragmentInteractionListener {
+        Serializable {
 
     // On Activity result codes
     public static final int NEW_COCKTAIL_RECIPE = 1;   // Created new cocktail from NewCocktailActivity
@@ -82,10 +68,6 @@ public class MainActivity extends AppCompatActivity implements
     // Database
     private AppDatabase db;
 
-    private FloatingActionButton fab;
-
-    private AddCocktailHandler fragmentHandler;
-    private ConstraintLayout mainTopLayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements
             loadData();
         }
 
-        mainTopLayer = findViewById(R.id.mainactivity_toplayer);
         // Instantiates the 3 base fragments (Index, Favourite & Idea)
         fragmentIndex = new IndexFragment();
         fragmentFavorite = new FavoriteFragment();
@@ -121,12 +102,8 @@ public class MainActivity extends AppCompatActivity implements
         java.util.Collections.sort(cocktailList);
         // Sets starting fragment TODO: Have user decide the starting fragment, or possibly start at Favourites
         setCurrentFragment(fragmentIndex);
-    }
 
-    public FloatingActionButton getFab() {
-        return fab;
     }
-
 
     /**
      * Loads all data from database and adds to the listviews
@@ -210,12 +187,12 @@ public class MainActivity extends AppCompatActivity implements
 
 
         // Setup of FAB
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), NewCocktailActivity.class);
-                startActivityForResult(i, 1);
+                Intent intent = new Intent(MainActivity.this, NewCocktailActivity.class);
+                startActivityForResult(intent, NEW_COCKTAIL_RECIPE);
             }
         });
     }
@@ -278,14 +255,6 @@ public class MainActivity extends AppCompatActivity implements
         // Updates the cocktailList
         cocktailList.clear();
         cocktailList.addAll(savedCocktailList);
-    }
-
-    public void toggleFrontLayerOpacity(boolean setting) {
-        if(setting) {
-            mainTopLayer.setBackgroundColor(getResources().getColor(R.color.black_overlay));
-        } else {
-            mainTopLayer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        }
     }
 
     @Override
@@ -365,36 +334,4 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-
-
-
-    @Override
-    public void onPressingOverviewButton(int button) {
-        fragmentHandler.onPressingOverviewButton(button);
-    }
-
-    @Override
-    public void onPressingCommentsButton(int button) {
-        fragmentHandler.onPressingCommentsButton(button);
-    }
-
-    @Override
-    public void onPressingImageButton(int button) {
-        fragmentHandler.onPressingImageButton(button);
-    }
-
-    @Override
-    public void onPressingIngredientsButton(int button) {
-        fragmentHandler.onPressingIngredientsButton(button);
-    }
-
-    @Override
-    public void onPressingNameButton(int button) {
-        fragmentHandler.onPressingNameButton(button);
-    }
-
-    @Override
-    public void onPressingRecipeButton(int button) {
-        fragmentHandler.onPressingRecipeButton(button);
-    }
 }

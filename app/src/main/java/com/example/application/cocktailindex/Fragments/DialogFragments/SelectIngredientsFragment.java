@@ -18,9 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.application.cocktailindex.Activities.MainActivity;
 import com.example.application.cocktailindex.Activities.NewCocktailActivity;
-import com.example.application.cocktailindex.Handlers.AddCocktailHandler;
 import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IndexAdapter;
@@ -50,14 +48,11 @@ public class SelectIngredientsFragment extends Fragment {
     private Button buttonNext;
     private Button buttonSkip;
 
-    private AddCocktailHandler addCocktailHandler;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         thisFragment = this;
-        addCocktailHandler = ((NewCocktailActivity)getActivity()).getFragmentHandler();
     }
 
     @Override
@@ -88,14 +83,14 @@ public class SelectIngredientsFragment extends Fragment {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCocktailHandler.onPressingIngredientsButton(1); // Next
+                ((NewCocktailActivity)getActivity()).onPressingIngredientsButton(3);
             }
         });
 
         buttonSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCocktailHandler.onPressingIngredientsButton(2); // Next
+                ((NewCocktailActivity)getActivity()).onPressingIngredientsButton(4);
             }
         });
         buttonAddIngredient.setOnClickListener(new View.OnClickListener() {

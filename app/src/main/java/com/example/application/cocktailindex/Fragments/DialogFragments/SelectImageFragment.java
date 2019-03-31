@@ -13,9 +13,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.application.cocktailindex.Activities.MainActivity;
 import com.example.application.cocktailindex.Activities.NewCocktailActivity;
-import com.example.application.cocktailindex.Handlers.AddCocktailHandler;
 import com.example.application.cocktailindex.R;
 
 /**
@@ -37,16 +35,13 @@ public class SelectImageFragment extends Fragment {
     private Button skip;
     private Button next;
 
-    private AddCocktailHandler addCocktailHandler;
-
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         thisFragment = this;
-        addCocktailHandler = ((NewCocktailActivity)getActivity()).getFragmentHandler();
-//        selectedImage = ((NewCocktailActivity)getActivity()).getSelectedImage();
+        selectedImage = ((NewCocktailActivity)getActivity()).getSelectedImage();
     }
 
     @Override
@@ -95,28 +90,28 @@ public class SelectImageFragment extends Fragment {
         selectCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCocktailHandler.onPressingImageButton(3);
+                ((NewCocktailActivity)getActivity()).onPressingImageButton(1);
             }
         });
 
         selectGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCocktailHandler.onPressingImageButton(4);
+                ((NewCocktailActivity)getActivity()).onPressingImageButton(2);
             }
         });
 
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCocktailHandler.onPressingImageButton(2);
+                ((NewCocktailActivity)getActivity()).onPressingImageButton(4);
             }
         });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCocktailHandler.onPressingImageButton(1);
+                ((NewCocktailActivity)getActivity()).onPressingImageButton(3);
             }
         });
     }

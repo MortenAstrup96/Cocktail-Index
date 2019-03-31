@@ -8,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.application.cocktailindex.Activities.MainActivity;
 import com.example.application.cocktailindex.Activities.NewCocktailActivity;
-import com.example.application.cocktailindex.Handlers.AddCocktailHandler;
 import com.example.application.cocktailindex.R;
 
 /**
@@ -27,8 +25,6 @@ public class SelectCommentsFragment extends Fragment {
     private Button skip;
     private Button next;
 
-    private AddCocktailHandler addCocktailHandler;
-
 
 
 
@@ -36,7 +32,6 @@ public class SelectCommentsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         thisFragment = this;
-        addCocktailHandler = ((NewCocktailActivity)getActivity()).getFragmentHandler();
     }
 
     @Override
@@ -56,14 +51,14 @@ public class SelectCommentsFragment extends Fragment {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCocktailHandler.onPressingCommentsButton(2); // Next
+                ((NewCocktailActivity)getActivity()).onPressingCommentsButton(4);
             }
         });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCocktailHandler.onPressingCommentsButton(1); // Next
+                ((NewCocktailActivity)getActivity()).onPressingCommentsButton(3);
             }
         });
     }

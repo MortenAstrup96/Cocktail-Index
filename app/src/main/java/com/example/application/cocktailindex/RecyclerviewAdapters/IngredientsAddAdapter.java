@@ -62,9 +62,10 @@ public class IngredientsAddAdapter extends RecyclerView.Adapter<IngredientsAddAd
         Ingredient ingredient = ingredients.get(position);
         String name = ingredient.getIngredient();
         String amount = ingredient.getAmount();
+        String measurement = ingredient.getMeasurement();
 
         holder.name.setText(name);
-        holder.amount.setText(amount);
+        holder.amount.setText(amount + " " + measurement + " ");
     }
 
     @Override

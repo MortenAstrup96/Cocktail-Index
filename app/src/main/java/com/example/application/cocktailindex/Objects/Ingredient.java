@@ -4,11 +4,7 @@ public class Ingredient {
 
     private String ingredient;
     private String amount;
-
-    public Ingredient(String ingredient, String amount) {
-        this.ingredient = ingredient;
-        this.amount = amount;
-    }
+    private String measurement;
 
     public String getIngredient() {
         return ingredient;
@@ -25,4 +21,20 @@ public class Ingredient {
     public void setAmount(String amount) {
         this.amount = amount;
     }
+
+    public String getMeasurement() {
+        return measurement;
+    }
+
+    public void setMeasurement(String measurement) {
+        this.measurement = measurement;
+    }
+
+    public Ingredient(String ingredient, String amount, String measurement) {
+        this.ingredient = ingredient;
+        this.amount = amount;
+        this.measurement = measurement;
+    }
+
+
 }

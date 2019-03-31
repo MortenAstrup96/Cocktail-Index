@@ -61,10 +61,6 @@ public class SelectIngredientsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.addcocktail_fragment_setingredients, container, false);
 
-        ingredients = new ArrayList<>();
-        ingredients.add(new Ingredient("Whisky", "2oz"));
-        ingredients.add(new Ingredient("Lemon", "0.75oz"));
-        ingredients.add(new Ingredient("2:1 Simple Syrup", "0.5oz"));
 
         recyclerView = view.findViewById(R.id.addcocktail_fragment_setingredients_recyclerview);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
@@ -114,8 +110,6 @@ public class SelectIngredientsFragment extends Fragment {
                 }
 
 
-                Ingredient ingredientToAdd = new Ingredient(ingredientString, amountString);
-                ingredients.add(ingredientToAdd);
                 mAdapter.notifyDataSetChanged();
 
                 editIngredients.setText("");

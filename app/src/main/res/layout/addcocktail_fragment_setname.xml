@@ -26,353 +26,162 @@
             android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/constraintLayout2"
+                android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#EBEBEB"
-                android:minHeight="86dp"
-                tools:context=".Activities.NewCocktailActivity">
+                android:layout_height="match_parent">
 
 
-                <Button
-                    android:id="@+id/addcocktail_fragment_setname_button_next"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="80dp"
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/AddIngredient_Layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="Next"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ChooseCommentsCard" />
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/ChooseIngredientsCard"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="left"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="4dp"
-                    android:elevation="4dp"
-                    android:innerRadius="0dp"
-                    android:shape="ring"
-                    android:thicknessRatio="1.9"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="4dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_bias="0.6"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ChooseNameCard">
+                    app:layout_constraintTop_toBottomOf="@+id/addcocktail_fragment_setingredients_recyclerview"
+                    app:layout_constraintVertical_bias="0.0">
 
 
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="0dp">
+                    <Spinner
+                        android:id="@+id/addCocktail_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/addCocktail_border_quantity"
+                        app:layout_constraintTop_toTopOf="@+id/addCocktail_border_quantity"
+                        tools:layout_editor_absoluteX="88dp" />
 
-                        <android.support.constraint.ConstraintLayout
-                            android:id="@+id/constraintLayout"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/addCocktail_border_ingredient"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="255dp"
+                        android:layout_height="65dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/addCocktail_edittext_ingredient"
                             android:layout_width="match_parent"
-                            android:layout_height="196dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="16dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.6"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/view2"
-                            app:layout_constraintVertical_bias="0.0">
-
-                            <android.support.design.widget.TextInputLayout
-                                android:id="@+id/textInputLayoutf"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="70dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="8dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutfhgkf">
-
-                                <android.support.design.widget.TextInputEditText
-                                    android:id="@+id/efghkditText"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Qnt."
-                                    android:inputType="textCapWords"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </android.support.design.widget.TextInputLayout>
-
-                            <android.support.design.widget.TextInputLayout
-                                android:id="@+id/textInputLayoutfhgkf"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="255dp"
-                                android:layout_height="65dp"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="8dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <android.support.design.widget.TextInputEditText
-                                    android:id="@+id/editTfhgkkext"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Ingredient"
-                                    android:inputType="textCapWords"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </android.support.design.widget.TextInputLayout>
-
-                            <Button
-                                android:id="@+id/addcocktail_fragment_setingredients_button_add"
-                                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                                android:layout_width="80dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:text="Add"
-                                app:layout_constraintBottom_toBottomOf="@+id/textInputLayoutf"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/textInputLayoutf" />
-
-                            <Spinner
-                                android:id="@+id/setName_measurement_picker"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                app:layout_constraintBottom_toBottomOf="@+id/textInputLayoutf"
-                                app:layout_constraintTop_toTopOf="@+id/textInputLayoutf"
-                                tools:layout_editor_absoluteX="88dp" />
-                        </android.support.constraint.ConstraintLayout>
-
-                        <View
-                            android:id="@+id/view2"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="32dp"
-                            android:background="@color/colorGrey"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/addcocktail_fragment_setingredients_recyclerview" />
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/addcocktail_fragment_setingredients_recyclerview"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+                            android:hint="Ingredient"
+                            android:inputType="textCapWords"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+                    </android.support.design.widget.TextInputLayout>
 
-                    </android.support.constraint.ConstraintLayout>
-                </android.support.v7.widget.CardView>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/addCocktail_border_quantity"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/addCocktail_border_ingredient">
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/ChooseNameCard"
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/addCocktail_edittext_quantity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Qnt."
+                            android:inputType="textCapWords"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/addCocktail_addIngredient_button"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Add"
+                        app:layout_constraintBottom_toBottomOf="@+id/addCocktail_border_quantity"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/addCocktail_border_quantity" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addCocktail_border_quantity"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="left"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="4dp"
-                    android:elevation="4dp"
-                    android:innerRadius="0dp"
-                    android:shape="ring"
-                    android:thicknessRatio="1.9"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="4dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:cardUseCompatPadding="true"
+                    android:layout_margin="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup3"
                     app:layout_constraintTop_toTopOf="parent">
 
-
-                    <android.support.constraint.ConstraintLayout
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/addCocktail_edittext_name"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:hint="Name"
+                        android:inputType="textCapWords"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.design.widget.TextInputLayout>
 
 
-                        <android.support.design.widget.TextInputLayout
-                            android:id="@+id/textInputLayoutf"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="8dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/radioGroup3"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <android.support.design.widget.TextInputEditText
-                                android:id="@+id/editText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Name"
-                                android:inputType="textCapWords"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </android.support.design.widget.TextInputLayout>
-
-
-                        <RadioGroup
-                            android:id="@+id/radioGroup3"
-                            android:layout_width="0dp"
-                            android:layout_height="35dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginBottom="16dp"
-                            android:checkedButton="@+id/radioButton"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutf">
-
-                            <RadioButton
-                                android:id="@+id/radioButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Standard" />
-
-                            <RadioButton
-                                android:id="@+id/radioButton2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Favourite" />
-
-                            <RadioButton
-                                android:id="@+id/radioButton3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Idea" />
-                        </RadioGroup>
-
-                    </android.support.constraint.ConstraintLayout>
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/ChooseRecipeCard"
+                <RadioGroup
+                    android:id="@+id/radioGroup3"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="left"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="4dp"
-                    android:elevation="4dp"
-                    android:innerRadius="0dp"
-                    android:shape="ring"
-                    android:thicknessRatio="1.9"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="4dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:cardUseCompatPadding="true"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:checkedButton="@+id/radioButton"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ChooseIngredientsCard">
+                    app:layout_constraintTop_toBottomOf="@+id/addCocktail_border_quantity">
 
+                    <RadioButton
+                        android:id="@+id/radioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Standard" />
 
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                    <RadioButton
+                        android:id="@+id/radioButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Favourite" />
 
-                        <EditText
-                            android:id="@+id/addcocktail_fragment_setRecipe_edittext_recipe"
-                            style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginBottom="16dp"
-                            android:ems="10"
-                            android:hint="Recipe (Optional)"
-                            android:inputType="textMultiLine"
-                            android:minHeight="100dp"
-                            android:singleLine="false"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <RadioButton
+                        android:id="@+id/radioButton3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Idea" />
+                </RadioGroup>
 
-                    </android.support.constraint.ConstraintLayout>
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/ChooseCommentsCard"
-                    android:layout_width="0dp"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/addcocktail_fragment_setingredients_recyclerview"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="left"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="4dp"
-                    android:elevation="4dp"
-                    android:innerRadius="0dp"
-                    android:shape="ring"
-                    android:thicknessRatio="1.9"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="4dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ChooseRecipeCard">
-
-
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <EditText
-                            android:id="@+id/addcocktail_fragment_setcomments_edittext_comments"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginBottom="16dp"
-                            android:ems="10"
-                            android:hint="Comments (Optional)"
-                            android:inputType="textMultiLine"
-                            android:minHeight="100dp"
-                            android:singleLine="false"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </android.support.constraint.ConstraintLayout>
-                </android.support.v7.widget.CardView>
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup3" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>

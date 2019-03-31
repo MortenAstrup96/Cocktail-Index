@@ -43,7 +43,6 @@ public class SelectNameFragment extends Fragment {
     private IngredientsAddAdapter mAdapter;
     private EditText editIngredients;
     private EditText editAmount;
-    private Spinner measurementSpinner;
     private ArrayList<Ingredient> ingredients;
     private RecyclerView recyclerView;
 
@@ -63,7 +62,6 @@ public class SelectNameFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.addcocktail_fragment_setname, container, false);
         next = view.findViewById(R.id.addcocktail_fragment_setname_button_next);
-        measurementSpinner = view.findViewById(R.id.setName_measurement_picker);
         scrollView = view.findViewById(R.id.newCocktail_scroll);
         populateSpinner(view);
         setupRecyclerView(view);
@@ -97,41 +95,7 @@ public class SelectNameFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
-        buttonAddIngredient = view.findViewById(R.id.addcocktail_fragment_setingredients_button_add);
-        editIngredients = view.findViewById(R.id.addcocktail_fragment_setingredients_edit_ingredient);
-        editAmount = view.findViewById(R.id.addcocktail_fragment_setingredients_edit_amount);
 
-        buttonAddIngredient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Initial checks for completeness
-                String ingredientString = editIngredients.getText().toString();
-                String amountString = editAmount.getText().toString();
-                String measurementString = measurementSpinner.getSelectedItem().toString();
-
-                if(ingredientString.isEmpty() || amountString.isEmpty()) {
-                    Toast.makeText(getActivity(), "Please enter an ingredient & amount",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-
-                if(ingredients.size() >= 8) {
-                    Toast.makeText(getActivity(), "Ingredient limit reached",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-
-                Ingredient ingredientToAdd = new Ingredient(ingredientString, amountString, measurementString);
-                ingredients.add(ingredientToAdd);
-                mAdapter.notifyDataSetChanged();
-
-                editIngredients.setText("");
-                editAmount.setText("");
-                editIngredients.requestFocus();
-            }
-        });
     }
 
     private void populateSpinner(View view) {
@@ -144,7 +108,6 @@ public class SelectNameFragment extends Fragment {
         };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, measurements);
-        measurementSpinner.setAdapter(adapter);
     }
 
     private void setupListeners() {

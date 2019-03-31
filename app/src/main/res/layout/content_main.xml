@@ -8,8 +8,6 @@
     tools:context=".Activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
-
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

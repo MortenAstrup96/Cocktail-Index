@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -25,12 +24,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.BuildConfig;
-import com.example.application.cocktailindex.Fragments.DialogFragments.OverviewFragment;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectCommentsFragment;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectImageFragment;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectIngredientsFragment;
 import com.example.application.cocktailindex.Fragments.DialogFragments.SelectNameFragment;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectRecipeFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.R;
 
@@ -42,11 +36,6 @@ import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
 public class NewCocktailActivity extends AppCompatActivity implements Serializable,
-        SelectImageFragment.OnFragmentInteractionListener,
-        SelectIngredientsFragment.OnFragmentInteractionListener,
-        SelectRecipeFragment.OnFragmentInteractionListener,
-        SelectCommentsFragment.OnFragmentInteractionListener,
-        OverviewFragment.OnFragmentInteractionListener,
         SelectNameFragment.OnFragmentInteractionListener {
 
     // On Activity result codes
@@ -56,26 +45,8 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
     private Uri selectedImage;
 
     // Different views in the activity
-    private ImageView thumbnail;
-    private EditText cocktailNameView;
-    private EditText recipeEditText;
-
-    private EditText ingredient1EditText;
-    private EditText ingredient2EditText;
-    private EditText amount1EditText;
-    private EditText amount2EditText;
-
-    private ImageButton selectImageButton;
-    private ImageButton takeImageButton;
-    private Button finishButton;
-    private Button cropButton;
 
     private SelectNameFragment fragmentName;
-    private SelectImageFragment fragmentImage;
-    private SelectIngredientsFragment fragmentIngredients;
-    private SelectRecipeFragment fragmentRecipe;
-    private SelectCommentsFragment fragmentComments;
-    private OverviewFragment fragmentOverview;
 
 
     private boolean pictureSelected = false;
@@ -91,11 +62,6 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
        // setOnClickListeners();
 
         fragmentName = new SelectNameFragment();
-        fragmentImage = new SelectImageFragment();
-        fragmentIngredients = new SelectIngredientsFragment();
-        fragmentRecipe = new SelectRecipeFragment();
-        fragmentComments = new SelectCommentsFragment();
-        fragmentOverview = new OverviewFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -115,25 +81,14 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
             Uri selectedImage = data.getData();
             this.selectedImage = selectedImage;
 
-            Glide.with(this)
-                    .load(selectedImage)
-                    .override(400, 400)
-                    .centerInside()
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(thumbnail);
+
 
         } else if(requestCode==ACTION_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
 
-            Glide.with(this)
-                    .load(selectedImage)
-                    .override(400, 400)
-                    .centerInside()
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(thumbnail);
+
         }
 
         if(resultCode == Activity.RESULT_OK) {
-            fragmentImage.setThumbnail(selectedImage);
             pictureSelected = true;
         }
     }
@@ -161,55 +116,6 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         startActivityForResult(intent, GET_FROM_GALLERY); // Result is a Uri code for image
     }
 
-    /**
-     * Sets onClickListeners for choosing gallery or taking an image with the camera app
-     */
-    private void setOnClickListeners() {
-        // When finishing a cocktail object is made with the information and sent to MainActivity
-        finishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = cocktailNameView.getText().toString();
-                String recipe = recipeEditText.getText().toString();
-
-                String ingredients = buildIngredientList();
-
-                Cocktail cocktail = new Cocktail(name, ingredients, recipe, "Comments", null, false, false);
-
-                Intent intent = new Intent();
-                intent.putExtra("cocktail", cocktail); // TODO: Might be causing problems due to serialization
-                intent.putExtra("image", selectedImage.toString());
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-            }
-        });
-
-        cropButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(pictureSelected) {
-                    // TODO: Add https://github.com/igreenwood/SimpleCropView to CROP images!!
-                }
-            }
-        });
-    }
-
-    /**
-     * Takes the String Array and builds it into a single string TODO BuildIngredients not yet fully functional!
-     * @return
-     */
-    private String buildIngredientList() {
-        String ingredient1 = ingredient1EditText.getText().toString();
-        String ingredient2 = ingredient2EditText.getText().toString();
-        String amount1 = amount1EditText.getText().toString();
-        String amount2 = amount2EditText.getText().toString();
-
-        String ingredientCondensed =
-                amount1 + "oz. " + ingredient1 + "\n" +
-                        amount2 + "oz. " + ingredient2;
-
-        return ingredientCondensed;
-    }
 
     private void initializeViews() {
         //thumbnail = findViewById(R.id.newCocktail_imageView_thumbnail);
@@ -244,138 +150,6 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".my.package.name.provider", file);
     }
 
-    /**
-     * 1 == Camera
-     * 2 == Gallery
-     * 3 == Next
-     * 4 == Skip
-     *
-     * @param button
-     */
-    @Override
-    public void onPressingImageButton(int button) {
-
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentIngredients);
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.remove(fragmentImage);
-                fragmentTransaction.commit();
-                break;
-        }
-    }
-
-    @Override
-    public void onPressingIngredientsButton(int button) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentRecipe);
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentRecipe);
-                fragmentTransaction.commit();
-                break;
-        }
-    }
-
-    @Override
-    public void onPressingCommentsButton(int button) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentOverview);
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentOverview);
-                fragmentTransaction.commit();
-                break;
-        }
-    }
-
-    @Override
-    public void onPressingRecipeButton(int button) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentComments);
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentComments);
-                fragmentTransaction.commit();
-                break;
-        }
-    }
-
-    @Override
-    public void onPressingOverviewButton(int button) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-        switch (button) {
-            case 1:
-                activateCamera();
-                break;
-            case 2:
-                activateGallery();
-                break;
-            case 3:
-                finish();
-                break;
-            case 4:
-
-                break;
-        }
-    }
 
     @Override
     public void onPressingNameButton(int button) {
@@ -391,13 +165,11 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
             case 3:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentImage);
                 fragmentTransaction.commit();
                 break;
             case 4:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentImage);
                 fragmentTransaction.commit();
                 break;
         }

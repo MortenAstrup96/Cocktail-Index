@@ -3,6 +3,7 @@ package com.example.application.cocktailindex.Fragments.DialogFragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * AssignmentEnterNew is used when the user wants to add an assignment to the Task. This is a
@@ -31,7 +33,7 @@ import java.util.ArrayList;
  *
  * @author Morten Astrup
  */
-public class SelectNameFragment extends Fragment {
+public class FillCocktailDetailsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Fragment thisFragment;
@@ -43,9 +45,15 @@ public class SelectNameFragment extends Fragment {
     private IngredientsAddAdapter mAdapter;
     private EditText editIngredients;
     private EditText editAmount;
+    private EditText editName;
     private ArrayList<Ingredient> ingredients;
     private RecyclerView recyclerView;
 
+    private Spinner measureTypeSpinner;
+
+    // Container References for smoothscroll
+    private ConstraintLayout constraintName;
+    private ConstraintLayout constraintIngredients;
 
 
 
@@ -61,31 +69,18 @@ public class SelectNameFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.addcocktail_fragment_setname, container, false);
-        next = view.findViewById(R.id.addcocktail_fragment_setname_button_next);
-        scrollView = view.findViewById(R.id.newCocktail_scroll);
-        populateSpinner(view);
+        setupViews(view);
         setupRecyclerView(view);
         setupListeners();
 
-        /**
-        editIngredients.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    Toast.makeText(getActivity(), "Top: " + editIngredients.getBottom(),
-                            Toast.LENGTH_SHORT).show();
-                    scrollView.smoothScrollTo(0, editIngredients.getBottom());
-                }
-            }
-        });
-*/
+        editName.requestFocus();
+
 
         return view;
     }
 
     private void setupRecyclerView(View view) {
         ingredients = new ArrayList<>();
-
 
         recyclerView = view.findViewById(R.id.addcocktail_fragment_setingredients_recyclerview);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
@@ -94,29 +89,83 @@ public class SelectNameFragment extends Fragment {
         mAdapter = new IngredientsAddAdapter(ingredients, getContext());
         recyclerView.setAdapter(mAdapter);
 
-        mAdapter.notifyDataSetChanged();
+        /** Spinner setup here */
+        measureTypeSpinner = view.findViewById(R.id.addCocktail_spinner);
+        List<String> array = new ArrayList<>();
+        array.add("oz.");
+        array.add("Dash");
+        array.add("Teaspoon");
+        array.add("Piece");
+        array.add("Cup");
 
-    }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, array);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        measureTypeSpinner.setAdapter(adapter);
 
-    private void populateSpinner(View view) {
-        final String[] measurements = {
-                "Oz.",
-                "Tsp.",
-                "Dash",
-                "Teaspoon",
-                "Cup"
-        };
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, measurements);
     }
 
     private void setupListeners() {
-        next.setOnClickListener(new View.OnClickListener() {
+        editIngredients.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View view) {
-                ((NewCocktailActivity)getActivity()).onPressingNameButton(3);
+            public void onFocusChange(View view, boolean b) {
+                if(b) {
+                    Toast.makeText(getActivity(), "" + constraintIngredients.getTop(),
+                            Toast.LENGTH_LONG).show();
+                    scrollView.smoothScrollTo(0, constraintIngredients.getTop());
+
+                }
             }
         });
+
+        buttonAddIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Initial checks for completeness
+                String ingredientString = editIngredients.getText().toString();
+                String amountString = editAmount.getText().toString();
+                String quantityString = measureTypeSpinner.getSelectedItem().toString();
+
+                if(ingredientString.isEmpty() || amountString.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please enter an ingredient & amount",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                if(ingredients.size() >= 8) {
+                    Toast.makeText(getActivity(), "Ingredient limit reached",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                Ingredient ingredientToAdd = new Ingredient(ingredientString, amountString, quantityString);
+                ingredients.add(ingredientToAdd);
+                mAdapter.notifyDataSetChanged();
+
+                editIngredients.setText("");
+                editAmount.setText("");
+                editIngredients.requestFocus();
+            }
+        });
+    }
+
+    private void setupViews(View view) {
+        next = view.findViewById(R.id.addcocktail_fragment_setname_button_next);
+        scrollView = view.findViewById(R.id.newCocktail_scroll);
+
+        // Edittexts
+        editIngredients = view.findViewById(R.id.addCocktail_edittext_ingredient);
+        editAmount = view.findViewById(R.id.addCocktail_edittext_quantity);
+        editName = view.findViewById(R.id.addCocktail_edittext_name);
+
+
+        // Constraint Layouts
+        constraintName = view.findViewById(R.id.ChooseName_container);
+        constraintIngredients = view.findViewById(R.id.ChooseIngredients_container);
+
+        // Buttons
+        buttonAddIngredient = view.findViewById(R.id.addCocktail_addIngredient_button);
     }
 
 

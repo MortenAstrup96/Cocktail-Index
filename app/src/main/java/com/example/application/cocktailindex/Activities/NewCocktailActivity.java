@@ -15,17 +15,9 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.BuildConfig;
-import com.example.application.cocktailindex.Fragments.DialogFragments.SelectNameFragment;
-import com.example.application.cocktailindex.Objects.Cocktail;
+import com.example.application.cocktailindex.Fragments.DialogFragments.FillCocktailDetailsFragment;
 import com.example.application.cocktailindex.R;
 
 import java.io.File;
@@ -36,7 +28,7 @@ import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
 public class NewCocktailActivity extends AppCompatActivity implements Serializable,
-        SelectNameFragment.OnFragmentInteractionListener {
+        FillCocktailDetailsFragment.OnFragmentInteractionListener {
 
     // On Activity result codes
     public static final int GET_FROM_GALLERY = 3;   // Getting images from gallery
@@ -46,7 +38,7 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
 
     // Different views in the activity
 
-    private SelectNameFragment fragmentName;
+    private FillCocktailDetailsFragment fragmentName;
 
 
     private boolean pictureSelected = false;
@@ -61,7 +53,7 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
        initializeViews();
        // setOnClickListeners();
 
-        fragmentName = new SelectNameFragment();
+        fragmentName = new FillCocktailDetailsFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

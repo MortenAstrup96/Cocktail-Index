@@ -1,8 +1,8 @@
 package com.example.application.cocktailindex.Fragments.DialogFragments;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,12 +14,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.NumberPicker;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.Activities.NewCocktailActivity;
+import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
@@ -40,12 +46,29 @@ public class FillCocktailDetailsFragment extends Fragment {
     private ScrollView scrollView;
 
     private Button next;
+    private Button cancel;
     private Button buttonAddIngredient;
 
     private IngredientsAddAdapter mAdapter;
     private EditText editIngredients;
     private EditText editAmount;
     private EditText editName;
+    private EditText editRecipe;
+    private EditText editComments;
+
+    private boolean normal;
+    private boolean idea;
+    private boolean favourite;
+
+    private RadioGroup radioGroup;
+    private RadioButton normalRadio;
+    private RadioButton ideaRadio;
+    private RadioButton favouriteRadio;
+
+    private Cocktail temporaryCocktail;
+
+
+
     private ArrayList<Ingredient> ingredients;
     private RecyclerView recyclerView;
 
@@ -54,6 +77,8 @@ public class FillCocktailDetailsFragment extends Fragment {
     // Container References for smoothscroll
     private ConstraintLayout constraintName;
     private ConstraintLayout constraintIngredients;
+
+
 
 
 
@@ -68,8 +93,11 @@ public class FillCocktailDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.addcocktail_fragment_setname, container, false);
-        setupViews(view);
+        View view = inflater.inflate(R.layout.addcocktail_fragment_details, container, false);
+
+
+
+       setupViews(view);
         setupRecyclerView(view);
         setupListeners();
 
@@ -78,6 +106,8 @@ public class FillCocktailDetailsFragment extends Fragment {
 
         return view;
     }
+
+
 
     private void setupRecyclerView(View view) {
         ingredients = new ArrayList<>();
@@ -105,6 +135,22 @@ public class FillCocktailDetailsFragment extends Fragment {
     }
 
     private void setupListeners() {
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onPressingNameButton(2);
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createNewCocktailFromInformation();
+                mListener.onPressingNameButton(1);
+
+            }
+        });
+
         editIngredients.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -148,16 +194,57 @@ public class FillCocktailDetailsFragment extends Fragment {
                 editIngredients.requestFocus();
             }
         });
+
+
+
+
+    }
+
+    private void createNewCocktailFromInformation() {
+        favourite = false;
+        idea = false;
+
+        int id = radioGroup.getCheckedRadioButtonId();
+        if(id == favouriteRadio.getId()) {
+            favourite = true;
+        }
+        if(id == ideaRadio.getId()) {
+            idea = true;
+        }
+
+        temporaryCocktail = new Cocktail(
+                editName.getText().toString(),
+                editIngredients.getText().toString(),
+                editRecipe.getText().toString(),
+                editComments.getText().toString(),
+                null,
+                favourite,
+                idea
+        );
+
+
+    }
+
+    public Cocktail getTemporaryCocktail() {
+        return temporaryCocktail;
     }
 
     private void setupViews(View view) {
-        next = view.findViewById(R.id.addcocktail_fragment_setname_button_next);
+        next = view.findViewById(R.id.addCocktail_button_next);
+        cancel = view.findViewById(R.id.addCocktail_button_cancel);
         scrollView = view.findViewById(R.id.newCocktail_scroll);
 
         // Edittexts
         editIngredients = view.findViewById(R.id.addCocktail_edittext_ingredient);
         editAmount = view.findViewById(R.id.addCocktail_edittext_quantity);
         editName = view.findViewById(R.id.addCocktail_edittext_name);
+        editRecipe = view.findViewById(R.id.addCocktail_edittext_recipe);
+        editComments = view.findViewById(R.id.addCocktail_edittext_comments);
+
+        radioGroup = view.findViewById(R.id.radioGroup3);
+        normalRadio = view.findViewById(R.id.radioButton);
+        favouriteRadio = view.findViewById(R.id.radioButton2);
+        ideaRadio = view.findViewById(R.id.radioButton3);
 
 
         // Constraint Layouts
@@ -166,6 +253,10 @@ public class FillCocktailDetailsFragment extends Fragment {
 
         // Buttons
         buttonAddIngredient = view.findViewById(R.id.addCocktail_addIngredient_button);
+
+        normal = false;
+        idea = false;
+        favourite = false;
     }
 
 
@@ -187,6 +278,7 @@ public class FillCocktailDetailsFragment extends Fragment {
         mListener = null;
     }
 
+    // 1 = next, 2 = cancel
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onPressingNameButton(int button);

@@ -15,9 +15,12 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.application.cocktailindex.BuildConfig;
 import com.example.application.cocktailindex.Fragments.DialogFragments.FillCocktailDetailsFragment;
+import com.example.application.cocktailindex.Fragments.DialogFragments.FinaliseCocktailDetailsFragment;
+import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.R;
 
 import java.io.File;
@@ -27,8 +30,10 @@ import java.util.Date;
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
-public class NewCocktailActivity extends AppCompatActivity implements Serializable,
-        FillCocktailDetailsFragment.OnFragmentInteractionListener {
+public class NewCocktailActivity extends AppCompatActivity implements
+        Serializable,
+        FillCocktailDetailsFragment.OnFragmentInteractionListener,
+        FinaliseCocktailDetailsFragment.OnFragmentInteractionListener {
 
     // On Activity result codes
     public static final int GET_FROM_GALLERY = 3;   // Getting images from gallery
@@ -39,9 +44,11 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
     // Different views in the activity
 
     private FillCocktailDetailsFragment fragmentName;
+    private FinaliseCocktailDetailsFragment fragmentFinalise;
 
 
     private boolean pictureSelected = false;
+    private Cocktail temporaryCocktail;
 
 
 
@@ -50,15 +57,20 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_cocktail);
 
-       initializeViews();
-       // setOnClickListeners();
-
         fragmentName = new FillCocktailDetailsFragment();
+        fragmentFinalise = new FinaliseCocktailDetailsFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentName);
         fragmentTransaction.commit();
+
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+
+        }
+
 
 
     }
@@ -74,14 +86,14 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
             this.selectedImage = selectedImage;
 
 
-
         } else if(requestCode==ACTION_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-
 
         }
 
         if(resultCode == Activity.RESULT_OK) {
             pictureSelected = true;
+            fragmentFinalise.setThumbnail(getSelectedImage());
+            temporaryCocktail.imagePath = selectedImage.toString();
         }
     }
 
@@ -109,30 +121,6 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
     }
 
 
-    private void initializeViews() {
-        //thumbnail = findViewById(R.id.newCocktail_imageView_thumbnail);
-        /**
-        cocktailNameView = findViewById(R.id.newCocktail_edit_name);
-        recipeEditText = findViewById(R.id.newCocktail_edit_recipe);
-
-        ingredient1EditText = findViewById(R.id.newCocktail_edit_ingredient);
-        amount1EditText = findViewById(R.id.newCocktail_edit_amount);
-        ingredient2EditText  = findViewById(R.id.newCocktail_edit_ingredient3);
-        amount2EditText  = findViewById(R.id.newCocktail_edit_amount2);
-
-        selectImageButton = findViewById(R.id.newCocktail_imagebutton_chooseImage);
-        takeImageButton = findViewById(R.id.newCocktail_imagebutton_takeImage);
-        finishButton = findViewById(R.id.newCocktail_button_finish);
-        cropButton = findViewById(R.id.newCocktail_button_crop);
-
-         Glide.with(this)
-         .load(R.drawable.ic_nopicture)
-         .override(400, 400)
-         .centerInside()
-         .apply(RequestOptions.circleCropTransform())
-         .into(thumbnail);
-         */
-    }
 
     public Uri getSelectedImage() {
         return selectedImage;
@@ -142,27 +130,56 @@ public class NewCocktailActivity extends AppCompatActivity implements Serializab
         return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".my.package.name.provider", file);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            finish();//finish your activity
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onPressingNameButton(int button) {
         FragmentManager fragmentManager;
         FragmentTransaction fragmentTransaction;
+
+
         switch (button) {
             case 1:
-                activateCamera();
+                // First fragment finished
+                temporaryCocktail = fragmentName.getTemporaryCocktail();
+
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentFinalise);
+                fragmentTransaction.commit();
+
+
+
                 break;
             case 2:
-                activateGallery();
+                finish();
+                break;
+
+        }
+    }
+
+    @Override
+    public void onPressingImageButton(int button) {
+        switch (button) {
+            case 1:
+                Intent intent = new Intent();
+                intent.putExtra("cocktail", temporaryCocktail); // TODO: Might be causing problems due to serialization
+                intent.putExtra("image", getSelectedImage().toString());
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+                break;
+            case 2:
+                activateCamera();
                 break;
             case 3:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.commit();
-                break;
-            case 4:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.commit();
+                activateGallery();
                 break;
         }
     }

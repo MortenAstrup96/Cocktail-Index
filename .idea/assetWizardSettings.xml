@@ -19,11 +19,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="200" />
-                            <entry key="outputName" value="ic_indicator_undone" />
+                            <entry key="height" value="32" />
+                            <entry key="outputName" value="ic_round_mode_comment_24px" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="D:\Programmer\Android\CocktailIndex\SVG Files\indicator_undone.svg" />
-                            <entry key="width" value="200" />
+                            <entry key="sourceFile" value="D:\Programmer\Android\CocktailIndex\SVG Files\round-mode_comment-24px.svg" />
+                            <entry key="width" value="32" />
                           </map>
                         </option>
                       </PersistentState>

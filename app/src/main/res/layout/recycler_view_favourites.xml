@@ -14,10 +14,10 @@
             android:id="@+id/favourites_section_cardview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:clickable="true"
             android:focusable="true"
             android:innerRadius="0dp"
@@ -40,7 +40,7 @@
                 <ImageView
                     android:id="@+id/favourites_section_image_cocktail"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
+                    android:layout_height="180dp"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -57,56 +57,55 @@
 
                     <TextView
                         android:id="@+id/favourites_section_header"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
                         android:text="Missing name"
+                        android:textAlignment="textStart"
                         android:textColor="@color/colorGrey"
-                        android:textSize="28sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <TextView
-                        android:id="@+id/favourites_section_expand"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="EXPAND"
-                        android:textColor="@color/colorAccent"
+                        android:textSize="26sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/index_section_favourite"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/favourites_section_header" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
                         android:id="@+id/favourites_section_imagebutton_settings"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
                         android:background="@drawable/ic_settings_vertical"
                         android:foreground="?attr/selectableItemBackground"
                         android:tint="@color/colorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintBottom_toBottomOf="@+id/index_section_favourite"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/index_section_favourite" />
 
                     <CheckBox
                         android:id="@+id/index_section_favourite"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginEnd="24dp"
                         android:background="@drawable/selector_fav"
                         android:button="@color/colorPrimaryDark"
                         android:checked="true"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView"
+                        app:layout_constraintEnd_toStartOf="@+id/favourites_section_imagebutton_settings"
+                        app:layout_constraintTop_toTopOf="@+id/favourites_section_header" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Whisky, Lemon, Simple Syru..."
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/favourites_section_imagebutton_settings" />
+                        app:layout_constraintStart_toStartOf="@+id/favourites_section_header"
+                        app:layout_constraintTop_toBottomOf="@+id/favourites_section_header" />
 
                 </android.support.constraint.ConstraintLayout>
 

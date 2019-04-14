@@ -3,6 +3,7 @@ package com.example.application.cocktailindex.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBar;
@@ -34,6 +35,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         // Gets the specific cocktail
         Intent data = getIntent();
         cocktail = (Cocktail) data.getSerializableExtra("cocktail");
+
 
         setupViews();
 
@@ -84,6 +86,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
+
 
 
 }

@@ -62,7 +62,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
+            app:layout_constraintTop_toBottomOf="@+id/activity_cocktail_details_statusbarfaker">
 
             <ImageView
                 android:id="@+id/imageView6"

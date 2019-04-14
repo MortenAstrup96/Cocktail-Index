@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements
             public void run() {
                 savedCocktailList = db.cocktailDBDao().getAll();
                 cocktailList.addAll(savedCocktailList);
-                java.util.Collections.sort(cocktailList);
             }
         });
     }
@@ -148,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements
             Uri selectedImage = Uri.parse(data.getStringExtra("image"));
             cocktail.imagePath = selectedImage.toString();
 
+            // Database Query
             Executor myExecutor = Executors.newSingleThreadExecutor();
             myExecutor.execute(new Runnable() {
                 @Override
@@ -158,7 +158,19 @@ public class MainActivity extends AppCompatActivity implements
 
             savedCocktailList.add(cocktail);
             cocktailList = savedCocktailList;
+
+            updateFragmentLists();
+
         }
+    }
+
+    /**
+     * Attempts to update all the fragment lists, some will be null
+     */
+    private void updateFragmentLists() {
+        if(fragmentFavorite != null) fragmentFavorite.updateList();
+        if(fragmentIndex != null) fragmentIndex.updateList();
+        if(fragmentIdea != null) /*fragmentIdea.updateList()*/;
     }
 
 
@@ -220,34 +232,6 @@ public class MainActivity extends AppCompatActivity implements
                 return false;
         }
         return true;
-    }
-
-    public void toggleCocktailFavourite(int id, boolean favourite) {
-        boolean found = false;
-        try {
-            for(final Cocktail cocktail : cocktailList) {
-                if(cocktail.id == id) {
-                    cocktail.favourite = favourite; // Update whether the cocktail is favourite
-
-                    // Updates the cocktail in the database
-                    Executor myExecutor = Executors.newSingleThreadExecutor();
-                    myExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.cocktailDBDao().updateOne(cocktail);
-                        }
-                    });
-                    found = true;
-                }
-            }
-        } catch (ConcurrentModificationException e) {
-            Toast.makeText(getApplicationContext(), "Error saving to Database", Toast.LENGTH_SHORT).show();
-        }
-
-        if(found) {
-            refreshCocktailList();
-        }
-
     }
 
 

@@ -64,7 +64,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
         // Get image from internal storage
         holder.name.setText(name);
-        holder.ingredients.setText(ingredients);
 
 
 
@@ -88,7 +87,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
         private OnItemClickListener itemClickListener;
         private TextView name;
-        private TextView ingredients;
         private ImageView imageView;
         private CardView cardView;
         private CheckBox favourite;
@@ -98,10 +96,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
             super(view);
             this.itemClickListener = itemClickListener;
             name =  view.findViewById(R.id.favourites_section_header);
-            ingredients =  view.findViewById(R.id.favourites_section_ingredients);
             imageView =  view.findViewById(R.id.favourites_section_image_cocktail);
             cardView = view.findViewById(R.id.favourites_section_cardview);
-
 
             view.setOnClickListener(this);
             cardView.setOnClickListener(new View.OnClickListener() {

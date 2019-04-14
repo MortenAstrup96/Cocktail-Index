@@ -53,6 +53,7 @@ public class FinaliseCocktailDetailsFragment extends Fragment {
         thumbnail = view.findViewById(R.id.addcocktail_fragment_setimage_thumbnail2);
         selectCamera = view.findViewById(R.id.addcocktail_fragment_setimage_imagebutton_camera2);
         selectGallery = view.findViewById(R.id.addcocktail_fragment_setimage_imagebutton_gallery2);
+        next = view.findViewById(R.id.addcocktail_fragment_setimage_imagebutton_finish);
 
         Glide.with(this)
                 .load(R.drawable.ic_nopicture)

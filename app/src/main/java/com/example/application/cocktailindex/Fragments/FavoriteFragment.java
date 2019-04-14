@@ -110,6 +110,11 @@ public class FavoriteFragment extends Fragment {
     }
 
 
+    public void updateList() {
+        if(mAdapter != null) mAdapter.notifyDataSetChanged();
+
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

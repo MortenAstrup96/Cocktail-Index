@@ -153,9 +153,8 @@ public class NewCocktailActivity extends AppCompatActivity implements
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentFinalise);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-
-
 
                 break;
             case 2:

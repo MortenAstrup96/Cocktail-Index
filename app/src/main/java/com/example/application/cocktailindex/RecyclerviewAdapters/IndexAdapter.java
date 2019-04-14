@@ -40,7 +40,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
     private Context context;
 
     private CheckBox checkBox;
-    private boolean checkboxHack; // A hack to make sure the checkbox.setChecked does not trigger listener
 
     // Initialises the string list
     public IndexAdapter(List<Cocktail> cocktailList,  OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener, Context context) {
@@ -138,10 +137,8 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(getAdapterPosition() >= 0 && !checkboxHack) {
-                        Cocktail cocktail = cocktailList.get(getAdapterPosition());
-                        cocktail.favourite = b;
-                        ((MainActivity)context).toggleCocktailFavourite(cocktail.id, cocktail.favourite);
+                    if(getAdapterPosition() >= 0) {
+                        cocktailList.get(getAdapterPosition()).favourite = b;
                     }
                 }
             });

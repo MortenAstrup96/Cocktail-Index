@@ -165,6 +165,10 @@ public class IndexFragment extends Fragment {
         }
     }
 
+    public void updateList() {
+        if(mAdapter != null) mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();

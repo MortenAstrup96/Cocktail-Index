@@ -1,4 +1,4 @@
-package com.example.application.cocktailindex;
+package com.example.application.cocktailindex.Utility;
 
 import android.support.v4.content.FileProvider;
 

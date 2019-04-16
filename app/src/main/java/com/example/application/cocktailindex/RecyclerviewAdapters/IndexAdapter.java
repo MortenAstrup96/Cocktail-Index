@@ -1,5 +1,6 @@
 package com.example.application.cocktailindex.RecyclerviewAdapters;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -16,12 +17,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.Activities.MainActivity;
+import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.OnItemLongClickListener;
 import com.example.application.cocktailindex.R;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -41,12 +45,19 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
     private CheckBox checkBox;
 
+    // Database
+    private AppDatabase db;
+
     // Initialises the string list
     public IndexAdapter(List<Cocktail> cocktailList,  OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener, Context context) {
         this.cocktailList = cocktailList;
         this.itemClickListener = itemClickListener;
         this.itemLongClickListener = itemLongClickListener;
         this.context = context;
+
+        // Setup of database
+        db = Room.databaseBuilder(context,
+                AppDatabase.class, "database-name").build();
     }
 
     @Override
@@ -56,6 +67,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
                 .inflate(R.layout.recycler_view_index, parent, false);
 
         java.util.Collections.sort(cocktailList);
+
 
         return new MyViewHolder(itemView, itemClickListener, itemLongClickListener);
     }
@@ -100,7 +112,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         private OnItemLongClickListener itemLongClickListener;
         private TextView name;
         private ImageView imageView;
-        private CardView cardView;
 
 
         public MyViewHolder(final View view, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener) {
@@ -112,25 +123,10 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
             name =  view.findViewById(R.id.index_section_header);
             imageView =  view.findViewById(R.id.index_section_image_cocktail);
-            cardView = view.findViewById(R.id.index_section_cardview);
             checkBox = view.findViewById(R.id.index_section_favourite);
 
             view.setOnClickListener(this);
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    itemClickListener.onItemClick(view, getAdapterPosition()); // Might be wrong view
-                }
-            });
 
-
-            cardView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    itemLongClickListener.onItemLongClick(view, getAdapterPosition()); // Might be wrong view
-                    return false;
-                }
-            });
 
 
             cocktailList = ((MainActivity)context).getCocktailList();
@@ -138,7 +134,18 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if(getAdapterPosition() >= 0) {
-                        cocktailList.get(getAdapterPosition()).favourite = b;
+                        cocktailList.get(getAdapterPosition()).favourite = b; // Updates local
+
+                        // Updates favourites in db
+                        Executor myExecutor = Executors.newSingleThreadExecutor();
+                        myExecutor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                db.cocktailDBDao().updateOne(cocktailList.get(getAdapterPosition()));
+                            }
+                        });
+
+
                     }
                 }
             });

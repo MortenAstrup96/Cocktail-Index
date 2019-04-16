@@ -43,7 +43,7 @@
         </activity>
 
         <provider
-            android:name=".GenericFileProvider"
+            android:name=".Utility.GenericFileProvider"
             android:authorities="${applicationId}.my.package.name.provider"
             android:exported="false"
             android:grantUriPermissions="true">

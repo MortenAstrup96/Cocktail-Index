@@ -54,8 +54,13 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         imageView = findViewById(R.id.details_section_image_cocktail);
         TextView header = findViewById(R.id.details_section_header);
         TextView ingredients = findViewById(R.id.details_section_ingredients);
+        TextView recipe = findViewById(R.id.details_section_recipe);
+        TextView comments = findViewById(R.id.details_section_comments);
 
         header.setText(cocktail.name);
+        ingredients.setText(cocktail.ingredients);
+        recipe.setText(cocktail.recipe);
+        comments.setText(cocktail.comments);
 
         ImageButton exitButton = findViewById(R.id.details_section_imagebutton_exit);
         exitButton.setOnClickListener(new View.OnClickListener() {

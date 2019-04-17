@@ -214,13 +214,16 @@ public class FillCocktailDetailsFragment extends Fragment {
 
         temporaryCocktail = new Cocktail(
                 editName.getText().toString(),
-                editIngredients.getText().toString(),
                 editRecipe.getText().toString(),
                 editComments.getText().toString(),
                 null,
                 favourite,
                 idea
         );
+        temporaryCocktail.setIngredients(ingredients);
+        for(Ingredient i : ingredients) {
+            i.setCocktailIdFk(temporaryCocktail.id);
+        }
 
 
     }

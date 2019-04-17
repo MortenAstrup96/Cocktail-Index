@@ -10,6 +10,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,12 +22,18 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.application.cocktailindex.Objects.Cocktail;
+import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
+import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientDetailsAdapter;
+import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
+
+import java.util.ArrayList;
 
 public class CocktailDetailsActivity extends AppCompatActivity {
     private Cocktail cocktail;
 
     private ImageView imageView;
+    private IngredientDetailsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +62,22 @@ public class CocktailDetailsActivity extends AppCompatActivity {
     private void setupViews() {
         imageView = findViewById(R.id.details_section_image_cocktail);
         TextView header = findViewById(R.id.details_section_header);
-        TextView ingredients = findViewById(R.id.details_section_ingredients);
+        RecyclerView recyclerView = findViewById(R.id.details_section_ingredients);
         TextView recipe = findViewById(R.id.details_section_recipe);
         TextView comments = findViewById(R.id.details_section_comments);
 
         header.setText(cocktail.name);
-        ingredients.setText(cocktail.ingredients);
         recipe.setText(cocktail.recipe);
         comments.setText(cocktail.comments);
+
+        // Recyclerview to show ingredients here
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new IngredientDetailsAdapter((ArrayList<Ingredient>)cocktail.ingredients, this);
+        recyclerView.setAdapter(mAdapter);
+
+
 
         ImageButton exitButton = findViewById(R.id.details_section_imagebutton_exit);
         exitButton.setOnClickListener(new View.OnClickListener() {

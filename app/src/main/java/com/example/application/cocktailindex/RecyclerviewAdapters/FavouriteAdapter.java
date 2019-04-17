@@ -60,7 +60,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
         Cocktail cocktail = cocktailList.get(position);
         String name = cocktail.name;
-        String ingredients = cocktail.ingredients;
+        //String ingredients = cocktail.ingredients;
 
         // Get image from internal storage
         holder.name.setText(name);

@@ -32,6 +32,7 @@ import com.example.application.cocktailindex.Fragments.FavoriteFragment;
 import com.example.application.cocktailindex.Fragments.IdeaFragment;
 import com.example.application.cocktailindex.Fragments.IndexFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
+import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
 
 import java.io.Serializable;
@@ -120,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements
             public void run() {
                 savedCocktailList = db.cocktailDBDao().getAll();
                 cocktailList.addAll(savedCocktailList);
+
+                for(Cocktail c : savedCocktailList) {
+                    c.setIngredients((ArrayList<Ingredient>)db.ingredientDBDao().getAll());
+                }
             }
         });
     }
@@ -152,7 +157,8 @@ public class MainActivity extends AppCompatActivity implements
             myExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    db.cocktailDBDao().insertOne(cocktail);
+                    db.cocktailDBDao().insertOne(cocktail); // TODO INSERT INGREDIENTS HERE
+                    db.ingredientDBDao().insertOne(cocktail.ingredients); // TODO INSERT INGREDIENTS HERE
                 }
             });
 

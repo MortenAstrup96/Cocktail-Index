@@ -1,9 +1,35 @@
 package com.example.application.cocktailindex.Objects;
 
-public class Ingredient {
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.util.UUID;
+
+@Entity(tableName = "Ingredient",
+        foreignKeys = {
+        @ForeignKey(
+                entity = Cocktail.class,
+                parentColumns = "id",
+                childColumns = "cocktail_fk"
+        )})
+public class Ingredient implements Serializable {
+
+    @PrimaryKey
+    public int id = UUID.randomUUID().hashCode();
+
+    @ColumnInfo(name = "cocktail_fk")
+    private int cocktailIdFk;
+
+    @ColumnInfo(name = "ingredient")
     private String ingredient;
+
+    @ColumnInfo(name = "amount")
     private String amount;
+
+    @ColumnInfo(name = "measurement")
     private String measurement;
 
     public String getIngredient() {
@@ -30,11 +56,24 @@ public class Ingredient {
         this.measurement = measurement;
     }
 
+    public int getCocktailIdFk() {
+        return cocktailIdFk;
+    }
+
+    public void setCocktailIdFk(int cocktailIdFk) {
+        this.cocktailIdFk = cocktailIdFk;
+    }
+
+
     public Ingredient(String ingredient, String amount, String measurement) {
         this.ingredient = ingredient;
         this.amount = amount;
         this.measurement = measurement;
     }
+
+
+
+
 
 
 }

@@ -69,7 +69,7 @@
                         app:srcCompat="@drawable/ic_baseline_list_alt_24px" />
 
                     <ImageView
-                        android:id="@+id/imageView9"
+                        android:id="@+id/details_section_ingredients_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
@@ -93,22 +93,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/details_section_image_cocktail"
                         app:layout_constraintVertical_bias="0.0" />
-
-                    <TextView
-                        android:id="@+id/details_section_ingredients"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="32dp"
-                        android:layout_marginEnd="32dp"
-                        android:lineSpacingExtra="8sp"
-                        android:text="2oz         Whisky \n0,75oz    Lemon\n0,75oz    Simple Syrup\n1              Egg White"
-                        android:textAlignment="viewStart"
-                        android:textSize="17sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/imageView9"
-                        app:layout_constraintTop_toBottomOf="@+id/details_section_header" />
 
                     <TextView
                         android:id="@+id/details_section_recipe"
@@ -160,9 +144,19 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="24dp"
                         android:background="?android:attr/listDivider"
-                        app:layout_constraintBottom_toTopOf="@+id/details_section_ingredients"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/details_section_header" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/details_section_ingredients"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="32dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/details_section_ingredients_icon"
                         app:layout_constraintTop_toBottomOf="@+id/details_section_header" />
 
                 </android.support.constraint.ConstraintLayout>

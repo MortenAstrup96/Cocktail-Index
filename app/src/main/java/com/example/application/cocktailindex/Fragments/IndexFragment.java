@@ -126,10 +126,10 @@ public class IndexFragment extends Fragment {
 
         for(Cocktail cocktail : cocktailList) {
             String name = cocktail.name.toLowerCase();
-            String ingredients = cocktail.ingredients.toLowerCase();
+           // String ingredients = cocktail.ingredients.toLowerCase();
 
-            if( !name.contains(s) &&
-                    !ingredients.contains(s)) {
+            if( !name.contains(s) /*&&
+                    !ingredients.contains(s)*/) {
                 toRemove.add(cocktail);
             }
         }

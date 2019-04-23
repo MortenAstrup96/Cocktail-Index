@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements
                 cocktailList.addAll(savedCocktailList);
 
                 for(Cocktail c : savedCocktailList) {
-                    c.setIngredients((ArrayList<Ingredient>)db.ingredientDBDao().getAll());
+                    c.setIngredients((ArrayList<Ingredient>)db.ingredientDBDao().findById(c.id));
                 }
             }
         });

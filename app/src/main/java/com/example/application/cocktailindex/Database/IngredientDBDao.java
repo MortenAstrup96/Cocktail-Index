@@ -20,10 +20,10 @@ public interface IngredientDBDao {
     @Query("SELECT * FROM Ingredient")
     List<Ingredient> getAll();
 
-    /**
-    @Query("SELECT * FROM Ingredient WHERE cocktail_fk=id ")
-    List<Ingredient> findById();
-*/
+
+    @Query("SELECT * FROM Ingredient WHERE cocktail_fk=:id ")
+    List<Ingredient> findById(Integer id);
+
 
     @Insert(onConflict = REPLACE)
     void insertOne(List<Ingredient> ingredients);

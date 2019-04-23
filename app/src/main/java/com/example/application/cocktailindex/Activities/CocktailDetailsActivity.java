@@ -33,6 +33,11 @@ public class CocktailDetailsActivity extends AppCompatActivity {
     private Cocktail cocktail;
 
     private ImageView imageView;
+
+    private ImageView iconIngredients;
+    private ImageView iconRecipe;
+    private ImageView iconComments;
+
     private IngredientDetailsAdapter mAdapter;
 
     @Override
@@ -66,6 +71,10 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         TextView recipe = findViewById(R.id.details_section_recipe);
         TextView comments = findViewById(R.id.details_section_comments);
 
+        iconIngredients = findViewById(R.id.details_section_ingredients_icon);
+        iconRecipe = findViewById(R.id.details_section_recipe_icon);
+        iconComments = findViewById(R.id.details_section_comments_icon);
+
         header.setText(cocktail.name);
         recipe.setText(cocktail.recipe);
         comments.setText(cocktail.comments);
@@ -77,6 +86,11 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         mAdapter = new IngredientDetailsAdapter((ArrayList<Ingredient>)cocktail.ingredients, this);
         recyclerView.setAdapter(mAdapter);
 
+
+        // Ternary operators - If empty = INVISIBLE else VISIBLE
+        iconIngredients.setVisibility(cocktail.ingredients.size() == 0 ? View.INVISIBLE : View.VISIBLE);
+        iconRecipe.setVisibility(cocktail.recipe.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+        iconComments.setVisibility(cocktail.comments.isEmpty() ? View.INVISIBLE : View.VISIBLE);
 
 
         ImageButton exitButton = findViewById(R.id.details_section_imagebutton_exit);

@@ -4,8 +4,10 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.Activities.MainActivity;
 import com.example.application.cocktailindex.Database.AppDatabase;
+import com.example.application.cocktailindex.Fragments.IndexFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.OnItemLongClickListener;
@@ -39,6 +42,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
     // The list containing all the objects with the required information for at piece.
     private List<Cocktail> cocktailList;
+
     private OnItemClickListener itemClickListener;
     private OnItemLongClickListener itemLongClickListener;
     private Context context;
@@ -106,7 +110,9 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
     /**
      * Inner class for the specific views
      */
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener,
+            View.OnCreateContextMenuListener {
 
         private OnItemClickListener itemClickListener;
         private OnItemLongClickListener itemLongClickListener;
@@ -126,6 +132,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             checkBox = view.findViewById(R.id.index_section_favourite);
 
             view.setOnClickListener(this);
+            view.setOnCreateContextMenuListener(this);
 
 
 
@@ -151,7 +158,13 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             });
 
             view.setOnClickListener(this);
-
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    position = getAdapterPosition();
+                    return false;
+                }
+            });
         }
 
         /**
@@ -162,6 +175,22 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         public void onClick(View view) {
             itemClickListener.onItemClick(view, getAdapterPosition());
         }
+
+
+
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            contextMenu.setHeaderTitle("Select Action");
+            contextMenu.add(0, view.getId(), 0, "Edit Cocktail");
+            contextMenu.add(0, view.getId(), 0, "Delete Cocktail");
+        }
     }
+
+    public int getPosition() {
+        return position;
+    }
+
+    private int position;
 
 }

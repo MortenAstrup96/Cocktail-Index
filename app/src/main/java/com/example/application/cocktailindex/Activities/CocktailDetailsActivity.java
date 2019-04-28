@@ -1,19 +1,12 @@
 package com.example.application.cocktailindex.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -25,7 +18,6 @@ import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientDetailsAdapter;
-import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
 
 import java.util.ArrayList;
 

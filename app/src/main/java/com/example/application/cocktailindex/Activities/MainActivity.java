@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements
     private List<Cocktail> cocktailList;
     private List<Cocktail> savedCocktailList;
 
+    private FloatingActionButton fab;
+
     // Database
     private AppDatabase db;
 
@@ -127,6 +129,11 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         });
+    }
+
+    public void setFabVisibility(boolean isVisible) {
+        if(isVisible) fab.show();
+        else fab.hide();
     }
 
 
@@ -205,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
         // Setup of FAB
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements
                 startActivityForResult(intent, NEW_COCKTAIL_RECIPE);
             }
         });
+
     }
 
     /**

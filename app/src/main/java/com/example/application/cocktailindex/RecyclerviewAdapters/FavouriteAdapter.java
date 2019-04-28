@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,9 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     /**
      * Inner class for the specific views
      */
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener,
+            View.OnCreateContextMenuListener {
 
         private OnItemClickListener itemClickListener;
         private TextView name;
@@ -104,6 +107,14 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
                 @Override
                 public void onClick(View view) {
                     itemClickListener.onItemClick(view, getAdapterPosition()); // Might be wrong view
+                }
+            });
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    position = getAdapterPosition();
+                    return false;
                 }
             });
 
@@ -128,5 +139,19 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         public void onClick(View view) {
             itemClickListener.onItemClick(view, getAdapterPosition());
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            contextMenu.setHeaderTitle("Select Action");
+            contextMenu.add(0, view.getId(), 0, "Edit Cocktail");
+            contextMenu.add(0, view.getId(), 0, "Delete Cocktail");
+        }
     }
+
+
+    public int getPosition() {
+        return position;
+    }
+
+    private int position;
 }

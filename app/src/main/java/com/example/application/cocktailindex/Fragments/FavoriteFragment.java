@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,6 +39,7 @@ public class FavoriteFragment extends Fragment {
     private List<Cocktail> favouriteList;
 
     private FavouriteAdapter mAdapter;
+    private Cocktail tempDeletion;
 
     /**
      * Creates the Fragment and sets up listeners
@@ -93,6 +97,62 @@ public class FavoriteFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new FavouriteAdapter(favouriteList, listener, getContext());
         recyclerView.setAdapter(mAdapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+
+                // Checks if the up/down scroll speed is over/under 10 and hides/shows the FAB
+                // A method from MainActivity will be called by type-casting getActivity.
+                // TODO: Create a while loop and count the dx/dy so scrolling slowly will also remove FAB
+                if(dy > 10) {
+                    try {
+                        ((MainActivity)getActivity()).setFabVisibility(false);
+                    } catch (NullPointerException e) {
+                        Log.d("FAB", "Error getting Main Activity when scrolling up/down " + e);
+                    }
+                }else if(dy < -10) {
+                    try {
+                        ((MainActivity)getActivity()).setFabVisibility(true);
+                    } catch (NullPointerException e) {
+                        Log.d("FAB", "Error getting Main Activity when scrolling up/down " + e);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        String name = item.getTitle().toString();
+        int itemPosition = mAdapter.getPosition();
+
+        if(name.equals("Edit Cocktail")) {
+
+        } else if(name.equals("Delete Cocktail")) {
+            tempDeletion = cocktailList.get(itemPosition);
+            cocktailList.remove(itemPosition);
+            mAdapter.notifyDataSetChanged();
+            Snackbar.make(getView(), "Cocktail Deleted", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            cocktailList.add(tempDeletion);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(R.color.colorAccent))
+                    .show();
+
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

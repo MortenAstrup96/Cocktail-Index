@@ -10,6 +10,8 @@ import com.example.application.cocktailindex.Objects.Cocktail;
 
 import java.util.List;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
 @Dao
 public interface CocktailDBDao {
 
@@ -19,7 +21,7 @@ public interface CocktailDBDao {
     @Insert
     void insertAll(Cocktail... cocktails);
 
-    @Insert
+    @Insert(onConflict = REPLACE)
     void insertOne(Cocktail cocktail);
 
     @Update

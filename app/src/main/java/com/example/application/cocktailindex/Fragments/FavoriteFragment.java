@@ -24,6 +24,7 @@ import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.R;
+import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class FavoriteFragment extends Fragment {
         };
 
         try {
-            cocktailList = ((MainActivity) getActivity()).getCocktailList();
+            cocktailList = CocktailSingleton.getInstance().getCocktailList();
         } catch (NullPointerException e) {
             Log.e("ApplicationError", "Nullpointer " + e);
         }

@@ -25,6 +25,7 @@ import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.OnItemLongClickListener;
 import com.example.application.cocktailindex.R;
+import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -136,7 +137,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
 
 
-            cocktailList = ((MainActivity)context).getCocktailList();
+            cocktailList = CocktailSingleton.getInstance().getCocktailList();
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

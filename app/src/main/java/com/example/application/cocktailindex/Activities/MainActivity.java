@@ -34,6 +34,7 @@ import com.example.application.cocktailindex.Fragments.IndexFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
+import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -63,10 +64,10 @@ public class MainActivity extends AppCompatActivity implements
 
     // Searching and Cocktails references
     private SearchView searchView;
-    private List<Cocktail> cocktailList;
-    private List<Cocktail> savedCocktailList;
 
     private FloatingActionButton fab;
+
+    private CocktailSingleton cocktailSingleton;
 
     // Database
     private AppDatabase db;
@@ -78,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        cocktailSingleton = CocktailSingleton.getInstance();
 
         SetupViews();   // FAB & BNV
 
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements
         fragmentFavorite = new FavoriteFragment();
         fragmentIdea = new IdeaFragment();
 
-        java.util.Collections.sort(cocktailList);
+        java.util.Collections.sort(cocktailSingleton.getCocktailList());
         // Sets starting fragment TODO: Have user decide the starting fragment, or possibly start at Favourites
         setCurrentFragment(fragmentIndex);
 
@@ -112,23 +115,7 @@ public class MainActivity extends AppCompatActivity implements
      * Loads all data from database and adds to the listviews
      */
     private void loadData() {
-        // SavedCocktailList is a static list -> CocktalList dynamically changes (removes & adds)
-        cocktailList = new ArrayList<>();
-        savedCocktailList = new ArrayList<>();
-
-        // Loads all images into the two lists from database
-        Executor myExecutor = Executors.newSingleThreadExecutor();
-        myExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                savedCocktailList = db.cocktailDBDao().getAll();
-                cocktailList.addAll(savedCocktailList);
-
-                for(Cocktail c : savedCocktailList) {
-                    c.setIngredients((ArrayList<Ingredient>)db.ingredientDBDao().findById(c.id));
-                }
-            }
-        });
+        updateFromDatabase();
     }
 
     public void setFabVisibility(boolean isVisible) {
@@ -164,23 +151,46 @@ public class MainActivity extends AppCompatActivity implements
             myExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    db.cocktailDBDao().insertOne(cocktail); // TODO INSERT INGREDIENTS HERE
-                    db.ingredientDBDao().insertOne(cocktail.ingredients); // TODO INSERT INGREDIENTS HERE
+                    db.cocktailDBDao().insertOne(cocktail);
+                    db.ingredientDBDao().insertOne(cocktail.ingredients);
                 }
             });
 
-            savedCocktailList.add(cocktail);
-            cocktailList = savedCocktailList;
-
+            cocktailSingleton.getCocktailList().add(cocktail);
             updateFragmentLists();
 
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateFromDatabase();
+        updateFragmentLists();
+    }
+
+    /**
+     * Might be a waste to update from DB every time mainactivity resumes !!
+     */
+    private void updateFromDatabase() {
+        // Loads all images into the two lists from database
+        Executor myExecutor = Executors.newSingleThreadExecutor();
+        myExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                cocktailSingleton.setCocktailList(db.cocktailDBDao().getAll());
+
+                for(Cocktail c : cocktailSingleton.getCocktailList()) {
+                    c.setIngredients((ArrayList<Ingredient>)db.ingredientDBDao().findById(c.id));
+                }
+            }
+        });
+    }
+
     /**
      * Attempts to update all the fragment lists, some will be null
      */
-    private void updateFragmentLists() {
+    public void updateFragmentLists() {
         if(fragmentFavorite != null) fragmentFavorite.updateList();
         if(fragmentIndex != null) fragmentIndex.updateList();
         if(fragmentIdea != null) /*fragmentIdea.updateList()*/;
@@ -248,13 +258,6 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-
-    public void refreshCocktailList() {
-        // Updates the cocktailList
-        cocktailList.clear();
-        cocktailList.addAll(savedCocktailList);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -272,8 +275,7 @@ public class MainActivity extends AppCompatActivity implements
             public boolean onQueryTextSubmit(String s) {
                 Log.d("Search","Query Submitted: " + s);
                 if(s.isEmpty()) {
-                    cocktailList.clear();
-                    cocktailList.addAll(savedCocktailList);
+                    cocktailSingleton.getCocktailList().clear();
                 }
 
                 return false;
@@ -281,9 +283,6 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public boolean onQueryTextChange(String s) {
-                Log.d("Search","SearchOnQueryTextChanged: " + s);
-                Log.d("Search","Main: " + cocktailList.size() + "");
-
                 if(fragmentIndex != null) {
                     fragmentIndex.searchQuery(s.toLowerCase());
                 }
@@ -308,11 +307,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public List<Cocktail> getCocktailList() {
-        return cocktailList;
     }
 
 

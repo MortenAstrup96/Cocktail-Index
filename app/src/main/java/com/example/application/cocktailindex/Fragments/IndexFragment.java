@@ -28,6 +28,7 @@ import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.OnItemLongClickListener;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IndexAdapter;
+import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class IndexFragment extends Fragment {
     private OnItemLongClickListener longClickListener;
 
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
-    private List<Cocktail> cocktailList;
+    private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
     private List<Cocktail> savedCocktailList;
 
     private IndexAdapter mAdapter;
@@ -67,45 +68,26 @@ public class IndexFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_index,container,false);
 
-        cocktailList = ((MainActivity) getActivity()).getCocktailList();
         savedCocktailList = new ArrayList<>();
-        savedCocktailList.addAll(cocktailList);
+        savedCocktailList.addAll(cocktailSingleton.getCocktailList());
 
         // Setup of database
         db = Room.databaseBuilder(getContext(),
                 AppDatabase.class, "database-name").build();
 
-        longClickListener = new OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(View view, int position) {
-                final Cocktail removingCocktail = savedCocktailList.get(position);
-
-                cocktailList.remove(position);
-                savedCocktailList.remove(position);
-                mAdapter.notifyDataSetChanged();
-
-                Executor myExecutor = Executors.newSingleThreadExecutor();
-                myExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        db.cocktailDBDao().delete(removingCocktail);
-                    }
-                });
-            }
-        };
 
         // Item click listener
         listener = new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                java.util.Collections.sort(cocktailList);
+                java.util.Collections.sort(cocktailSingleton.getCocktailList());
 
                 // Scales up the new activity from the cardview clicked
                 Activity activity = getActivity();
                 Intent intent = new Intent(activity, CocktailDetailsActivity.class);
                 Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                         view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
-                intent.putExtra("cocktail", cocktailList.get(position)); // TODO: Switch to using ID instead later
+                intent.putExtra("cocktail", cocktailSingleton.getCocktailList().get(position)); // TODO: Switch to using ID instead later
                 ActivityCompat.startActivity(activity, intent, options);
             }
         };
@@ -114,7 +96,7 @@ public class IndexFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new IndexAdapter(cocktailList, listener, longClickListener, getContext());
+        mAdapter = new IndexAdapter(cocktailSingleton.getCocktailList(), listener, longClickListener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -147,7 +129,7 @@ public class IndexFragment extends Fragment {
             }
         });
 
-        java.util.Collections.sort(cocktailList);
+        java.util.Collections.sort(cocktailSingleton.getCocktailList());
         mAdapter.notifyDataSetChanged();
 
         // Inflate the layout for this fragment
@@ -164,6 +146,7 @@ public class IndexFragment extends Fragment {
      */
 
 
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
@@ -172,17 +155,36 @@ public class IndexFragment extends Fragment {
         if(name.equals("Edit Cocktail")) {
 
         } else if(name.equals("Delete Cocktail")) {
-            tempDeletion = cocktailList.get(itemPosition);
-            cocktailList.remove(itemPosition);
+            tempDeletion = cocktailSingleton.getCocktailList().get(itemPosition);
+            cocktailSingleton.getCocktailList().remove(itemPosition);
             savedCocktailList.remove(itemPosition);
             mAdapter.notifyDataSetChanged();
+
+            Executor myExecutor = Executors.newSingleThreadExecutor();
+            myExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    db.cocktailDBDao().delete(tempDeletion);
+                }
+            });
+
+
+            // Revert deletion
             Snackbar.make(getView(), "Cocktail Deleted", Snackbar.LENGTH_LONG)
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            cocktailList.add(tempDeletion);
+                            cocktailSingleton.getCocktailList().add(tempDeletion);
                             savedCocktailList.add(tempDeletion);
                             mAdapter.notifyDataSetChanged();
+
+                            Executor myExecutor = Executors.newSingleThreadExecutor();
+                            myExecutor.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    db.cocktailDBDao().insertOne(tempDeletion);
+                                }
+                            });
                         }
                     })
                     .setActionTextColor(getResources().getColor(R.color.colorAccent))
@@ -194,11 +196,11 @@ public class IndexFragment extends Fragment {
 
 
     public List<Cocktail> searchQuery(String s) {
-        cocktailList.clear();
-        cocktailList.addAll(savedCocktailList);
+        cocktailSingleton.getCocktailList().clear();
+        cocktailSingleton.getCocktailList().addAll(savedCocktailList);
         List<Cocktail> toRemove = new ArrayList<>();
 
-        for(Cocktail cocktail : cocktailList) {
+        for(Cocktail cocktail : cocktailSingleton.getCocktailList()) {
             String name = cocktail.name.toLowerCase();
            // String ingredients = cocktail.ingredients.toLowerCase();
 
@@ -208,9 +210,9 @@ public class IndexFragment extends Fragment {
             }
         }
 
-        cocktailList.removeAll(toRemove);
+        cocktailSingleton.getCocktailList().removeAll(toRemove);
         mAdapter.notifyDataSetChanged();
-        return cocktailList;
+        return cocktailSingleton.getCocktailList();
     }
 
     /** ==== STANDARD FRAGMENT METHODS ==== */
@@ -223,8 +225,6 @@ public class IndexFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-
         mAdapter.notifyDataSetChanged();
     }
 

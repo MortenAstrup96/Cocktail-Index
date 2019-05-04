@@ -70,7 +70,14 @@ public class NewCocktailActivity extends AppCompatActivity implements
         } catch (NullPointerException e) {
 
         }
+        Bundle data = getIntent().getExtras();
 
+        try {
+            temporaryCocktail = (Cocktail) data.getSerializable("cocktail");
+            selectedImage = Uri.parse(temporaryCocktail.imagePath);
+        } catch (NullPointerException e) {
+
+        }
 
 
     }
@@ -169,7 +176,7 @@ public class NewCocktailActivity extends AppCompatActivity implements
         switch (button) {
             case 1:
                 Intent intent = new Intent();
-                intent.putExtra("cocktail", temporaryCocktail); // TODO: Might be causing problems due to serialization
+                intent.putExtra("cocktail", temporaryCocktail);
                 intent.putExtra("image", getSelectedImage().toString());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
@@ -181,5 +188,9 @@ public class NewCocktailActivity extends AppCompatActivity implements
                 activateGallery();
                 break;
         }
+    }
+
+    public Cocktail getEditableCocktail() {
+        return temporaryCocktail;
     }
 }

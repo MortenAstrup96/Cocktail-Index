@@ -74,6 +74,8 @@ public class FillCocktailDetailsFragment extends Fragment {
 
     private Spinner measureTypeSpinner;
 
+    private Cocktail editableCocktail;
+
     // Container References for smoothscroll
     private ConstraintLayout constraintName;
     private ConstraintLayout constraintIngredients;
@@ -95,18 +97,32 @@ public class FillCocktailDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.addcocktail_fragment_details, container, false);
 
+        temporaryCocktail = ((NewCocktailActivity)getActivity()).getEditableCocktail();
 
-
-       setupViews(view);
+        setupViews(view);
         setupRecyclerView(view);
         setupListeners();
 
+        if(temporaryCocktail != null) fillEditableText();
         editName.requestFocus();
 
 
         return view;
     }
 
+    private void fillEditableText() {
+        editName.setText(temporaryCocktail.name);
+        editRecipe.setText(temporaryCocktail.recipe);
+        editComments.setText(temporaryCocktail.comments);
+
+        // Add ingredients to list
+        for(Ingredient ingredient : temporaryCocktail.ingredients) {
+            ingredients.add(ingredient);
+        }
+        mAdapter.notifyDataSetChanged();
+
+
+    }
 
 
     private void setupRecyclerView(View view) {
@@ -145,7 +161,12 @@ public class FillCocktailDetailsFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewCocktailFromInformation();
+                if(temporaryCocktail != null) {
+                    updateExistingCocktail();
+                } else {
+                    createNewCocktailFromInformation();
+                }
+
                 mListener.onPressingNameButton(1);
 
             }
@@ -200,10 +221,32 @@ public class FillCocktailDetailsFragment extends Fragment {
 
     }
 
+    private void updateExistingCocktail() {
+        favourite = false;
+        idea = false;
+        int id = radioGroup.getCheckedRadioButtonId();
+        if(id == favouriteRadio.getId()) {
+            favourite = true;
+        }
+        if(id == ideaRadio.getId()) {
+            idea = true;
+        }
+
+        temporaryCocktail.name = editName.getText().toString();
+        temporaryCocktail.recipe = editRecipe.getText().toString();
+        temporaryCocktail.comments = editComments.getText().toString();
+        temporaryCocktail.favourite = favourite;
+        temporaryCocktail.idea = idea;
+
+        temporaryCocktail.setIngredients(ingredients);
+        for(Ingredient i : ingredients) {
+            i.setCocktailIdFk(temporaryCocktail.id);
+        }
+    }
+
     private void createNewCocktailFromInformation() {
         favourite = false;
         idea = false;
-
         int id = radioGroup.getCheckedRadioButtonId();
         if(id == favouriteRadio.getId()) {
             favourite = true;
@@ -220,12 +263,11 @@ public class FillCocktailDetailsFragment extends Fragment {
                 favourite,
                 idea
         );
+
         temporaryCocktail.setIngredients(ingredients);
         for(Ingredient i : ingredients) {
             i.setCocktailIdFk(temporaryCocktail.id);
         }
-
-
     }
 
     public Cocktail getTemporaryCocktail() {

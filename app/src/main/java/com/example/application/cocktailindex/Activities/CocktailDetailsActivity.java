@@ -2,8 +2,12 @@ package com.example.application.cocktailindex.Activities;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +17,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -77,6 +83,25 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         TextView recipe = findViewById(R.id.details_section_recipe);
         TextView comments = findViewById(R.id.details_section_comments);
         buttonEdit = findViewById(R.id.cocktaildetails_button_edit);
+        CheckBox favourite = findViewById(R.id.details_section_image_favourite);
+
+        favourite.setChecked(cocktail.favourite);
+        favourite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                shortVibration();
+                cocktail.favourite = b;
+
+                // Updates favourites in db
+                Executor myExecutor = Executors.newSingleThreadExecutor();
+                myExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.cocktailDBDao().updateOne(cocktail);
+                    }
+                });
+            }
+        });
 
         iconIngredients = findViewById(R.id.details_section_ingredients_icon);
         iconRecipe = findViewById(R.id.details_section_recipe_icon);
@@ -117,6 +142,17 @@ public class CocktailDetailsActivity extends AppCompatActivity {
                 startActivityForResult(intent, UPDATE_COCKTAIL_RECIPE);
             }
         });
+    }
+
+    private void shortVibration() {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(5, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(5);
+        }
     }
 
     @Override

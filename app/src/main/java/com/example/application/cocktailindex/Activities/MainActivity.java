@@ -336,6 +336,22 @@ public class MainActivity extends AppCompatActivity implements
         if (id == R.id.action_settings) {
             return true;
         }
+        else if(id == R.id.action_about) {
+            Intent intent = new Intent(this, About.class);
+            startActivity(intent);
+        }
+        else if(id == R.id.action_feedback) {
+            /* Create the Intent */
+            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+            /* Fill it with Data */
+            emailIntent.setType("plain/text");
+            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"cocktail@astrup.dev"});
+            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Feedback on CocktailIndex");
+
+            /* Send it off to the Activity-Chooser */
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        }
 
         return super.onOptionsItemSelected(item);
     }

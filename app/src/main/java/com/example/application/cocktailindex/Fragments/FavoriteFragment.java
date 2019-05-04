@@ -38,6 +38,7 @@ public class FavoriteFragment extends Fragment {
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
     private List<Cocktail> cocktailList;
     private List<Cocktail> favouriteList;
+    private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
 
     private FavouriteAdapter mAdapter;
     private Cocktail tempDeletion;
@@ -82,6 +83,8 @@ public class FavoriteFragment extends Fragment {
             }
         }
         java.util.Collections.sort(favouriteList);
+
+
 
         // Gets the cocktailList
         setupRecyclerView(view);
@@ -134,8 +137,10 @@ public class FavoriteFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
         int itemPosition = mAdapter.getPosition();
+        Cocktail cocktail = cocktailSingleton.getCocktailList().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
+            ((MainActivity)getActivity()).updateSpecificCocktail(cocktail);
 
         } else if(name.equals("Delete Cocktail")) {
             tempDeletion = cocktailList.get(itemPosition);

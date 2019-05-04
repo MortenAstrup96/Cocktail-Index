@@ -54,7 +54,8 @@ public class FinaliseCocktailDetailsFragment extends Fragment {
 
         temporaryCocktail = ((NewCocktailActivity)getActivity()).getEditableCocktail();
         imagePath = ((NewCocktailActivity)getActivity()).getSelectedImage();
-        temporaryCocktail.imagePath = imagePath.toString();
+
+        if(temporaryCocktail.imagePath != null) temporaryCocktail.imagePath = imagePath.toString();
 
         thumbnail = view.findViewById(R.id.addcocktail_fragment_setimage_thumbnail2);
         selectCamera = view.findViewById(R.id.addcocktail_fragment_setimage_imagebutton_camera2);

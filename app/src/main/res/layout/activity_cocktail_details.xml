@@ -187,7 +187,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <CheckBox
-                android:id="@+id/index_section_favourite"
+                android:id="@+id/details_section_image_favourite"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="32dp"
@@ -196,11 +196,11 @@
                 android:backgroundTint="@android:color/background_light"
                 android:button="@android:color/background_light"
                 android:buttonTint="@android:color/background_light"
-                app:layout_constraintEnd_toStartOf="@+id/details_section_imagebutton_settings"
+                app:layout_constraintEnd_toStartOf="@+id/index_section_favourite"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/details_section_imagebutton_settings"
+                android:id="@+id/index_section_favourite"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="16dp"
@@ -209,7 +209,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:tint="@android:color/background_light"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/index_section_favourite" />
+                app:layout_constraintTop_toTopOf="@+id/details_section_image_favourite" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>

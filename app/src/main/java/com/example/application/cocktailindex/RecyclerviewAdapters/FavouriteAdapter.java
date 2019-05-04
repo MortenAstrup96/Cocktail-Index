@@ -1,7 +1,11 @@
 package com.example.application.cocktailindex.RecyclerviewAdapters;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -16,11 +20,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.R;
+import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -36,6 +44,10 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     private OnItemClickListener itemClickListener;
     private Context context;
 
+
+    // Database
+    private AppDatabase db;
+
     // Initialises the string list
     public FavouriteAdapter(List<Cocktail> cocktailList, OnItemClickListener itemClickListener, Context context) {
         this.cocktailList = cocktailList;
@@ -43,6 +55,11 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
         this.itemClickListener = itemClickListener;
         this.context = context;
+
+        // Setup of database
+        db = Room.databaseBuilder(context,
+                AppDatabase.class, "database-name").build();
+
     }
 
     @Override
@@ -58,13 +75,25 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     @NonNull
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Log.d("PositionHolder", "Position: " + position);
-
+        String displayIngredients = "";
         Cocktail cocktail = cocktailList.get(position);
         String name = cocktail.name;
         //String ingredients = cocktail.ingredients;
 
         // Get image from internal storage
         holder.name.setText(name);
+
+        if(position >= 0) {
+            cocktail = cocktailList.get(position);
+            if(cocktail.ingredients.size() > 0) {
+                displayIngredients = displayIngredients + cocktail.ingredients.get(0).getIngredient();
+                for(int i = 1; i < cocktail.ingredients.size(); i++) {
+                    displayIngredients = displayIngredients + ", " + cocktail.ingredients.get(i).getIngredient();
+                }
+            }
+
+            holder.ingredientsView.setText(displayIngredients);
+        }
 
 
 
@@ -92,6 +121,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         private TextView name;
         private ImageView imageView;
         private CardView cardView;
+        private TextView ingredientsView;
         private CheckBox favourite;
 
 
@@ -101,6 +131,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
             name =  view.findViewById(R.id.favourites_section_header);
             imageView =  view.findViewById(R.id.favourites_section_image_cocktail);
             cardView = view.findViewById(R.id.favourites_section_cardview);
+            ingredientsView = view.findViewById(R.id.favourites_section_ingredients);
+            view.setOnCreateContextMenuListener(this);
 
             view.setOnClickListener(this);
             cardView.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +142,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
                 }
             });
 
-            view.setOnLongClickListener(new View.OnLongClickListener() {
+            cardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     position = getAdapterPosition();
@@ -127,8 +159,25 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     Cocktail cocktail = cocktailList.get(getAdapterPosition());
                     cocktail.favourite = b;
+
+                    // Updates favourites in db
+                    Executor myExecutor = Executors.newSingleThreadExecutor();
+                    myExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.cocktailDBDao().updateOne(cocktailList.get(getAdapterPosition()));
+                        }
+                    });
                 }
             });
+
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    shortVibration();
+                }
+            });
+
         }
 
         /**
@@ -138,6 +187,17 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         @Override
         public void onClick(View view) {
             itemClickListener.onItemClick(view, getAdapterPosition());
+        }
+
+        private void shortVibration() {
+            Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            // Vibrate for 500 milliseconds
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                v.vibrate(VibrationEffect.createOneShot(5, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                //deprecated in API 26
+                v.vibrate(5);
+            }
         }
 
         @Override

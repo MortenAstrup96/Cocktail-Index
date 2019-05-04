@@ -3,9 +3,10 @@ package com.example.application.cocktailindex.RecyclerviewAdapters;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -13,16 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.application.cocktailindex.Activities.MainActivity;
 import com.example.application.cocktailindex.Database.AppDatabase;
-import com.example.application.cocktailindex.Fragments.IndexFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
-import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.OnItemLongClickListener;
 import com.example.application.cocktailindex.R;
@@ -74,7 +73,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
         java.util.Collections.sort(cocktailList);
 
-
         return new MyViewHolder(itemView, itemClickListener, itemLongClickListener);
     }
 
@@ -84,8 +82,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         java.util.Collections.sort(cocktailList);
         Cocktail cocktail = cocktailList.get(position);
         String name = cocktail.name;
-        String recipe = cocktail.recipe;
-        boolean isChecked = cocktail.favourite;
         String displayIngredients = "";
 
         // Get image from internal storage
@@ -141,12 +137,13 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             this.itemClickListener = itemClickListener;
             this.itemLongClickListener = itemLongClickListener;
 
-            this.setIsRecyclable(false); // TODO: VERY BAD PRACTICE -> Fix: https://android.jlelse.eu/android-handling-checkbox-state-in-recycler-views-71b03f237022
+            this.setIsRecyclable(true); // TODO: VERY BAD PRACTICE -> Fix: https://android.jlelse.eu/android-handling-checkbox-state-in-recycler-views-71b03f237022
 
             name =  view.findViewById(R.id.index_section_header);
             imageView =  view.findViewById(R.id.index_section_image_cocktail);
             checkBox = view.findViewById(R.id.index_section_favourite);
             ingredients = view.findViewById(R.id.index_section_details);
+
 
             view.setOnClickListener(this);
             view.setOnCreateContextMenuListener(this);
@@ -158,6 +155,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if(getAdapterPosition() >= 0) {
+
                         cocktailList.get(getAdapterPosition()).favourite = b; // Updates local
 
                         // Updates favourites in db
@@ -168,9 +166,14 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
                                 db.cocktailDBDao().updateOne(cocktailList.get(getAdapterPosition()));
                             }
                         });
-
-
                     }
+                }
+            });
+
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    shortVibration();
                 }
             });
 
@@ -184,11 +187,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             });
 
         }
-
-
-
-
-
         /**
          * Method to be invoked when clicking on a certain element
          * @param view The specific element in the RecyclerView
@@ -199,6 +197,16 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         }
 
 
+        private void shortVibration() {
+            Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            // Vibrate for 500 milliseconds
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                v.vibrate(VibrationEffect.createOneShot(5, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                //deprecated in API 26
+                v.vibrate(5);
+            }
+        }
 
 
         @Override

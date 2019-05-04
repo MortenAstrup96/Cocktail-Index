@@ -22,6 +22,7 @@ import com.example.application.cocktailindex.Activities.MainActivity;
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Fragments.IndexFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
+import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.OnItemLongClickListener;
 import com.example.application.cocktailindex.R;
@@ -85,6 +86,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         String name = cocktail.name;
         String recipe = cocktail.recipe;
         boolean isChecked = cocktail.favourite;
+        String displayIngredients = "";
 
         // Get image from internal storage
         holder.name.setText(name);
@@ -97,6 +99,18 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
                 .into(holder.imageView);
 
         checkBox.setChecked(cocktail.favourite);
+
+        if(position >= 0) {
+            cocktail = cocktailList.get(position);
+            if(cocktail.ingredients.size() > 0) {
+                displayIngredients = displayIngredients + cocktail.ingredients.get(0).getIngredient();
+                for(int i = 1; i < cocktail.ingredients.size(); i++) {
+                    displayIngredients = displayIngredients + ", " + cocktail.ingredients.get(i).getIngredient();
+                }
+            }
+
+            holder.ingredients.setText(displayIngredients);
+        }
     }
 
 
@@ -119,6 +133,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         private OnItemLongClickListener itemLongClickListener;
         private TextView name;
         private ImageView imageView;
+        private TextView ingredients;
 
 
         public MyViewHolder(final View view, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener) {
@@ -131,6 +146,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             name =  view.findViewById(R.id.index_section_header);
             imageView =  view.findViewById(R.id.index_section_image_cocktail);
             checkBox = view.findViewById(R.id.index_section_favourite);
+            ingredients = view.findViewById(R.id.index_section_details);
 
             view.setOnClickListener(this);
             view.setOnCreateContextMenuListener(this);
@@ -166,7 +182,12 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
                     return false;
                 }
             });
+
         }
+
+
+
+
 
         /**
          * Method to be invoked when clicking on a certain element

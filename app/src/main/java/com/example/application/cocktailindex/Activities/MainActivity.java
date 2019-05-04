@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import static com.example.application.cocktailindex.Activities.CocktailDetailsActivity.UPDATE_COCKTAIL_RECIPE;
+
 
 public class MainActivity extends AppCompatActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
@@ -159,6 +161,24 @@ public class MainActivity extends AppCompatActivity implements
             cocktailSingleton.getCocktailList().add(cocktail);
             updateFragmentLists();
 
+        } else if(requestCode == UPDATE_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) { {
+                // Object and Uri are retrieved from NewCocktailActivity
+                cocktail = (Cocktail) data.getSerializableExtra("cocktail");
+                Uri selectedImage = Uri.parse(data.getStringExtra("image"));
+                cocktail.imagePath = selectedImage.toString();
+
+
+                // Database Query
+                Executor myExecutor = Executors.newSingleThreadExecutor();
+                myExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.ingredientDBDao().insertOne(cocktail.ingredients);
+                        db.cocktailDBDao().updateOne(cocktail);
+
+                    }
+                });
+            }
         }
     }
 
@@ -180,11 +200,22 @@ public class MainActivity extends AppCompatActivity implements
             public void run() {
                 cocktailSingleton.setCocktailList(db.cocktailDBDao().getAll());
 
-                for(Cocktail c : cocktailSingleton.getCocktailList()) {
-                    c.setIngredients((ArrayList<Ingredient>)db.ingredientDBDao().findById(c.id));
+                try {
+                    for(Cocktail c : cocktailSingleton.getCocktailList()) {
+                        c.setIngredients((ArrayList<Ingredient>)db.ingredientDBDao().findById(c.id));
+                    }
+                } catch (ConcurrentModificationException e) {
+                    Log.e("Concurrent", "Concurrent Error!!");
                 }
+
             }
         });
+    }
+
+    public void updateSpecificCocktail(Cocktail cocktail) {
+        Intent intent = new Intent(this, NewCocktailActivity.class);
+        intent.putExtra("cocktail", cocktail);
+        startActivityForResult(intent, UPDATE_COCKTAIL_RECIPE);
     }
 
     /**

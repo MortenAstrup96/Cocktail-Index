@@ -128,17 +128,15 @@ public class CocktailDetailsActivity extends AppCompatActivity {
             Uri selectedImage = Uri.parse(data.getStringExtra("image"));
             cocktail.imagePath = selectedImage.toString();
 
-
             // Database Query
             Executor myExecutor = Executors.newSingleThreadExecutor();
             myExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
+                    db.ingredientDBDao().insertOne(cocktail.ingredients);
                     db.cocktailDBDao().updateOne(cocktail);
-                    db.ingredientDBDao().updateOne(cocktail.ingredients);
                 }
             });
-
             setupViews();
         }
     }

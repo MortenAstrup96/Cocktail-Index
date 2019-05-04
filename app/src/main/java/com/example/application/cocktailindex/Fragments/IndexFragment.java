@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -22,6 +24,7 @@ import android.widget.AdapterView;
 
 import com.example.application.cocktailindex.Activities.CocktailDetailsActivity;
 import com.example.application.cocktailindex.Activities.MainActivity;
+import com.example.application.cocktailindex.Activities.NewCocktailActivity;
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
@@ -36,6 +39,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import static com.example.application.cocktailindex.Activities.CocktailDetailsActivity.UPDATE_COCKTAIL_RECIPE;
 
 
 public class IndexFragment extends Fragment {
@@ -151,8 +156,10 @@ public class IndexFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
         int itemPosition = mAdapter.getPosition();
+        Cocktail cocktail = cocktailSingleton.getCocktailList().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
+            ((MainActivity)getActivity()).updateSpecificCocktail(cocktail);
 
         } else if(name.equals("Delete Cocktail")) {
             tempDeletion = cocktailSingleton.getCocktailList().get(itemPosition);
@@ -164,6 +171,7 @@ public class IndexFragment extends Fragment {
             myExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
+                    db.ingredientDBDao().delete(tempDeletion.ingredients);
                     db.cocktailDBDao().delete(tempDeletion);
                 }
             });
@@ -193,7 +201,6 @@ public class IndexFragment extends Fragment {
         }
         return super.onContextItemSelected(item);
     }
-
 
     public List<Cocktail> searchQuery(String s) {
         cocktailSingleton.getCocktailList().clear();

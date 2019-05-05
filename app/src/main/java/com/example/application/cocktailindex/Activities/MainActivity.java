@@ -25,7 +25,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Fragments.FavoriteFragment;
@@ -39,7 +38,6 @@ import com.example.application.cocktailindex.Utility.CocktailSingleton;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -337,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
         else if(id == R.id.action_about) {
-            Intent intent = new Intent(this, About.class);
+            Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
         }
         else if(id == R.id.action_feedback) {

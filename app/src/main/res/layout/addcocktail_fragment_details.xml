@@ -100,6 +100,73 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/ChooseImage_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/addCocktail_button_addimage"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/addCocktail_button_addimage"
+                    app:srcCompat="@drawable/ic_round_add_photo_alternate_24px" />
+
+                <Button
+                    android:id="@+id/addCocktail_button_addimage"
+                    style="@android:style/Widget.Holo.Button.Toggle"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="65dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/button_outlined"
+                    android:elevation="0dp"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/addCocktail_recyclerview_images"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/addCocktail_button_addimage"
+                    app:layout_constraintStart_toStartOf="@+id/addCocktail_button_addimage"
+                    app:layout_constraintTop_toBottomOf="@+id/addCocktail_button_addimage" />
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/addCocktail_button_addimage"
+                    app:layout_constraintStart_toStartOf="@+id/addCocktail_button_addimage"
+                    app:layout_constraintTop_toTopOf="@+id/addCocktail_button_addimage"
+                    app:srcCompat="@drawable/plus_orange" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Add images"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+                    app:layout_constraintStart_toEndOf="@+id/imageView9"
+                    app:layout_constraintTop_toTopOf="@+id/imageView9" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
                 android:id="@+id/ChooseIngredients_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -291,14 +358,14 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/addCocktail_button_next"
+                    android:id="@+id/addCocktail_button_finish"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="Next"
+                    android:text="Finish"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

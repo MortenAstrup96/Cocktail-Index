@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -23,11 +22,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.Activities.NewCocktailActivity;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
+import com.example.application.cocktailindex.RecyclerviewAdapters.ImageAddAdapter;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
 
 import java.util.ArrayList;
@@ -50,11 +49,14 @@ public class FillCocktailDetailsFragment extends Fragment {
     private Button buttonAddIngredient;
 
     private IngredientsAddAdapter mAdapter;
+    private ImageAddAdapter imageAddAdapter;
     private EditText editIngredients;
     private EditText editAmount;
     private EditText editName;
     private EditText editRecipe;
     private EditText editComments;
+    private Button addImageButton;
+    private ImageView testImage;
 
     private boolean normal;
     private boolean idea;
@@ -70,7 +72,9 @@ public class FillCocktailDetailsFragment extends Fragment {
 
 
     private ArrayList<Ingredient> ingredients;
+    private ArrayList<Uri> imagePaths;
     private RecyclerView recyclerView;
+    private RecyclerView imageRecyclerView;
 
     private Spinner measureTypeSpinner;
 
@@ -79,11 +83,6 @@ public class FillCocktailDetailsFragment extends Fragment {
     // Container References for smoothscroll
     private ConstraintLayout constraintName;
     private ConstraintLayout constraintIngredients;
-
-
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -147,6 +146,24 @@ public class FillCocktailDetailsFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         measureTypeSpinner.setAdapter(adapter);
+
+
+        // Image Adapter
+        imagePaths = new ArrayList<>();
+
+        try {
+            imagePaths.add(Uri.parse(temporaryCocktail.imagePath));
+        } catch (NullPointerException e) {
+
+        }
+
+
+        imageRecyclerView = view.findViewById(R.id.addCocktail_recyclerview_images);
+        LinearLayoutManager imageLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        imageRecyclerView.setLayoutManager(imageLayoutManager);
+        imageRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        imageAddAdapter= new ImageAddAdapter(imagePaths, getContext());
+        imageRecyclerView.setAdapter(imageAddAdapter);
 
     }
 
@@ -216,6 +233,13 @@ public class FillCocktailDetailsFragment extends Fragment {
             }
         });
 
+        addImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((NewCocktailActivity)getActivity()).onPressingNameButton(3);
+            }
+        });
+
 
 
 
@@ -275,9 +299,11 @@ public class FillCocktailDetailsFragment extends Fragment {
     }
 
     private void setupViews(View view) {
-        next = view.findViewById(R.id.addCocktail_button_next);
+        next = view.findViewById(R.id.addCocktail_button_finish);
         cancel = view.findViewById(R.id.addCocktail_button_cancel);
         scrollView = view.findViewById(R.id.newCocktail_scroll);
+        addImageButton = view.findViewById(R.id.addCocktail_button_addimage);
+        testImage = view.findViewById(R.id.recycler_view_add_image_imageview);
 
         // Edittexts
         editIngredients = view.findViewById(R.id.addCocktail_edittext_ingredient);
@@ -304,6 +330,15 @@ public class FillCocktailDetailsFragment extends Fragment {
         favourite = false;
     }
 
+    public void addImageToList(Uri image) {
+        imagePaths.add(image);
+        imageAddAdapter.notifyDataSetChanged();
+    }
+
+    public void removeImageFromList(int position) {
+        imagePaths.remove(position);
+        imageAddAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -315,6 +350,7 @@ public class FillCocktailDetailsFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
 
 
     @Override

@@ -53,6 +53,7 @@ public class IngredientsAddAdapter extends RecyclerView.Adapter<IngredientsAddAd
                 .inflate(R.layout.recycler_view_addingredients_show, parent, false);
 
 
+
         return new MyViewHolder(itemView);
     }
 
@@ -86,6 +87,7 @@ public class IngredientsAddAdapter extends RecyclerView.Adapter<IngredientsAddAd
             super(view);
             name = view.findViewById(R.id.recycler_view_addingredient_show_ingredient);
             amount = view.findViewById(R.id.recycler_view_addingredient_show_amount);
+
 
 
         }

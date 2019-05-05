@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.application.cocktailindex.R;
 
-public class About extends AppCompatActivity {
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

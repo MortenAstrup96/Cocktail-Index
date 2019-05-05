@@ -34,18 +34,17 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/details_section_image_cocktail">
+                    app:layout_constraintStart_toStartOf="parent">
 
-                    <ImageView
-                        android:id="@+id/details_section_image_cocktail"
-                        android:layout_width="0dp"
-                        android:layout_height="280dp"
-                        android:scaleType="centerCrop"
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/photos_viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </android.support.v4.view.ViewPager>
 
                     <ImageView
                         android:id="@+id/details_section_comments_icon"
@@ -83,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:text="Missing name"
                         android:textColor="@color/colorGrey"
@@ -91,7 +90,7 @@
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/details_section_image_cocktail"
+                        app:layout_constraintTop_toBottomOf="@+id/photos_viewpager"
                         app:layout_constraintVertical_bias="0.0" />
 
                     <TextView

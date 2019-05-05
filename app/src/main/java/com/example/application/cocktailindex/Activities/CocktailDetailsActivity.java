@@ -9,21 +9,26 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.application.cocktailindex.CustomPagerAdapter;
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.Objects.Ingredient;
@@ -31,8 +36,11 @@ import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientDetailsAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.zip.Inflater;
 
 public class CocktailDetailsActivity extends AppCompatActivity {
 
@@ -67,17 +75,19 @@ public class CocktailDetailsActivity extends AppCompatActivity {
 
         setupViews();
 
-        // Set the image view to the decired picture
-        Glide.with(getApplicationContext())
-                .load(Uri.parse(cocktail.imagePath))
-                .into(imageView);
+
+        ViewPager pager = findViewById(R.id.photos_viewpager);
+        CustomPagerAdapter pagerAdapter = new CustomPagerAdapter(getApplicationContext(), cocktail.imagePath);
+        pager.setAdapter(pagerAdapter);
+
     }
+
 
     /**
      * Sets up all of the basic views
      */
     private void setupViews() {
-        imageView = findViewById(R.id.details_section_image_cocktail);
+        //imageView = findViewById(R.id.details_section_image_cocktail);
         TextView header = findViewById(R.id.details_section_header);
         RecyclerView recyclerView = findViewById(R.id.details_section_ingredients);
         TextView recipe = findViewById(R.id.details_section_recipe);
@@ -161,8 +171,10 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         if(requestCode == UPDATE_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {
             // Object and Uri are retrieved from NewCocktailActivity
             cocktail = (Cocktail) data.getSerializableExtra("cocktail");
-            Uri selectedImage = Uri.parse(data.getStringExtra("image"));
-            cocktail.imagePath = selectedImage.toString();
+
+            // Will convert String[] to a listview and add all to cocktail image path arraylist
+            //cocktail.imagePath.addAll(Arrays.asList(data.getStringArrayExtra("image")));
+
 
             // Database Query
             Executor myExecutor = Executors.newSingleThreadExecutor();

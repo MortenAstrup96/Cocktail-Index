@@ -8,15 +8,23 @@ import java.util.ArrayList;
 
 public class TypeConverter  {
     @android.arch.persistence.room.TypeConverter
-    public static ArrayList<String> fromString(String value) {
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        return new Gson().fromJson(value, listType);
+    public String fromArray(ArrayList<String> strings) {
+        String string = "";
+        for(String s : strings) string += (s + ",");
+
+        return string;
     }
 
     @android.arch.persistence.room.TypeConverter
-    public static String fromArrayList(ArrayList<String> list) {
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        return json;
+    public ArrayList<String> toArray(String concatenatedStrings) {
+        ArrayList<String> myStrings = new ArrayList<>();
+
+        for(String s : concatenatedStrings.split(",")) {
+            myStrings.add(s);
+        }
+
+        return myStrings;
     }
+
+
 }

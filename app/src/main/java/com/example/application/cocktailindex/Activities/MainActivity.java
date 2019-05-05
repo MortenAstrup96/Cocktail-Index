@@ -37,6 +37,7 @@ import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -143,8 +144,6 @@ public class MainActivity extends AppCompatActivity implements
 
             // Object and Uri are retrieved from NewCocktailActivity
             cocktail = (Cocktail) data.getSerializableExtra("cocktail");
-            Uri selectedImage = Uri.parse(data.getStringExtra("image"));
-            cocktail.imagePath = selectedImage.toString();
 
             // Database Query
             Executor myExecutor = Executors.newSingleThreadExecutor();
@@ -162,9 +161,6 @@ public class MainActivity extends AppCompatActivity implements
         } else if(requestCode == UPDATE_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) { {
                 // Object and Uri are retrieved from NewCocktailActivity
                 cocktail = (Cocktail) data.getSerializableExtra("cocktail");
-                Uri selectedImage = Uri.parse(data.getStringExtra("image"));
-                cocktail.imagePath = selectedImage.toString();
-
 
                 // Database Query
                 Executor myExecutor = Executors.newSingleThreadExecutor();

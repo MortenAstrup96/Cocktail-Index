@@ -51,8 +51,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     // Initialises the string list
     public FavouriteAdapter(List<Cocktail> cocktailList, OnItemClickListener itemClickListener, Context context) {
         this.cocktailList = cocktailList;
-
-
         this.itemClickListener = itemClickListener;
         this.context = context;
 
@@ -74,7 +72,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     @Override
     @NonNull
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Log.d("PositionHolder", "Position: " + position);
         String displayIngredients = "";
         Cocktail cocktail = cocktailList.get(position);
         String name = cocktail.name;
@@ -83,22 +80,18 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         // Get image from internal storage
         holder.name.setText(name);
 
-        if(position >= 0) {
-            cocktail = cocktailList.get(position);
-            if(cocktail.ingredients.size() > 0) {
-                displayIngredients = displayIngredients + cocktail.ingredients.get(0).getIngredient();
-                for(int i = 1; i < cocktail.ingredients.size(); i++) {
-                    displayIngredients = displayIngredients + ", " + cocktail.ingredients.get(i).getIngredient();
-                }
+        if(cocktail.ingredients.size() > 0) {
+            displayIngredients = displayIngredients + cocktail.ingredients.get(0).getIngredient();
+            for(int i = 1; i < cocktail.ingredients.size(); i++) {
+                displayIngredients = displayIngredients + ", " + cocktail.ingredients.get(i).getIngredient();
             }
 
             holder.ingredientsView.setText(displayIngredients);
         }
 
-
-
+        Uri uri = Uri.parse(cocktail.imagePath.get(0));
         Glide.with(context)
-                .load(Uri.parse(cocktail.imagePath))
+                .load(uri)
                 .into(holder.imageView);
     }
 

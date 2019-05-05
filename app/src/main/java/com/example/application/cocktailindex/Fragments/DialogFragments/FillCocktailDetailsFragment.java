@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,7 +153,7 @@ public class FillCocktailDetailsFragment extends Fragment {
         imagePaths = new ArrayList<>();
 
         try {
-            imagePaths.add(Uri.parse(temporaryCocktail.imagePath));
+            imagePaths.add(Uri.parse(temporaryCocktail.imagePath.get(0)));
         } catch (NullPointerException e) {
 
         }
@@ -266,6 +267,11 @@ public class FillCocktailDetailsFragment extends Fragment {
         for(Ingredient i : ingredients) {
             i.setCocktailIdFk(temporaryCocktail.id);
         }
+        temporaryCocktail.imagePath = new ArrayList<>();
+        for(Uri uri : imagePaths) {
+            temporaryCocktail.imagePath.add(uri.toString());
+        }
+
     }
 
     private void createNewCocktailFromInformation() {
@@ -283,7 +289,7 @@ public class FillCocktailDetailsFragment extends Fragment {
                 editName.getText().toString(),
                 editRecipe.getText().toString(),
                 editComments.getText().toString(),
-                null,
+                new ArrayList<String>(),
                 favourite,
                 idea
         );
@@ -291,6 +297,10 @@ public class FillCocktailDetailsFragment extends Fragment {
         temporaryCocktail.setIngredients(ingredients);
         for(Ingredient i : ingredients) {
             i.setCocktailIdFk(temporaryCocktail.id);
+        }
+
+        for(Uri uri : imagePaths) {
+            temporaryCocktail.imagePath.add(uri.toString());
         }
     }
 

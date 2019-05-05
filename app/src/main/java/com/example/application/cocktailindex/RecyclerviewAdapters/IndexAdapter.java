@@ -88,7 +88,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         holder.name.setText(name);
 
         Glide.with(context)
-                .load(Uri.parse(cocktail.imagePath))
+                .load(Uri.parse(cocktail.imagePath.get(0)))
                 .override(200, 200)
                 .centerInside()
                 .apply(RequestOptions.circleCropTransform())

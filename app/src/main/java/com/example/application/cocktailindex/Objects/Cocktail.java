@@ -5,7 +5,10 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
+
+import com.example.application.cocktailindex.Utility.TypeConverter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,8 +33,10 @@ public class Cocktail implements Serializable, Comparable {
     @ColumnInfo(name = "comments")
     public String comments;
 
+
     @ColumnInfo(name = "imagePath")
-    public String imagePath;
+    @TypeConverters(TypeConverter.class)
+    public ArrayList<String> imagePath;
 
     @ColumnInfo(name = "favourite")
     public boolean favourite;
@@ -40,7 +45,7 @@ public class Cocktail implements Serializable, Comparable {
     public boolean idea;
 
 
-    public Cocktail(String name, String recipe, String comments, String imagePath, boolean favourite, boolean idea) {
+    public Cocktail(String name, String recipe, String comments, ArrayList<String> imagePath, boolean favourite, boolean idea) {
         id = UUID.randomUUID().hashCode();
         this.name = name;
         this.recipe = recipe;

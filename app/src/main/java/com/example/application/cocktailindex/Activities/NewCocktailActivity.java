@@ -82,7 +82,6 @@ public class NewCocktailActivity extends AppCompatActivity implements
 
         try {
             temporaryCocktail = (Cocktail) data.getSerializable("cocktail");
-            selectedImage = Uri.parse(temporaryCocktail.imagePath);
         } catch (NullPointerException e) {
 
         }
@@ -199,7 +198,6 @@ public class NewCocktailActivity extends AppCompatActivity implements
                 temporaryCocktail = fragmentName.getTemporaryCocktail();
                 Intent intent = new Intent();
                 intent.putExtra("cocktail", temporaryCocktail);
-                intent.putExtra("image", getSelectedImage().toString());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
                 break;

@@ -77,8 +77,7 @@ public class IndexFragment extends Fragment {
         savedCocktailList.addAll(cocktailSingleton.getCocktailList());
 
         // Setup of database
-        db = Room.databaseBuilder(getContext(),
-                AppDatabase.class, "database-name").build();
+        db = AppDatabase.getDatabase(view.getContext());
 
 
         // Item click listener

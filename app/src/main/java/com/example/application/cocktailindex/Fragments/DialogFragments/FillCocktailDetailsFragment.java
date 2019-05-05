@@ -151,12 +151,12 @@ public class FillCocktailDetailsFragment extends Fragment {
 
         // Image Adapter
         imagePaths = new ArrayList<>();
-
-        try {
-            imagePaths.add(Uri.parse(temporaryCocktail.imagePath.get(0)));
-        } catch (NullPointerException e) {
-
+        if(temporaryCocktail.imagePath != null) {
+            for(String s : temporaryCocktail.imagePath) {
+                imagePaths.add(Uri.parse(s));
+            }
         }
+
 
 
         imageRecyclerView = view.findViewById(R.id.addCocktail_recyclerview_images);

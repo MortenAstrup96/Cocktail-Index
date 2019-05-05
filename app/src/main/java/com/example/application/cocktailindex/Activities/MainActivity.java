@@ -86,8 +86,7 @@ public class MainActivity extends AppCompatActivity implements
         SetupViews();   // FAB & BNV
 
         // Setup of database
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "database-name").build();
+        db = AppDatabase.getDatabase(this);
 
         // Request permission to read storage before loading images
         if (ContextCompat.checkSelfPermission(this,

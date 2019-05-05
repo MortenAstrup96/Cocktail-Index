@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
@@ -77,6 +78,13 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         String name = cocktail.name;
         //String ingredients = cocktail.ingredients;
 
+        Glide.with(context)
+                .load(Uri.parse(cocktail.imagePath.get(0)))
+                .override(1200, 1200)
+                .centerCrop()
+                .apply(RequestOptions.centerCropTransform())
+                .into(holder.imageView);
+
         // Get image from internal storage
         holder.name.setText(name);
 
@@ -89,10 +97,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
             holder.ingredientsView.setText(displayIngredients);
         }
 
-        Uri uri = Uri.parse(cocktail.imagePath.get(0));
-        Glide.with(context)
-                .load(uri)
-                .into(holder.imageView);
     }
 
     @Override

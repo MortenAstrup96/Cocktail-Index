@@ -63,7 +63,7 @@ public class ImageAddAdapter extends RecyclerView.Adapter<ImageAddAdapter.MyView
         if(uri != null) {
             Glide.with(context)
                     .load(uri)
-                    .override(200, 200)
+                    .override(1200, 1200)
                     .centerCrop()
                     .into(holder.imageView);
         } else {

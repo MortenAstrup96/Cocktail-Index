@@ -35,9 +35,6 @@ public class FavoriteFragment extends Fragment {
 
     private OnItemClickListener listener;
 
-    // Field variables for RecyclerView - The taskList will be shown in RecyclerView
-    private List<Cocktail> cocktailList;
-    private List<Cocktail> favouriteList;
     private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
 
     private FavouriteAdapter mAdapter;
@@ -54,7 +51,6 @@ public class FavoriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite,container,false);
-        favouriteList = new ArrayList<>();
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -66,23 +62,11 @@ public class FavoriteFragment extends Fragment {
                 Intent intent = new Intent(activity, CocktailDetailsActivity.class);
                 Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                         view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
-                intent.putExtra("cocktail", favouriteList.get(position)); // TODO: Switch to using ID instead later
+                intent.putExtra("cocktail", cocktailSingleton.getFavourites().get(position));
                 ActivityCompat.startActivity(activity, intent, options);
             }
         };
 
-        try {
-            cocktailList = CocktailSingleton.getInstance().getCocktailList();
-        } catch (NullPointerException e) {
-            Log.e("ApplicationError", "Nullpointer " + e);
-        }
-
-        for(Cocktail cocktail : cocktailList) {
-            if(cocktail.favourite) {
-                favouriteList.add(cocktail);
-            }
-        }
-        java.util.Collections.sort(favouriteList);
 
 
 
@@ -99,7 +83,7 @@ public class FavoriteFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new FavouriteAdapter(favouriteList, listener, getContext());
+        mAdapter = new FavouriteAdapter(cocktailSingleton.getFavourites(), listener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -140,17 +124,17 @@ public class FavoriteFragment extends Fragment {
         Cocktail cocktail = cocktailSingleton.getCocktailList().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
-            ((MainActivity)getActivity()).updateSpecificCocktail(cocktail);
+            ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
 
         } else if(name.equals("Delete Cocktail")) {
-            tempDeletion = cocktailList.get(itemPosition);
-            cocktailList.remove(itemPosition);
+            tempDeletion = cocktailSingleton.getCocktailList().get(itemPosition);
+            cocktailSingleton.getCocktailList().remove(itemPosition);
             mAdapter.notifyDataSetChanged();
             Snackbar.make(getView(), "Cocktail Deleted", Snackbar.LENGTH_LONG)
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            cocktailList.add(tempDeletion);
+                            cocktailSingleton.getCocktailList().add(tempDeletion);
                             mAdapter.notifyDataSetChanged();
                         }
                     })

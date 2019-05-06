@@ -61,8 +61,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         this.context = context;
 
         // Setup of database
-        db = Room.databaseBuilder(context,
-                AppDatabase.class, "database-name").build();
+        db = AppDatabase.getDatabase(context);
     }
 
     @Override
@@ -155,17 +154,10 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if(getAdapterPosition() >= 0) {
+                        final Cocktail cocktail = cocktailList.get(getAdapterPosition());
+                        cocktail.favourite = b;
 
-                        cocktailList.get(getAdapterPosition()).favourite = b; // Updates local
-
-                        // Updates favourites in db
-                        Executor myExecutor = Executors.newSingleThreadExecutor();
-                        myExecutor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                db.cocktailDBDao().updateOne(cocktailList.get(getAdapterPosition()));
-                            }
-                        });
+                        CocktailSingleton.getInstance().setFavourite(cocktail, db);
                     }
                 }
             });

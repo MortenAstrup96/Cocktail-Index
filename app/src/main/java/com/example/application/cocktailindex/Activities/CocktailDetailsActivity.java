@@ -24,23 +24,17 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.application.cocktailindex.CustomPagerAdapter;
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientDetailsAdapter;
+import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.zip.Inflater;
 
 public class CocktailDetailsActivity extends AppCompatActivity {
 
@@ -58,6 +52,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
     private IngredientDetailsAdapter mAdapter;
 
     private AppDatabase db;
+    private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +61,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         setStatusBarTranslucent(true);
 
 
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "database-name").build();
+        db = AppDatabase.getDatabase(this);
 
         // Gets the specific cocktail
         Intent data = getIntent();
@@ -101,15 +95,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 shortVibration();
                 cocktail.favourite = b;
-
-                // Updates favourites in db
-                Executor myExecutor = Executors.newSingleThreadExecutor();
-                myExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        db.cocktailDBDao().updateOne(cocktail);
-                    }
-                });
+                CocktailSingleton.getInstance().setFavourite(cocktail, db);
             }
         });
 
@@ -169,22 +155,8 @@ public class CocktailDetailsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == UPDATE_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {
-            // Object and Uri are retrieved from NewCocktailActivity
             cocktail = (Cocktail) data.getSerializableExtra("cocktail");
-
-            // Will convert String[] to a listview and add all to cocktail image path arraylist
-            //cocktail.imagePath.addAll(Arrays.asList(data.getStringArrayExtra("image")));
-
-
-            // Database Query
-            Executor myExecutor = Executors.newSingleThreadExecutor();
-            myExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    db.ingredientDBDao().insertOne(cocktail.ingredients);
-                    db.cocktailDBDao().updateOne(cocktail);
-                }
-            });
+            cocktailSingleton.updateCocktail(cocktail, db);
             setupViews();
         }
     }

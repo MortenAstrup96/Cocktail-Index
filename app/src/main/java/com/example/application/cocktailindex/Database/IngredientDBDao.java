@@ -28,7 +28,7 @@ public interface IngredientDBDao {
     @Insert(onConflict = REPLACE)
     void insertOne(List<Ingredient> ingredients);
 
-    @Update
+    @Update(onConflict = REPLACE)
     void updateOne(List<Ingredient> ingredients);
 
     @Delete

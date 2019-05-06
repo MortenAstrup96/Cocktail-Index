@@ -39,6 +39,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -55,23 +57,15 @@ public class MainActivity extends AppCompatActivity implements
     // On Activity result codes
     public static final int NEW_COCKTAIL_RECIPE = 1;   // Created new cocktail from NewCocktailActivity
 
-    // Navigation in the bottom
-    private BottomNavigationView bottomNavigationView;
+    private CocktailSingleton cocktailSingleton;
+    private AppDatabase db;
 
     // Fragments
     private IndexFragment fragmentIndex;
     private FavoriteFragment fragmentFavorite;
     private IdeaFragment fragmentIdea;
 
-    // Searching and Cocktails references
-    private SearchView searchView;
-
     private FloatingActionButton fab;
-
-    private CocktailSingleton cocktailSingleton;
-
-    // Database
-    private AppDatabase db;
 
 
     @Override
@@ -83,9 +77,7 @@ public class MainActivity extends AppCompatActivity implements
 
         cocktailSingleton = CocktailSingleton.getInstance();
 
-        SetupViews();   // FAB & BNV
-
-        // Setup of database
+        SetupViews();
         db = AppDatabase.getDatabase(this);
 
         // Request permission to read storage before loading images
@@ -97,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     3);
         } else {
-            loadData();
+            updateFromDatabase();
         }
 
         // Instantiates the 3 base fragments (Index, Favourite & Idea)
@@ -105,24 +97,8 @@ public class MainActivity extends AppCompatActivity implements
         fragmentFavorite = new FavoriteFragment();
         fragmentIdea = new IdeaFragment();
 
-        java.util.Collections.sort(cocktailSingleton.getCocktailList());
-        // Sets starting fragment TODO: Have user decide the starting fragment, or possibly start at Favourites
         setCurrentFragment(fragmentIndex);
-
     }
-
-    /**
-     * Loads all data from database and adds to the listviews
-     */
-    private void loadData() {
-        updateFromDatabase();
-    }
-
-    public void setFabVisibility(boolean isVisible) {
-        if(isVisible) fab.show();
-        else fab.hide();
-    }
-
 
     /**
      * OnActivityResult has 1 type of result; New Cocktail Recipe.
@@ -141,50 +117,69 @@ public class MainActivity extends AppCompatActivity implements
         //Detects request codes
         if (requestCode == NEW_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {
 
-            // Object and Uri are retrieved from NewCocktailActivity
+            // Cocktail is retrieved from NewCocktailActivity
             cocktail = (Cocktail) data.getSerializableExtra("cocktail");
+            cocktailSingleton.addCocktail(cocktail, db);
 
-            // Database Query
-            Executor myExecutor = Executors.newSingleThreadExecutor();
-            myExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    db.cocktailDBDao().insertOne(cocktail);
-                    db.ingredientDBDao().insertOne(cocktail.ingredients);
-                }
-            });
-
-            cocktailSingleton.getCocktailList().add(cocktail);
             updateFragmentLists();
 
-        } else if(requestCode == UPDATE_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) { {
-                // Object and Uri are retrieved from NewCocktailActivity
-                cocktail = (Cocktail) data.getSerializableExtra("cocktail");
+        } else if(requestCode == UPDATE_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {             // Object and Uri are retrieved from NewCocktailActivity
+            cocktail = (Cocktail) data.getSerializableExtra("cocktail");
 
-                // Database Query
-                Executor myExecutor = Executors.newSingleThreadExecutor();
-                myExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        db.ingredientDBDao().insertOne(cocktail.ingredients);
-                        db.cocktailDBDao().updateOne(cocktail);
-
-                    }
-                });
-            }
+            cocktailSingleton.updateCocktail(cocktail, db);
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateFromDatabase();
-        updateFragmentLists();
+    public void updateSpecificCocktailForResult(Cocktail cocktail) {
+        Intent intent = new Intent(this, NewCocktailActivity.class);
+        intent.putExtra("cocktail", cocktail);
+        startActivityForResult(intent, UPDATE_COCKTAIL_RECIPE);
     }
 
     /**
-     * Might be a waste to update from DB every time mainactivity resumes !!
+     * Sets up the different views when creating the activity
+     *
+     *  - Bottom Navigation Bar
+     *  - Floating Action Button
      */
+    private void SetupViews() {
+        // Navigation in the bottom
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation_view);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.getMenu().getItem(1).setChecked(true);
+
+        // Setup of FAB
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NewCocktailActivity.class);
+                startActivityForResult(intent, NEW_COCKTAIL_RECIPE);
+            }
+        });
+    }
+
+    /**
+     * Switches the current fragment with the parameter fragment
+     * @param fragment  The fragment to be switched to
+     */
+    private void setCurrentFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    public void setFabVisibility(boolean isVisible) {
+        if(isVisible) fab.show();
+        else fab.hide();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateFragmentLists();
+    }
+
     private void updateFromDatabase() {
         // Loads all images into the two lists from database
         Executor myExecutor = Executors.newSingleThreadExecutor();
@@ -205,11 +200,6 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    public void updateSpecificCocktail(Cocktail cocktail) {
-        Intent intent = new Intent(this, NewCocktailActivity.class);
-        intent.putExtra("cocktail", cocktail);
-        startActivityForResult(intent, UPDATE_COCKTAIL_RECIPE);
-    }
 
     /**
      * Attempts to update all the fragment lists, some will be null
@@ -218,43 +208,6 @@ public class MainActivity extends AppCompatActivity implements
         if(fragmentFavorite != null) fragmentFavorite.updateList();
         if(fragmentIndex != null) fragmentIndex.updateList();
         if(fragmentIdea != null) /*fragmentIdea.updateList()*/;
-    }
-
-
-    /**
-     * Switches the current fragment with the parameter fragment
-     * @param fragment  The fragment to be switched to
-     */
-    private void setCurrentFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
-    }
-
-    /**
-     * Sets up the different views when creating the activity
-     *
-     *  - Bottom Navigation Bar
-     *  - Floating Action Button
-     */
-    private void SetupViews() {
-        // Setup of BottomNavigationView
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation_view);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.getMenu().getItem(1).setChecked(true);
-
-
-        // Setup of FAB
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewCocktailActivity.class);
-                startActivityForResult(intent, NEW_COCKTAIL_RECIPE);
-            }
-        });
-
     }
 
     /**
@@ -293,7 +246,8 @@ public class MainActivity extends AppCompatActivity implements
 
         // https://stackoverflow.com/questions/27378981/how-to-use-searchview-in-toolbar-android <--- Search view
         final SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) searchItem.getActionView();
+        // Searching and Cocktails references
+        SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

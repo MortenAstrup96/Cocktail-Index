@@ -1,13 +1,10 @@
 package com.example.application.cocktailindex.Fragments;
 
 import android.app.Activity;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -20,11 +17,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.example.application.cocktailindex.Activities.CocktailDetailsActivity;
 import com.example.application.cocktailindex.Activities.MainActivity;
-import com.example.application.cocktailindex.Activities.NewCocktailActivity;
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
@@ -33,14 +28,10 @@ import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IndexAdapter;
 import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import static com.example.application.cocktailindex.Activities.CocktailDetailsActivity.UPDATE_COCKTAIL_RECIPE;
 
 
 public class IndexFragment extends Fragment {
@@ -158,7 +149,7 @@ public class IndexFragment extends Fragment {
         Cocktail cocktail = cocktailSingleton.getCocktailList().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
-            ((MainActivity)getActivity()).updateSpecificCocktail(cocktail);
+            ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
 
         } else if(name.equals("Delete Cocktail")) {
             tempDeletion = cocktailSingleton.getCocktailList().get(itemPosition);
@@ -244,6 +235,7 @@ public class IndexFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
 
     public void updateList() {
         if(mAdapter != null) mAdapter.notifyDataSetChanged();

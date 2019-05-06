@@ -56,9 +56,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         this.context = context;
 
         // Setup of database
-        db = Room.databaseBuilder(context,
-                AppDatabase.class, "database-name").build();
-
+        db = AppDatabase.getDatabase(context);
     }
 
     @Override
@@ -146,7 +144,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
                     return false;
                 }
             });
-
             /**
              * Switches checkbox from red to black in (checked/unchecked mode)
              */
@@ -154,17 +151,10 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    Cocktail cocktail = cocktailList.get(getAdapterPosition());
+                    final Cocktail cocktail = cocktailList.get(getAdapterPosition());
                     cocktail.favourite = b;
 
-                    // Updates favourites in db
-                    Executor myExecutor = Executors.newSingleThreadExecutor();
-                    myExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.cocktailDBDao().updateOne(cocktailList.get(getAdapterPosition()));
-                        }
-                    });
+                    CocktailSingleton.getInstance().setFavourite(cocktail, db);
                 }
             });
 
@@ -174,7 +164,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
                     shortVibration();
                 }
             });
-
         }
 
         /**

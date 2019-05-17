@@ -55,7 +55,6 @@ public class NewCocktailActivity extends AppCompatActivity implements
         setupFragments();
         if(getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         Bundle data = getIntent().getExtras();
 
         if(data != null) temporaryCocktail = (Cocktail) data.getSerializable("cocktail");

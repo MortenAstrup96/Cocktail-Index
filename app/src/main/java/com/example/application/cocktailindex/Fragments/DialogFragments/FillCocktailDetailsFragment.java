@@ -104,7 +104,8 @@ public class FillCocktailDetailsFragment extends Fragment {
         setupListeners();
 
         if(temporaryCocktail != null) fillEditableText();
-        editName.requestFocus();
+
+        //editName.requestFocus();
 
 
         return view;
@@ -194,10 +195,7 @@ public class FillCocktailDetailsFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if(b) {
-                    Toast.makeText(getActivity(), "" + constraintIngredients.getTop(),
-                            Toast.LENGTH_LONG).show();
                     scrollView.smoothScrollTo(0, constraintIngredients.getTop());
-
                 }
             }
         });

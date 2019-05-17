@@ -4,9 +4,9 @@
         <shape
             android:innerRadius="0dp"
             android:shape="ring"
-            android:thickness="8dp"
+            android:thickness="6dp"
             android:useLevel="false">
-            <solid android:color="@color/colorAccent"/>
+            <solid android:color="@color/cardview_light_background"/>
         </shape>
     </item>
 </layer-list>

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,8 +48,6 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         setStatusBarTranslucent(true);
 
 
-
-
         db = AppDatabase.getDatabase(this);
 
         // Gets the specific cocktail
@@ -61,6 +60,12 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         ViewPager pager = findViewById(R.id.photos_viewpager);
         CustomPagerAdapter pagerAdapter = new CustomPagerAdapter(getApplicationContext(), cocktail.imagePath);
         pager.setAdapter(pagerAdapter);
+        if(pagerAdapter.getCount() > 1) {
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
+            tabLayout.setupWithViewPager(pager, true);
+            tabLayout.setClickable(false);
+        }
+
 
     }
 

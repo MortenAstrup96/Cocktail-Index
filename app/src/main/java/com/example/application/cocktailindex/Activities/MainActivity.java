@@ -3,11 +3,9 @@ package com.example.application.cocktailindex.Activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.SearchManager;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -37,10 +35,7 @@ import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -75,22 +70,12 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         cocktailSingleton = CocktailSingleton.getInstance();
 
         SetupViews();
         db = AppDatabase.getDatabase(this);
 
-        // Request permission to read storage before loading images
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    3);
-        } else {
-            updateFromDatabase();
-        }
 
         // Instantiates the 3 base fragments (Index, Favourite & Idea)
         fragmentIndex = new IndexFragment();
@@ -99,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements
 
         setCurrentFragment(fragmentIndex);
     }
+
 
     /**
      * OnActivityResult has 1 type of result; New Cocktail Recipe.
@@ -178,26 +164,6 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         updateFragmentLists();
-    }
-
-    private void updateFromDatabase() {
-        // Loads all images into the two lists from database
-        Executor myExecutor = Executors.newSingleThreadExecutor();
-        myExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                cocktailSingleton.setCocktailList(db.cocktailDBDao().getAll());
-
-                try {
-                    for(Cocktail c : cocktailSingleton.getCocktailList()) {
-                        c.setIngredients((ArrayList<Ingredient>)db.ingredientDBDao().findById(c.id));
-                    }
-                } catch (ConcurrentModificationException e) {
-                    Log.e("Concurrent", "Concurrent Error!!");
-                }
-
-            }
-        });
     }
 
 
@@ -319,5 +285,4 @@ public class MainActivity extends AppCompatActivity implements
     public void ideaFragmentInteractionListener(String task) {
 
     }
-
 }

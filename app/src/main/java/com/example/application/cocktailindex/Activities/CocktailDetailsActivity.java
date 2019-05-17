@@ -1,10 +1,8 @@
 package com.example.application.cocktailindex.Activities;
 
 import android.app.Activity;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -15,9 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -49,6 +45,8 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cocktail_details);
         setStatusBarTranslucent(true);
+
+
 
 
         db = AppDatabase.getDatabase(this);
@@ -106,6 +104,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
 
 
         // Ternary operators - If empty = INVISIBLE else VISIBLE
+
         iconIngredients.setVisibility(cocktail.ingredients.size() == 0 ? View.INVISIBLE : View.VISIBLE);
         iconRecipe.setVisibility(cocktail.recipe.isEmpty() ? View.INVISIBLE : View.VISIBLE);
         iconComments.setVisibility(cocktail.comments.isEmpty() ? View.INVISIBLE : View.VISIBLE);

@@ -41,16 +41,6 @@ public class CocktailDetailsActivity extends AppCompatActivity {
     public static final int UPDATE_COCKTAIL_RECIPE = 2;
     private Cocktail cocktail;
 
-    private ImageView imageView;
-
-    private ImageView iconIngredients;
-    private ImageView iconRecipe;
-    private ImageView iconComments;
-
-    private Button buttonEdit;
-
-    private IngredientDetailsAdapter mAdapter;
-
     private AppDatabase db;
     private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
 
@@ -86,7 +76,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.details_section_ingredients);
         TextView recipe = findViewById(R.id.details_section_recipe);
         TextView comments = findViewById(R.id.details_section_comments);
-        buttonEdit = findViewById(R.id.cocktaildetails_button_edit);
+        Button buttonEdit = findViewById(R.id.cocktaildetails_button_edit);
         CheckBox favourite = findViewById(R.id.details_section_image_favourite);
 
         favourite.setChecked(cocktail.favourite);
@@ -94,14 +84,14 @@ public class CocktailDetailsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 shortVibration();
-                cocktail.favourite = b;
-                CocktailSingleton.getInstance().setFavourite(cocktail, db);
+
+                cocktailSingleton.setFavouriteById(cocktail.id, db, b);
             }
         });
 
-        iconIngredients = findViewById(R.id.details_section_ingredients_icon);
-        iconRecipe = findViewById(R.id.details_section_recipe_icon);
-        iconComments = findViewById(R.id.details_section_comments_icon);
+        ImageView iconIngredients = findViewById(R.id.details_section_ingredients_icon);
+        ImageView iconRecipe = findViewById(R.id.details_section_recipe_icon);
+        ImageView iconComments = findViewById(R.id.details_section_comments_icon);
 
         header.setText(cocktail.name);
         recipe.setText(cocktail.recipe);
@@ -111,7 +101,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new IngredientDetailsAdapter((ArrayList<Ingredient>)cocktail.ingredients, this);
+        IngredientDetailsAdapter mAdapter = new IngredientDetailsAdapter((ArrayList<Ingredient>) cocktail.ingredients, this);
         recyclerView.setAdapter(mAdapter);
 
 
@@ -125,6 +115,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                shortVibration();
                 finish();
                 overridePendingTransition(0, R.anim.fade_out);
             }

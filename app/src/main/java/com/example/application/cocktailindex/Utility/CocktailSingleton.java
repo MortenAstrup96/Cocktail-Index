@@ -53,6 +53,15 @@ public class CocktailSingleton {
         });
     }
 
+    public void setFavouriteById(int id, final AppDatabase db, boolean b) {
+        for(Cocktail c : cocktailList) {
+            if(c.id == id) {
+                c.favourite = b;
+                setFavourite(c, db);
+            }
+        }
+    }
+
     public List<Cocktail> getIdeas() {
         return ideas;
     }
@@ -102,4 +111,5 @@ public class CocktailSingleton {
 
 
     }
+
 }

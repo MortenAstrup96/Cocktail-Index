@@ -201,16 +201,16 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/selector_fav"
                 android:backgroundTint="@android:color/background_light"
                 android:button="@android:color/background_light"
                 android:buttonTint="@android:color/background_light"
-                app:layout_constraintEnd_toStartOf="@+id/index_section_favourite"
+                app:layout_constraintEnd_toStartOf="@+id/index_section_spinner"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/index_section_favourite"
+                android:id="@+id/index_section_spinner"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="16dp"

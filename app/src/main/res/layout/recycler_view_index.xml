@@ -32,18 +32,19 @@
 
         <TextView
             android:id="@+id/index_section_header"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:text="Missing name"
             android:ellipsize="end"
-            android:textColor="@color/colorGrey"
             android:maxLength="20"
+            android:text="Missing name"
+            android:textColor="@color/colorGrey"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/index_section_favourite"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/index_section_image_cocktail"
             app:layout_constraintTop_toTopOf="@+id/index_section_image_cocktail" />
 
@@ -62,9 +63,9 @@
 
         <TextView
             android:id="@+id/index_section_details"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:singleLine="true"
             android:textSize="14sp"

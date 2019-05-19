@@ -13,7 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,6 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.application.cocktailindex.CustomPagerAdapter;
 import com.example.application.cocktailindex.Database.AppDatabase;
@@ -131,6 +134,28 @@ public class CocktailDetailsActivity extends AppCompatActivity {
                 Intent intent = new Intent(CocktailDetailsActivity.this, NewCocktailActivity.class);
                 intent.putExtra("cocktail", cocktail);
                 startActivityForResult(intent, UPDATE_COCKTAIL_RECIPE);
+            }
+        });
+
+        final ImageButton spinnerButton = findViewById(R.id.index_section_spinner);
+        spinnerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(CocktailDetailsActivity.this, spinnerButton);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater()
+                        .inflate(R.menu.menu_details, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        return true;
+                    }
+                });
+
+                popup.show(); //showing popup menu
             }
         });
     }

@@ -8,14 +8,20 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -29,6 +35,7 @@ import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.ImageAddAdapter;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
+import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +58,7 @@ public class FillCocktailDetailsFragment extends Fragment {
 
     private IngredientsAddAdapter mAdapter;
     private ImageAddAdapter imageAddAdapter;
-    private EditText editIngredients;
+    private AutoCompleteTextView editIngredients;
     private EditText editAmount;
     private EditText editName;
     private EditText editRecipe;
@@ -76,6 +83,7 @@ public class FillCocktailDetailsFragment extends Fragment {
     private ArrayList<Uri> imagePaths;
     private RecyclerView recyclerView;
     private RecyclerView imageRecyclerView;
+    private List<String> array = new ArrayList<>();
 
     private Spinner measureTypeSpinner;
 
@@ -107,7 +115,6 @@ public class FillCocktailDetailsFragment extends Fragment {
 
         //editName.requestFocus();
 
-
         return view;
     }
 
@@ -121,8 +128,6 @@ public class FillCocktailDetailsFragment extends Fragment {
             ingredients.add(ingredient);
         }
         mAdapter.notifyDataSetChanged();
-
-
     }
 
 
@@ -138,16 +143,70 @@ public class FillCocktailDetailsFragment extends Fragment {
 
         /** Spinner setup here */
         measureTypeSpinner = view.findViewById(R.id.addCocktail_spinner);
-        List<String> array = new ArrayList<>();
-        array.add("oz.");
-        array.add("Dash");
-        array.add("Teaspoon");
-        array.add("Piece");
-        array.add("Cup");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, array);
+
+        final List<String> arraySingle = new ArrayList<>();
+        arraySingle.add("oz.");
+        arraySingle.add("dash");
+        arraySingle.add("teaspoon");
+        arraySingle.add("sprig");
+        arraySingle.add("leaf");
+        arraySingle.add("cup");
+        arraySingle.add("drop");
+        arraySingle.add("mL.");
+
+        final List<String> arrayPlural = new ArrayList<>();
+        arrayPlural.add("oz.");
+        arrayPlural.add("dashes");
+        arrayPlural.add("teaspoons");
+        arrayPlural.add("sprigs");
+        arrayPlural.add("leaves");
+        arrayPlural.add("cups");
+        arrayPlural.add("drops");
+        arrayPlural.add("mL.");
+
+        array.addAll(arraySingle);
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         measureTypeSpinner.setAdapter(adapter);
+
+        editAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Double amount = null;
+                try {
+                    amount = Double.valueOf(charSequence.toString());
+                } catch (NumberFormatException e) {
+
+                }
+
+                if(amount != null) {
+                    if(amount == 0 || amount > 1) {
+                        getArray().clear();
+                        getArray().addAll(arrayPlural);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        getArray().clear();
+                        getArray().addAll(arraySingle);
+                        adapter.notifyDataSetChanged();
+                    }
+                } else {
+                    getArray().clear();
+                    getArray().addAll(arraySingle);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
 
         // Image Adapter
@@ -167,6 +226,10 @@ public class FillCocktailDetailsFragment extends Fragment {
         imageAddAdapter= new ImageAddAdapter(imagePaths, getContext());
         imageRecyclerView.setAdapter(imageAddAdapter);
 
+    }
+
+    private List<String> getArray() {
+        return array;
     }
 
     private void setupListeners() {
@@ -191,12 +254,22 @@ public class FillCocktailDetailsFragment extends Fragment {
             }
         });
 
+
+        // Autocomplete
+        String[] ingredientsArray = CocktailSingleton.getInstance().getIngredientsArrayWithAmount();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (getContext(), android.R.layout.select_dialog_item, ingredientsArray);
+
+        editIngredients.setThreshold(1);//will start working from first character
+        editIngredients.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+
         editIngredients.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if(b) {
                     scrollView.smoothScrollTo(0, constraintIngredients.getTop());
                 }
+
             }
         });
 

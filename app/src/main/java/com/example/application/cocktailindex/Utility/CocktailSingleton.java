@@ -1,12 +1,20 @@
 package com.example.application.cocktailindex.Utility;
 
+import android.util.Log;
+
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
+import com.example.application.cocktailindex.Objects.Ingredient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class CocktailSingleton {
     private static final CocktailSingleton ourInstance = new CocktailSingleton();
@@ -17,14 +25,50 @@ public class CocktailSingleton {
     private List<Cocktail> cocktailList;
     private List<Cocktail> favourites;
     private List<Cocktail> ideas;
+    private List<Ingredient> ingredients;
+    private Map<String, Integer> ingredientMap;
 
     private CocktailSingleton() {
         cocktailList = new ArrayList<>();
         favourites = new ArrayList<>();
+        ingredients = new ArrayList<>();
+        ingredientMap = new HashMap<>();
     }
 
     public void setCocktailList(List<Cocktail> cocktailList) {
         this.cocktailList = cocktailList;
+    }
+
+    public void setIngredientList(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+        for (Ingredient i : ingredients) {
+            if (ingredientMap.containsKey(i.getIngredient())) {
+                ingredientMap.put(i.getIngredient(), ingredientMap.get(i.getIngredient())+1);
+            } else {
+                ingredientMap.put(i.getIngredient(), 1);
+            }
+        }
+
+        for(String key : ingredientMap.keySet())  {
+            Log.d("Ingredients", "Key: " + key);
+            Log.d("Ingredients", "Value: " + ingredientMap.get(key) + "\n");
+        }
+    }
+
+    public Map<String, Integer> getIngredientMap() {
+        return ingredientMap;
+    }
+
+    public String[] getIngredientsArrayWithAmount() {
+        String[] array = new String[ingredientMap.size()];
+
+        int count = 0;
+        for (String s : ingredientMap.keySet()) {
+            array[count] = s;
+            count++;
+        }
+
+        return array;
     }
 
     public List<Cocktail> getCocktailList() {

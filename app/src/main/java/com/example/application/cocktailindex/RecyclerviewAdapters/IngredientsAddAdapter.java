@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +41,7 @@ public class IngredientsAddAdapter extends RecyclerView.Adapter<IngredientsAddAd
     private ArrayList<Ingredient> ingredients;
 
 
+
     // Initialises the string list
     public IngredientsAddAdapter(ArrayList<Ingredient> ingredients, Context context) {
         this.ingredients = ingredients;
@@ -59,8 +61,8 @@ public class IngredientsAddAdapter extends RecyclerView.Adapter<IngredientsAddAd
 
     @Override
     @NonNull
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Ingredient ingredient = ingredients.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final Ingredient ingredient = ingredients.get(position);
         String name = ingredient.getIngredient();
         String amount = ingredient.getAmount();
         String measurement = ingredient.getMeasurement();
@@ -68,6 +70,16 @@ public class IngredientsAddAdapter extends RecyclerView.Adapter<IngredientsAddAd
         if(measurement.equals("Piece")) measurement = "";   // Piece means no text
         holder.name.setText(name);
         holder.amount.setText(amount + " " + measurement + " ");
+
+        holder.deleteIngredientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ingredients.remove(position);
+                notifyDataSetChanged();
+            }
+        });
+
+
     }
 
     @Override
@@ -82,11 +94,15 @@ public class IngredientsAddAdapter extends RecyclerView.Adapter<IngredientsAddAd
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView amount;
+        private ImageButton deleteIngredientButton;
 
         public MyViewHolder(final View view) {
             super(view);
             name = view.findViewById(R.id.recycler_view_addingredient_show_ingredient);
             amount = view.findViewById(R.id.recycler_view_addingredient_show_amount);
+            deleteIngredientButton = view.findViewById(R.id.recyclerview_addingredients_delete);
+
+
 
 
 

@@ -146,11 +146,12 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="height" value="12" />
-                            <entry key="outputName" value="ic_clear_black_24dp" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="height" value="603" />
+                            <entry key="outputName" value="ic_splash" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="D:\Programmer\Android\CocktailIndex\SVG Files\round-add_photo_alternate-24px.svg" />
-                            <entry key="width" value="12" />
+                            <entry key="sourceFile" value="D:\Programmer\Android\CocktailIndex\Illustrations\splash.svg" />
+                            <entry key="width" value="595" />
                           </map>
                         </option>
                       </PersistentState>

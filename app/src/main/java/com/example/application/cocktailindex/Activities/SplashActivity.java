@@ -1,6 +1,7 @@
 package com.example.application.cocktailindex.Activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
@@ -27,7 +29,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+
+
 
         db = AppDatabase.getDatabase(this);
 
@@ -44,10 +47,12 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    // TODO Create plan B if not loading !
     private class PreloadDatabase extends AsyncTask<Context, Void, String> {
         @Override
         protected String doInBackground(Context... contexts) {
             cocktailSingleton.setCocktailList(db.cocktailDBDao().getAll());
+            cocktailSingleton.setIngredientList(db.ingredientDBDao().getAll());
 
             try {
                 for(Cocktail c : cocktailSingleton.getCocktailList()) {
@@ -61,7 +66,8 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            finish();
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            overridePendingTransition(R.anim.fade_out, R.anim.fade_out);
         }
     }
 }

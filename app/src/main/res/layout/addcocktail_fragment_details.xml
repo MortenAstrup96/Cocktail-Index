@@ -202,17 +202,24 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:nextFocusRight="@id/addCocktail_edittext_quantity"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/addCocktail_edittext_ingredient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Ingredient"
+                        android:paddingStart="12dp"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="17dp"
                         android:inputType="textCapWords"
                         android:singleLine="true"
+                        android:maxEms="5"
+                        android:imeOptions="actionNext"
+
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

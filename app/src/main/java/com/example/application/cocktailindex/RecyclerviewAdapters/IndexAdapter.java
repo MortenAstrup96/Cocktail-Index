@@ -86,12 +86,22 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         // Get image from internal storage
         holder.name.setText(name);
 
-        Glide.with(context)
-                .load(Uri.parse(cocktail.imagePath.get(0)))
-                .override(1200, 1200)
-                .centerCrop()
-                .apply(RequestOptions.circleCropTransform())
-                .into(holder.imageView);
+        if(!cocktail.imagePath.isEmpty() && !cocktail.imagePath.get(0).isEmpty()) {
+            Glide.with(context)
+                    .load(Uri.parse(cocktail.imagePath.get(0)))
+                    .override(1200, 1200)
+                    .centerCrop()
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.imageView);
+        } else {
+            Glide.with(context)
+                    .load(R.drawable.ic_nopicture)
+                    .override(1200, 1200)
+                    .centerCrop()
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.imageView);
+        }
+
 
         checkBox.setChecked(cocktail.favourite);
 

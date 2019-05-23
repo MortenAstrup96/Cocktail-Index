@@ -34,6 +34,7 @@ public class CocktailSingleton {
     private CocktailSingleton() {
         cocktailList = new ArrayList<>();
         favourites = new ArrayList<>();
+        ideas = new ArrayList<>();
         ingredients = new ArrayList<>();
         ingredientMap = new HashMap<>();
     }
@@ -131,6 +132,14 @@ public class CocktailSingleton {
     }
 
     public List<Cocktail> getIdeas() {
+        ideas.clear();
+
+        for(Cocktail cocktail : cocktailList) {
+            if(cocktail.idea) {
+                ideas.add(cocktail);
+            }
+        }
+        java.util.Collections.sort(ideas);
         return ideas;
     }
 

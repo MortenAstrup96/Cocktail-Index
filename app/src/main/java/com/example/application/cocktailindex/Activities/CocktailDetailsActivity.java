@@ -138,7 +138,6 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shortVibration();
                 finish();
                 overridePendingTransition(0, R.anim.fade_out);
             }

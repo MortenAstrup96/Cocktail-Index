@@ -29,6 +29,10 @@
             android:label="About Application"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".Activities.IdeaActivity"
+            android:label="Idea"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Activities.CocktailDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

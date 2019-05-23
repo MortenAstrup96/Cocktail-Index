@@ -147,11 +147,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="603" />
-                            <entry key="outputName" value="ic_splash" />
+                            <entry key="height" value="300" />
+                            <entry key="outputName" value="ic_nopicture" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="D:\Programmer\Android\CocktailIndex\Illustrations\splash.svg" />
-                            <entry key="width" value="595" />
+                            <entry key="sourceFile" value="D:\Programmer\Android\CocktailIndex\Illustrations\NoPicture.svg" />
+                            <entry key="width" value="500" />
                           </map>
                         </option>
                       </PersistentState>

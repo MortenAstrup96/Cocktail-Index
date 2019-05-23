@@ -26,6 +26,7 @@ import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.OnItemLongClickListener;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.Utility.CocktailSingleton;
+import com.example.application.cocktailindex.Utility.ImageUtilities;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -49,6 +50,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
     private Context context;
 
     private CheckBox checkBox;
+    private ImageUtilities imageUtilities = ImageUtilities.getInstance();
 
     // Database
     private AppDatabase db;
@@ -86,21 +88,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         // Get image from internal storage
         holder.name.setText(name);
 
-        if(!cocktail.imagePath.isEmpty() && !cocktail.imagePath.get(0).isEmpty()) {
-            Glide.with(context)
-                    .load(Uri.parse(cocktail.imagePath.get(0)))
-                    .override(1200, 1200)
-                    .centerCrop()
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(holder.imageView);
-        } else {
-            Glide.with(context)
-                    .load(R.drawable.ic_nopicture)
-                    .override(1200, 1200)
-                    .centerCrop()
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(holder.imageView);
-        }
+        setImage(holder, cocktail);
 
 
         checkBox.setChecked(cocktail.favourite);
@@ -115,6 +103,25 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             }
 
             holder.ingredients.setText(displayIngredients);
+        }
+    }
+
+    private void setImage(MyViewHolder holder, Cocktail cocktail) {
+        if(imageUtilities.hasFunctionalImage(cocktail)) {
+            Glide.with(context)
+                    .load(Uri.parse(cocktail.imagePath.get(0)))
+                    .placeholder(R.drawable.ic_nopicture)
+                    .override(1200, 1200)
+                    .centerCrop()
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.imageView);
+        } else {
+            Glide.with(context)
+                    .load(R.drawable.ic_nopicture)
+                    .override(1200, 1200)
+                    .centerCrop()
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.imageView);
         }
     }
 

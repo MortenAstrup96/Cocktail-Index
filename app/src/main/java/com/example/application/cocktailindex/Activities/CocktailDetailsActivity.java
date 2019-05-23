@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.CustomPagerAdapter;
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
@@ -68,8 +70,15 @@ public class CocktailDetailsActivity extends AppCompatActivity {
             tabLayout.setupWithViewPager(pager, true);
             tabLayout.setClickable(false);
         }
-
-
+        if(pagerAdapter.getCount() == 0) {
+            Glide.with(getApplicationContext())
+                    .load(R.drawable.ic_nopicture)
+                    .centerCrop()
+                    .into(((ImageView)findViewById(R.id.details_section_imageview_placeholder)));
+        } else {
+            Glide.with(getApplicationContext())
+                    .clear(((ImageView)findViewById(R.id.details_section_imageview_placeholder)));
+        }
     }
 
 

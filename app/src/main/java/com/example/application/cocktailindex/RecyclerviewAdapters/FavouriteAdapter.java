@@ -26,6 +26,7 @@ import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.Utility.CocktailSingleton;
+import com.example.application.cocktailindex.Utility.ImageUtilities;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -48,6 +49,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
     // Database
     private AppDatabase db;
+    private ImageUtilities imageUtilities = ImageUtilities.getInstance();
 
     // Initialises the string list
     public FavouriteAdapter(List<Cocktail> cocktailList, OnItemClickListener itemClickListener, Context context) {
@@ -68,6 +70,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         return new MyViewHolder(itemView, itemClickListener);
     }
 
+
     @Override
     @NonNull
     public void onBindViewHolder(MyViewHolder holder, int position) {
@@ -76,12 +79,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         String name = cocktail.name;
         //String ingredients = cocktail.ingredients;
 
-        Glide.with(context)
-                .load(Uri.parse(cocktail.imagePath.get(0)))
-                .override(1200, 1200)
-                .centerCrop()
-                .apply(RequestOptions.centerCropTransform())
-                .into(holder.imageView);
+        setImage(holder, cocktail);
 
         // Get image from internal storage
         holder.name.setText(name);
@@ -95,6 +93,23 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
             holder.ingredientsView.setText(displayIngredients);
         }
 
+    }
+
+    private void setImage(MyViewHolder holder, Cocktail cocktail) {
+        if(imageUtilities.hasFunctionalImage(cocktail)) {
+            Glide.with(context)
+                    .load(Uri.parse(cocktail.imagePath.get(0)))
+                    .override(1200, 1200)
+                    .centerCrop()
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(holder.imageView);
+        } else {
+            Glide.with(context)
+                    .load(R.drawable.ic_nopicture)
+                    .centerCrop()
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(holder.imageView);
+        }
     }
 
     @Override

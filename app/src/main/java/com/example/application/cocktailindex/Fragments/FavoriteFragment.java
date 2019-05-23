@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.example.application.cocktailindex.Activities.CocktailDetailsActivity;
 import com.example.application.cocktailindex.Activities.MainActivity;
+import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
 import com.example.application.cocktailindex.OnItemClickListener;
@@ -121,20 +122,21 @@ public class FavoriteFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
         int itemPosition = mAdapter.getPosition();
-        Cocktail cocktail = cocktailSingleton.getCocktailList().get(itemPosition);
+        final Cocktail cocktail = cocktailSingleton.getCocktailList().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
             ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
 
         } else if(name.equals("Delete Cocktail")) {
-            tempDeletion = cocktailSingleton.getCocktailList().get(itemPosition);
-            cocktailSingleton.getCocktailList().remove(itemPosition);
+            tempDeletion = cocktailSingleton.getFavourites().get(itemPosition);
+            cocktailSingleton.removeByID(tempDeletion.id, AppDatabase.getDatabase(getContext()));
             mAdapter.notifyDataSetChanged();
             Snackbar.make(getView(), "Cocktail Deleted", Snackbar.LENGTH_LONG)
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             cocktailSingleton.getCocktailList().add(tempDeletion);
+                            cocktailSingleton.getFavourites().add(tempDeletion);
                             mAdapter.notifyDataSetChanged();
                         }
                     })

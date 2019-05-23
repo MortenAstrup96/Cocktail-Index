@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.application.cocktailindex.Utility.ImageUtilities;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class CustomPagerAdapter extends PagerAdapter {
     private LayoutInflater mLayoutInflater;
     private List<String> mResources;
     private ImageView imageView;
+    private ImageUtilities imageUtilities = ImageUtilities.getInstance();
 
     public CustomPagerAdapter(Context context, List<String> images) {
         this.mContext = context;

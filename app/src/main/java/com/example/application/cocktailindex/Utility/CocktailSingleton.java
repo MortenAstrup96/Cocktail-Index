@@ -106,6 +106,27 @@ public class CocktailSingleton {
         }
     }
 
+    public void removeByID(int id, final AppDatabase db) {
+        final Cocktail deletion;
+        for(Cocktail c : cocktailList) {
+            if(c.id == id) {
+                deletion = c;
+                favourites.remove(c);
+                cocktailList.remove(c);
+
+                Executor myExecutor = Executors.newSingleThreadExecutor();
+                myExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.ingredientDBDao().delete(deletion.ingredients);
+                        db.cocktailDBDao().delete(deletion);
+                    }
+                });
+                return;
+            }
+        }
+    }
+
     public List<Cocktail> getIdeas() {
         return ideas;
     }

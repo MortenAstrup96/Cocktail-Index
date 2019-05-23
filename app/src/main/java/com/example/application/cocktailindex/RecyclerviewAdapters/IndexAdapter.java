@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
@@ -110,16 +111,14 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         if(imageUtilities.hasFunctionalImage(cocktail)) {
             Glide.with(context)
                     .load(Uri.parse(cocktail.imagePath.get(0)))
-                    .placeholder(R.drawable.ic_nopicture)
-                    .override(1200, 1200)
-                    .centerCrop()
-                    .apply(RequestOptions.circleCropTransform())
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .override(300, 300)
+                    .circleCrop()
                     .into(holder.imageView);
         } else {
             Glide.with(context)
                     .load(R.drawable.ic_nopicture)
-                    .override(1200, 1200)
-                    .centerCrop()
+                    .centerInside()
                     .apply(RequestOptions.circleCropTransform())
                     .into(holder.imageView);
         }

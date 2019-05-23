@@ -43,6 +43,8 @@ public class CocktailDetailsActivity extends AppCompatActivity {
     public static final int UPDATE_COCKTAIL_RECIPE = 2;
     private Cocktail cocktail;
 
+    CustomPagerAdapter pagerAdapter;
+
     private AppDatabase db;
     private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
 
@@ -58,18 +60,24 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         // Gets the specific cocktail
         Intent data = getIntent();
         cocktail = (Cocktail) data.getSerializableExtra("cocktail");
+        cocktailSingleton.cocktailDetailsCocktail(cocktail);
 
         setupViews();
 
 
         ViewPager pager = findViewById(R.id.photos_viewpager);
-        CustomPagerAdapter pagerAdapter = new CustomPagerAdapter(getApplicationContext(), cocktail.imagePath);
+        pagerAdapter = new CustomPagerAdapter(getApplicationContext(), cocktail.imagePath);
         pager.setAdapter(pagerAdapter);
         if(pagerAdapter.getCount() > 1) {
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
             tabLayout.setupWithViewPager(pager, true);
             tabLayout.setClickable(false);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if(pagerAdapter.getCount() == 0) {
             Glide.with(getApplicationContext())
                     .load(R.drawable.ic_nopicture)
@@ -80,7 +88,6 @@ public class CocktailDetailsActivity extends AppCompatActivity {
                     .clear(((ImageView)findViewById(R.id.details_section_imageview_placeholder)));
         }
     }
-
 
     /**
      * Sets up all of the basic views

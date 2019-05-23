@@ -281,6 +281,7 @@ public class FillCocktailDetailsFragment extends Fragment {
                 String amountString = editAmount.getText().toString();
                 String quantityString = measureTypeSpinner.getSelectedItem().toString();
 
+
                 if(ingredientString.isEmpty() || amountString.isEmpty()) {
                     Toast.makeText(getActivity(), "Please enter an ingredient & amount",
                             Toast.LENGTH_SHORT).show();
@@ -288,7 +289,7 @@ public class FillCocktailDetailsFragment extends Fragment {
                 }
 
 
-                if(ingredients.size() >= 8) {
+                if(ingredients.size() >= 20) {
                     Toast.makeText(getActivity(), "Ingredient limit reached",
                             Toast.LENGTH_SHORT).show();
                     return;
@@ -343,6 +344,11 @@ public class FillCocktailDetailsFragment extends Fragment {
             temporaryCocktail.imagePath.add(uri.toString());
         }
 
+        // Sets the unique number of the ingredient for future order
+        for(int i = 0 ; i < temporaryCocktail.ingredients.size(); i++) {
+            temporaryCocktail.ingredients.get(0).setNumber(i);
+        }
+
     }
 
     private void createNewCocktailFromInformation() {
@@ -372,6 +378,11 @@ public class FillCocktailDetailsFragment extends Fragment {
 
         for(Uri uri : imagePaths) {
             temporaryCocktail.imagePath.add(uri.toString());
+        }
+
+        // Sets the unique number of the ingredient for future order
+        for(int i = 0 ; i < temporaryCocktail.ingredients.size(); i++) {
+            temporaryCocktail.ingredients.get(0).setNumber(i);
         }
     }
 

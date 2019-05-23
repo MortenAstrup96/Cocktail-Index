@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.Utility.ImageUtilities;
 
@@ -47,7 +48,7 @@ public class CustomPagerAdapter extends PagerAdapter {
         imageView = layout.findViewById(R.id.details_section_image_cocktail);
         Glide.with(layout)
                 .load(image)
-                .override(1200, 1200)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .centerCrop()
                 .into(imageView);
 

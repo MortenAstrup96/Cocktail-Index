@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.Activities.NewCocktailActivity;
 import com.example.application.cocktailindex.Fragments.DialogFragments.FillCocktailDetailsFragment;
@@ -63,7 +64,8 @@ public class ImageAddAdapter extends RecyclerView.Adapter<ImageAddAdapter.MyView
         if(uri != null) {
             Glide.with(context)
                     .load(uri)
-                    .override(1200, 1200)
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .override(300, 300)
                     .centerCrop()
                     .into(holder.imageView);
         } else {

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.application.cocktailindex.Database.AppDatabase;
 import com.example.application.cocktailindex.Objects.Cocktail;
@@ -94,20 +95,17 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         }
 
     }
-
     private void setImage(MyViewHolder holder, Cocktail cocktail) {
         if(imageUtilities.hasFunctionalImage(cocktail)) {
             Glide.with(context)
                     .load(Uri.parse(cocktail.imagePath.get(0)))
-                    .override(1200, 1200)
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .centerCrop()
-                    .apply(RequestOptions.centerCropTransform())
                     .into(holder.imageView);
         } else {
             Glide.with(context)
                     .load(R.drawable.ic_nopicture)
-                    .centerCrop()
-                    .apply(RequestOptions.centerCropTransform())
+                    .centerInside()
                     .into(holder.imageView);
         }
     }

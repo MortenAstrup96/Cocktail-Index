@@ -1,5 +1,6 @@
 package com.example.application.cocktailindex.Utility;
 
+import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
 
 import com.example.application.cocktailindex.Database.AppDatabase;
@@ -27,6 +28,8 @@ public class CocktailSingleton {
     private List<Cocktail> ideas;
     private List<Ingredient> ingredients;
     private Map<String, Integer> ingredientMap;
+
+    private Cocktail tempCocktailDetailsCocktail;
 
     private CocktailSingleton() {
         cocktailList = new ArrayList<>();
@@ -164,10 +167,9 @@ public class CocktailSingleton {
             myExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    db.ingredientDBDao().delete(cocktail.ingredients);
-                    db.cocktailDBDao().delete(cocktail);
+                    db.ingredientDBDao().delete(tempCocktailDetailsCocktail.ingredients);
 
-                    db.cocktailDBDao().insertOne(cocktail);
+                    db.cocktailDBDao().updateOne(cocktail);
                     db.ingredientDBDao().insertOne(cocktail.ingredients);
 
                 }
@@ -175,6 +177,10 @@ public class CocktailSingleton {
         }
 
 
+    }
+
+    public void cocktailDetailsCocktail(Cocktail cocktail) {
+        this.tempCocktailDetailsCocktail = cocktail;
     }
 
 

@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -15,10 +16,13 @@ import java.util.UUID;
                 parentColumns = "id",
                 childColumns = "cocktail_fk"
         )})
-public class Ingredient implements Serializable {
+public class Ingredient implements Serializable, Comparable {
 
     @PrimaryKey
     public int id = UUID.randomUUID().hashCode();
+
+    @ColumnInfo(name = "number")
+    private int number;
 
     @ColumnInfo(name = "cocktail_fk")
     private int cocktailIdFk;
@@ -64,6 +68,13 @@ public class Ingredient implements Serializable {
         this.cocktailIdFk = cocktailIdFk;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
     public Ingredient(String ingredient, String amount, String measurement) {
         this.ingredient = ingredient;
@@ -72,8 +83,8 @@ public class Ingredient implements Serializable {
     }
 
 
-
-
-
-
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return ((Ingredient)o).getNumber()-getNumber();
+    }
 }

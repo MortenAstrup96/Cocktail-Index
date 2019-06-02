@@ -30,7 +30,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.IdeaActivity"
-            android:label="Idea"
+            android:label="Cocktail Idea"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.CocktailDetailsActivity"

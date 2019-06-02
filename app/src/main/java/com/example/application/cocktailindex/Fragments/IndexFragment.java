@@ -65,7 +65,7 @@ public class IndexFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_index,container,false);
 
         savedCocktailList = new ArrayList<>();
-        savedCocktailList.addAll(cocktailSingleton.getCocktailList());
+        savedCocktailList.addAll(cocktailSingleton.getIndexList());
 
         // Setup of database
         db = AppDatabase.getDatabase(view.getContext());
@@ -75,15 +75,12 @@ public class IndexFragment extends Fragment {
         listener = new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                java.util.Collections.sort(cocktailSingleton.getCocktailList());
+                java.util.Collections.sort(cocktailSingleton.getIndexList());
 
                 // Scales up the new activity from the cardview clicked
-                Activity activity = getActivity();
-                Intent intent = new Intent(activity, CocktailDetailsActivity.class);
-                Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
-                        view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
-                intent.putExtra("cocktail", cocktailSingleton.getCocktailList().get(position)); // TODO: Switch to using ID instead later
-                ActivityCompat.startActivity(activity, intent, options);
+                Intent intent = new Intent(getActivity(), CocktailDetailsActivity.class);
+                intent.putExtra("cocktail", cocktailSingleton.getIndexList().get(position)); // TODO: Switch to using ID instead later
+                startActivity(intent);
             }
         };
 
@@ -91,7 +88,7 @@ public class IndexFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new IndexAdapter(cocktailSingleton.getCocktailList(), listener, longClickListener, getContext());
+        mAdapter = new IndexAdapter(cocktailSingleton.getIndexList(), listener, longClickListener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -124,7 +121,7 @@ public class IndexFragment extends Fragment {
             }
         });
 
-        java.util.Collections.sort(cocktailSingleton.getCocktailList());
+        java.util.Collections.sort(cocktailSingleton.getIndexList());
         mAdapter.notifyDataSetChanged();
 
         // Inflate the layout for this fragment
@@ -146,14 +143,14 @@ public class IndexFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
         int itemPosition = mAdapter.getPosition();
-        Cocktail cocktail = cocktailSingleton.getCocktailList().get(itemPosition);
+        Cocktail cocktail = cocktailSingleton.getIndexList().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
             ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
 
         } else if(name.equals("Delete Cocktail")) {
-            tempDeletion = cocktailSingleton.getCocktailList().get(itemPosition);
-            cocktailSingleton.getCocktailList().remove(itemPosition);
+            tempDeletion = cocktailSingleton.getIndexList().get(itemPosition);
+            cocktailSingleton.getIndexList().remove(itemPosition);
             savedCocktailList.remove(itemPosition);
             mAdapter.notifyDataSetChanged();
 
@@ -172,7 +169,7 @@ public class IndexFragment extends Fragment {
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            cocktailSingleton.getCocktailList().add(tempDeletion);
+                            cocktailSingleton.getIndexList().add(tempDeletion);
                             savedCocktailList.add(tempDeletion);
                             mAdapter.notifyDataSetChanged();
 
@@ -193,11 +190,11 @@ public class IndexFragment extends Fragment {
     }
 
     public List<Cocktail> searchQuery(String s) {
-        cocktailSingleton.getCocktailList().clear();
-        cocktailSingleton.getCocktailList().addAll(savedCocktailList);
+        cocktailSingleton.getIndexList().clear();
+        cocktailSingleton.getIndexList().addAll(savedCocktailList);
         List<Cocktail> toRemove = new ArrayList<>();
 
-        for(Cocktail cocktail : cocktailSingleton.getCocktailList()) {
+        for(Cocktail cocktail : cocktailSingleton.getIndexList()) {
             String name = cocktail.name.toLowerCase();
            // String ingredients = cocktail.ingredients.toLowerCase();
 
@@ -207,9 +204,9 @@ public class IndexFragment extends Fragment {
             }
         }
 
-        cocktailSingleton.getCocktailList().removeAll(toRemove);
+        cocktailSingleton.getIndexList().removeAll(toRemove);
         mAdapter.notifyDataSetChanged();
-        return cocktailSingleton.getCocktailList();
+        return cocktailSingleton.getIndexList();
     }
 
     /** ==== STANDARD FRAGMENT METHODS ==== */

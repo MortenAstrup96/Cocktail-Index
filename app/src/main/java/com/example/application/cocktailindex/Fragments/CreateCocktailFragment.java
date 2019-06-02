@@ -1,4 +1,4 @@
-package com.example.application.cocktailindex.Fragments.DialogFragments;
+package com.example.application.cocktailindex.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author Morten Astrup
  */
-public class FillCocktailDetailsFragment extends Fragment {
+public class CreateCocktailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Fragment thisFragment;
@@ -92,6 +92,7 @@ public class FillCocktailDetailsFragment extends Fragment {
     // Container References for smoothscroll
     private ConstraintLayout constraintName;
     private ConstraintLayout constraintIngredients;
+    private ConstraintLayout imageLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -211,7 +212,7 @@ public class FillCocktailDetailsFragment extends Fragment {
 
         // Image Adapter
         imagePaths = new ArrayList<>();
-        if(temporaryCocktail.imagePath != null) {
+        if(temporaryCocktail.imagePath != null && temporaryCocktail.imagePath.get(0) != null && !temporaryCocktail.imagePath.get(0).isEmpty()) {
             for(String s : temporaryCocktail.imagePath) {
                 imagePaths.add(Uri.parse(s));
             }
@@ -313,6 +314,19 @@ public class FillCocktailDetailsFragment extends Fragment {
             }
         });
 
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if(i == ideaRadio.getId()) {
+                    imageLayout.setVisibility(View.GONE);
+                    imagePaths = null;
+                } else {
+                    imageLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
 
 
 
@@ -339,10 +353,16 @@ public class FillCocktailDetailsFragment extends Fragment {
         for(Ingredient i : ingredients) {
             i.setCocktailIdFk(temporaryCocktail.id);
         }
+
         temporaryCocktail.imagePath = new ArrayList<>();
-        for(Uri uri : imagePaths) {
-            temporaryCocktail.imagePath.add(uri.toString());
+        if(imagePaths != null) {
+            for(Uri uri : imagePaths) {
+                temporaryCocktail.imagePath.add(uri.toString());
+            }
         }
+
+
+
 
         // Sets the unique number of the ingredient for future order
         for(int i = 0 ; i < temporaryCocktail.ingredients.size(); i++) {
@@ -391,6 +411,8 @@ public class FillCocktailDetailsFragment extends Fragment {
     }
 
     private void setupViews(View view) {
+        imageLayout = view.findViewById(R.id.ChooseImage_container);
+
         next = view.findViewById(R.id.addCocktail_button_finish);
         cancel = view.findViewById(R.id.addCocktail_button_cancel);
         scrollView = view.findViewById(R.id.newCocktail_scroll);

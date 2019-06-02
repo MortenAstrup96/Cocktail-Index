@@ -99,7 +99,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         if(imageUtilities.hasFunctionalImage(cocktail)) {
             Glide.with(context)
                     .load(Uri.parse(cocktail.imagePath.get(0)))
-                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(holder.imageView);
         } else {

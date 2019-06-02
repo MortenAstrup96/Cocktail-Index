@@ -1,6 +1,5 @@
 package com.example.application.cocktailindex.Utility;
 
-import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
 
 import com.example.application.cocktailindex.Database.AppDatabase;
@@ -9,13 +8,10 @@ import com.example.application.cocktailindex.Objects.Ingredient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class CocktailSingleton {
     private static final CocktailSingleton ourInstance = new CocktailSingleton();
@@ -26,6 +22,7 @@ public class CocktailSingleton {
     private List<Cocktail> cocktailList;
     private List<Cocktail> favourites;
     private List<Cocktail> ideas;
+    private List<Cocktail> indexList;
     private List<Ingredient> ingredients;
     private Map<String, Integer> ingredientMap;
 
@@ -35,6 +32,7 @@ public class CocktailSingleton {
         cocktailList = new ArrayList<>();
         favourites = new ArrayList<>();
         ideas = new ArrayList<>();
+        indexList = new ArrayList<>();
         ingredients = new ArrayList<>();
         ingredientMap = new HashMap<>();
     }
@@ -73,6 +71,18 @@ public class CocktailSingleton {
         }
 
         return array;
+    }
+
+    public List<Cocktail> getIndexList() {
+        indexList.clear();
+
+        for(Cocktail cocktail : cocktailList) {
+            if(!cocktail.idea) {
+                indexList.add(cocktail);
+            }
+        }
+        java.util.Collections.sort(indexList);
+        return indexList;
     }
 
     public List<Cocktail> getCocktailList() {
@@ -184,8 +194,6 @@ public class CocktailSingleton {
                 }
             });
         }
-
-
     }
 
     public void cocktailDetailsCocktail(Cocktail cocktail) {

@@ -1,20 +1,16 @@
 package com.example.application.cocktailindex.Activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -29,15 +25,10 @@ import com.example.application.cocktailindex.Fragments.FavoriteFragment;
 import com.example.application.cocktailindex.Fragments.IdeaFragment;
 import com.example.application.cocktailindex.Fragments.IndexFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
-import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import static com.example.application.cocktailindex.Activities.CocktailDetailsActivity.UPDATE_COCKTAIL_RECIPE;
 
@@ -84,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements
 
         setCurrentFragment(fragmentIndex);
     }
+
 
 
     /**
@@ -173,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements
     public void updateFragmentLists() {
         if(fragmentFavorite != null) fragmentFavorite.updateList();
         if(fragmentIndex != null) fragmentIndex.updateList();
-        if(fragmentIdea != null) /*fragmentIdea.updateList()*/;
+        if(fragmentIdea != null) fragmentIdea.updateList();
     }
 
     /**
@@ -219,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements
             public boolean onQueryTextSubmit(String s) {
                 Log.d("Search","Query Submitted: " + s);
                 if(s.isEmpty()) {
-                    cocktailSingleton.getCocktailList().clear();
+                    cocktailSingleton.getIndexList().clear();
                 }
 
                 return false;

@@ -1,7 +1,6 @@
 package com.example.application.cocktailindex.Activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,10 +17,8 @@ import com.example.application.cocktailindex.Objects.Ingredient;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 
 public class SplashActivity extends AppCompatActivity {
@@ -64,7 +61,7 @@ public class SplashActivity extends AppCompatActivity {
                 Log.e("Concurrent", "Concurrent Error!!");
             }
 
-            for(Cocktail cocktail : cocktailSingleton.getCocktailList()) {
+            for(Cocktail cocktail : cocktailSingleton.getIndexList()) {
                 Collections.sort(cocktail.ingredients);
             }
             return null;

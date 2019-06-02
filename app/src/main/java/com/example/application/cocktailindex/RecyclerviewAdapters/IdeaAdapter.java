@@ -133,7 +133,7 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
             view.setOnClickListener(this);
             view.setOnCreateContextMenuListener(this);
 
-            cocktailList = CocktailSingleton.getInstance().getCocktailList();
+            cocktailList = CocktailSingleton.getInstance().getIdeas();
 
             view.setOnClickListener(this);
             view.setOnLongClickListener(new View.OnLongClickListener() {

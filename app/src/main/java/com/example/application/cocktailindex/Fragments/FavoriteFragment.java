@@ -27,9 +27,6 @@ import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class FavoriteFragment extends Fragment {
     OnFragmentInteractionListener mListener;
@@ -122,7 +119,7 @@ public class FavoriteFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
         int itemPosition = mAdapter.getPosition();
-        final Cocktail cocktail = cocktailSingleton.getCocktailList().get(itemPosition);
+        final Cocktail cocktail = cocktailSingleton.getIndexList().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
             ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
@@ -135,7 +132,7 @@ public class FavoriteFragment extends Fragment {
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            cocktailSingleton.getCocktailList().add(tempDeletion);
+                            cocktailSingleton.getIndexList().add(tempDeletion);
                             cocktailSingleton.getFavourites().add(tempDeletion);
                             mAdapter.notifyDataSetChanged();
                         }

@@ -1,6 +1,5 @@
 package com.example.application.cocktailindex.RecyclerviewAdapters;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,8 +28,6 @@ import com.example.application.cocktailindex.Utility.CocktailSingleton;
 import com.example.application.cocktailindex.Utility.ImageUtilities;
 
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
 /**
@@ -165,7 +161,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
 
 
-            cocktailList = CocktailSingleton.getInstance().getCocktailList();
+            cocktailList = CocktailSingleton.getInstance().getIndexList();
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

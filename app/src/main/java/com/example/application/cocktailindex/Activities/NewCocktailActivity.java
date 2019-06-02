@@ -1,50 +1,32 @@
 package com.example.application.cocktailindex.Activities;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Environment;
-import android.os.Parcelable;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.application.cocktailindex.BuildConfig;
-import com.example.application.cocktailindex.Fragments.DialogFragments.FillCocktailDetailsFragment;
+import com.example.application.cocktailindex.Fragments.CreateCocktailFragment;
 import com.example.application.cocktailindex.Objects.Cocktail;
 import com.example.application.cocktailindex.R;
 
-import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class NewCocktailActivity extends AppCompatActivity implements
         Serializable,
-        FillCocktailDetailsFragment.OnFragmentInteractionListener{
+        CreateCocktailFragment.OnFragmentInteractionListener{
 
     // On Activity result codes
     public static final int GET_IMAGE = 3;
 
     private Uri outputFileUri;
     private Uri selectedImage;
-    private FillCocktailDetailsFragment fragmentName;
+    private CreateCocktailFragment fragmentName;
 
     private Cocktail temporaryCocktail;
-
-
 
 
     @Override
@@ -62,7 +44,7 @@ public class NewCocktailActivity extends AppCompatActivity implements
     }
 
     private void setupFragments() {
-        fragmentName = new FillCocktailDetailsFragment();
+        fragmentName = new CreateCocktailFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_new_cocktail, fragmentName);
@@ -121,7 +103,7 @@ public class NewCocktailActivity extends AppCompatActivity implements
         }
     }
 
-    public FillCocktailDetailsFragment getFragmentName() {
+    public CreateCocktailFragment getFragmentName() {
         return fragmentName;
     }
 

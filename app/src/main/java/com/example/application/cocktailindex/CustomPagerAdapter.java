@@ -48,7 +48,7 @@ public class CustomPagerAdapter extends PagerAdapter {
         imageView = layout.findViewById(R.id.details_section_image_cocktail);
         Glide.with(layout)
                 .load(image)
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imageView);
 

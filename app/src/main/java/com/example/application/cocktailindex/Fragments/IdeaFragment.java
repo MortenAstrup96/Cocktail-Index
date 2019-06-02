@@ -21,7 +21,6 @@ import com.example.application.cocktailindex.OnItemClickListener;
 import com.example.application.cocktailindex.OnItemLongClickListener;
 import com.example.application.cocktailindex.R;
 import com.example.application.cocktailindex.RecyclerviewAdapters.IdeaAdapter;
-import com.example.application.cocktailindex.RecyclerviewAdapters.IndexAdapter;
 import com.example.application.cocktailindex.Utility.CocktailSingleton;
 
 import java.util.ArrayList;
@@ -54,15 +53,12 @@ public class IdeaFragment extends Fragment {
         listener = new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                java.util.Collections.sort(cocktailSingleton.getCocktailList());
+                java.util.Collections.sort(cocktailSingleton.getIdeas());
 
                 // Scales up the new activity from the cardview clicked
-                Activity activity = getActivity();
-                Intent intent = new Intent(activity, IdeaActivity.class);
-                Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
-                        view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
+                Intent intent = new Intent(getActivity(), IdeaActivity.class);
                 intent.putExtra("cocktail", cocktailSingleton.getIdeas().get(position)); // TODO: Switch to using ID instead later
-                ActivityCompat.startActivity(getActivity(), intent, options);
+                startActivity(intent);
             }
         };
 
@@ -71,11 +67,16 @@ public class IdeaFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         mAdapter = new IdeaAdapter(cocktailSingleton.getIdeas(), listener, longClickListener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    public void updateList() {
+        if(mAdapter != null) mAdapter.notifyDataSetChanged();
     }
 
     /** ==== STANDARD FRAGMENT METHODS ==== */

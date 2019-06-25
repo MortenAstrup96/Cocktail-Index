@@ -63,10 +63,9 @@ public class MainActivity extends AppCompatActivity implements
 
 
         cocktailSingleton = CocktailSingleton.getInstance();
-
-        SetupViews();
         db = AppDatabase.getDatabase(this);
 
+        SetupViews();
 
         // Instantiates the 3 base fragments (Index, Favourite & Idea)
         fragmentIndex = new IndexFragment();

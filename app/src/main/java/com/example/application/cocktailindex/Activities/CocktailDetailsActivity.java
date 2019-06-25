@@ -65,20 +65,23 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         setupViews();
 
 
-        ViewPager pager = findViewById(R.id.photos_viewpager);
-        pagerAdapter = new CustomPagerAdapter(getApplicationContext(), cocktail.imagePath);
-        pager.setAdapter(pagerAdapter);
-        if(pagerAdapter.getCount() > 1) {
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
-            tabLayout.setupWithViewPager(pager, true);
-            tabLayout.setClickable(false);
+        if(cocktail.imagePath != null) {
+            ViewPager pager = findViewById(R.id.photos_viewpager);
+            pagerAdapter = new CustomPagerAdapter(getApplicationContext(), cocktail.imagePath);
+            pager.setAdapter(pagerAdapter);
+            if(pagerAdapter.getCount() > 1) {
+                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
+                tabLayout.setupWithViewPager(pager, true);
+                tabLayout.setClickable(false);
+            }
         }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(pagerAdapter.getCount() == 0) {
+        if(pagerAdapter == null) {
             Glide.with(getApplicationContext())
                     .load(R.drawable.ic_nopicture)
                     .centerCrop()

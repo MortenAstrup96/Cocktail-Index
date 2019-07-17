@@ -71,6 +71,7 @@ public class SplashActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             startActivity(new Intent(SplashActivity.this, MainActivity.class).
                     setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            finish();
             overridePendingTransition(R.anim.fade_out, R.anim.fade_out);
         }
     }

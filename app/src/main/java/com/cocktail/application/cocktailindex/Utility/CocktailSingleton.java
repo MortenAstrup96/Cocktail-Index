@@ -178,8 +178,8 @@ public class CocktailSingleton {
         myExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                db.cocktailDBDao().delete(cocktail);
                 db.ingredientDBDao().delete(cocktail.ingredients);
+                db.cocktailDBDao().delete(cocktail);
             }
         });
         updateLists();

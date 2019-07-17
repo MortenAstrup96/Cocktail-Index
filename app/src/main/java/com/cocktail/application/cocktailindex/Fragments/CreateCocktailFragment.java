@@ -150,6 +150,7 @@ public class CreateCocktailFragment extends Fragment {
         arraySingle.add("cup");
         arraySingle.add("drop");
         arraySingle.add("mL.");
+        arraySingle.add(" ");
 
         final List<String> arrayPlural = new ArrayList<>();
         arrayPlural.add("oz.");
@@ -160,6 +161,7 @@ public class CreateCocktailFragment extends Fragment {
         arrayPlural.add("cups");
         arrayPlural.add("drops");
         arrayPlural.add("mL.");
+        arrayPlural.add(" ");
 
         array.addAll(arraySingle);
 
@@ -361,7 +363,7 @@ public class CreateCocktailFragment extends Fragment {
 
         // Sets the unique number of the ingredient for future order
         for(int i = 0 ; i < temporaryCocktail.ingredients.size(); i++) {
-            temporaryCocktail.ingredients.get(0).setNumber(i);
+            temporaryCocktail.ingredients.get(i).setNumber(i);
         }
 
     }
@@ -397,7 +399,7 @@ public class CreateCocktailFragment extends Fragment {
 
         // Sets the unique number of the ingredient for future order
         for(int i = 0 ; i < temporaryCocktail.ingredients.size(); i++) {
-            temporaryCocktail.ingredients.get(0).setNumber(i);
+            temporaryCocktail.ingredients.get(i).setNumber(i);
         }
     }
 

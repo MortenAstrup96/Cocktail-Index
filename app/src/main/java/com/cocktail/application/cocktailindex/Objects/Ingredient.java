@@ -85,6 +85,6 @@ public class Ingredient implements Serializable, Comparable {
 
     @Override
     public int compareTo(@NonNull Object o) {
-        return ((Ingredient)o).getNumber()-getNumber();
+        return getNumber()-((Ingredient)o).getNumber();
     }
 }

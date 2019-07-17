@@ -69,7 +69,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_index, parent, false);
 
-        java.util.Collections.sort(cocktailList);
 
         return new MyViewHolder(itemView, itemClickListener, itemLongClickListener);
     }
@@ -77,8 +76,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
     @Override
     @NonNull
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        java.util.Collections.sort(cocktailList);
-        Cocktail cocktail = cocktailList.get(position);
+        final Cocktail cocktail = cocktailList.get(position);
         String name = cocktail.name;
         String displayIngredients = "";
 
@@ -87,11 +85,18 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
 
         setImage(holder, cocktail);
 
+        holder.checkBox.setOnCheckedChangeListener(null);
+        holder.checkBox.setChecked(cocktail.favourite);
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    cocktail.favourite = b;
+                    CocktailSingleton.getInstance().setFavourite(cocktail, db);
+                }
+            });
 
-        checkBox.setChecked(cocktail.favourite);
 
         if(position >= 0) {
-            cocktail = cocktailList.get(position);
             if(cocktail.ingredients.size() > 0) {
                 displayIngredients = displayIngredients + cocktail.ingredients.get(0).getIngredient();
                 for(int i = 1; i < cocktail.ingredients.size(); i++) {
@@ -108,7 +113,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             Glide.with(context)
                     .load(Uri.parse(cocktail.imagePath.get(0)))
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
-                    .override(300, 300)
+                    .override(250, 250)
                     .circleCrop()
                     .into(holder.imageView);
         } else {
@@ -141,15 +146,14 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         private TextView name;
         private ImageView imageView;
         private TextView ingredients;
-
+        public CheckBox checkBox;
 
         public MyViewHolder(final View view, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener) {
             super(view);
             this.itemClickListener = itemClickListener;
             this.itemLongClickListener = itemLongClickListener;
 
-            this.setIsRecyclable(true); // TODO: VERY BAD PRACTICE -> Fix: https://android.jlelse.eu/android-handling-checkbox-state-in-recycler-views-71b03f237022
-
+            cocktailList = CocktailSingleton.getInstance().getIndexList();
             name =  view.findViewById(R.id.index_section_header);
             imageView =  view.findViewById(R.id.index_section_image_cocktail);
             checkBox = view.findViewById(R.id.index_section_favourite);
@@ -159,27 +163,13 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             view.setOnClickListener(this);
             view.setOnCreateContextMenuListener(this);
 
-
-
-            cocktailList = CocktailSingleton.getInstance().getIndexList();
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(getAdapterPosition() >= 0) {
-                        final Cocktail cocktail = cocktailList.get(getAdapterPosition());
-                        cocktail.favourite = b;
-
-                        CocktailSingleton.getInstance().setFavourite(cocktail, db);
-                    }
-                }
-            });
-
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     shortVibration();
                 }
             });
+
 
             view.setOnClickListener(this);
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -189,7 +179,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
                     return false;
                 }
             });
-
         }
         /**
          * Method to be invoked when clicking on a certain element

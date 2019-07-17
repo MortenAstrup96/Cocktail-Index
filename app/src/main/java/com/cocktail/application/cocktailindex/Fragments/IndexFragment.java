@@ -134,8 +134,6 @@ public class IndexFragment extends Fragment {
      * @return
      */
 
-
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();

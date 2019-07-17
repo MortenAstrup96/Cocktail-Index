@@ -50,7 +50,7 @@ public class IngredientDetailsAdapter extends RecyclerView.Adapter<IngredientDet
         String amount = ingredient.getAmount();
         String measurement = ingredient.getMeasurement();
 
-        if(measurement.equals("Piece")) measurement = "";   // Piece means no text
+
         holder.name.setText(name);
         holder.amount.setText(amount + " " + measurement + " ");
     }

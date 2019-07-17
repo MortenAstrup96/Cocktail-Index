@@ -168,6 +168,27 @@ public class CocktailSingleton {
                 db.ingredientDBDao().insertOne(cocktail.ingredients);
             }
         });
+        updateLists();
+    }
+
+    public void removeCocktail(final Cocktail cocktail, final AppDatabase db) {
+        cocktailList.remove(cocktail);
+        // Insertion into Database
+        Executor myExecutor = Executors.newSingleThreadExecutor();
+        myExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                db.cocktailDBDao().delete(cocktail);
+                db.ingredientDBDao().delete(cocktail.ingredients);
+            }
+        });
+        updateLists();
+    }
+
+    private void updateLists() {
+        getIndexList();
+        getFavourites();
+        getIdeas();
     }
 
     public void updateCocktail(final Cocktail cocktail, final AppDatabase db) {

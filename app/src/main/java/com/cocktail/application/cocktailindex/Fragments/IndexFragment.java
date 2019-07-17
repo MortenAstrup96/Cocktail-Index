@@ -147,36 +147,19 @@ public class IndexFragment extends Fragment {
 
         } else if(name.equals("Delete Cocktail")) {
             tempDeletion = cocktailSingleton.getIndexList().get(itemPosition);
-            cocktailSingleton.getIndexList().remove(itemPosition);
-            savedCocktailList.remove(itemPosition);
+            cocktailSingleton.removeCocktail(tempDeletion, db);
+            savedCocktailList.remove(tempDeletion);
             mAdapter.notifyDataSetChanged();
-
-            Executor myExecutor = Executors.newSingleThreadExecutor();
-            myExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    db.ingredientDBDao().delete(tempDeletion.ingredients);
-                    db.cocktailDBDao().delete(tempDeletion);
-                }
-            });
-
 
             // Revert deletion
             Snackbar.make(getView(), "Cocktail Deleted", Snackbar.LENGTH_LONG)
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            cocktailSingleton.getIndexList().add(tempDeletion);
+                            cocktailSingleton.addCocktail(tempDeletion, db);
                             savedCocktailList.add(tempDeletion);
                             mAdapter.notifyDataSetChanged();
 
-                            Executor myExecutor = Executors.newSingleThreadExecutor();
-                            myExecutor.execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    db.cocktailDBDao().insertOne(tempDeletion);
-                                }
-                            });
                         }
                     })
                     .setActionTextColor(getResources().getColor(R.color.colorAccent))

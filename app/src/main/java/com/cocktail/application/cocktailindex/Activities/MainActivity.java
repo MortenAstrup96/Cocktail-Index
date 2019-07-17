@@ -179,12 +179,15 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
             case R.id.favorites:
                 setCurrentFragment(fragmentFavorite);
+                fab.show();
                 break;
             case R.id.index:
                 setCurrentFragment(fragmentIndex);
+                fab.show();
                 break;
             case R.id.ideas:
                 setCurrentFragment(fragmentIdea);
+                fab.show();
                 break;
             default:
                 return false;

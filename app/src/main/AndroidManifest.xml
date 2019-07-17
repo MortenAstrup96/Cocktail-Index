@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.application.cocktailindex">
+    package="com.cocktail.application.cocktailindex">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.SplashActivity"
+            android:name="com.cocktail.application.cocktailindex.Activities.SplashActivity"
             android:theme="@style/SplashScreen">
 
             <intent-filter>
@@ -25,22 +25,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.AboutActivity"
+            android:name="com.cocktail.application.cocktailindex.Activities.AboutActivity"
             android:label="About Application"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.IdeaActivity"
+            android:name="com.cocktail.application.cocktailindex.Activities.IdeaActivity"
             android:label="Cocktail Idea"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.CocktailDetailsActivity"
+            android:name="com.cocktail.application.cocktailindex.Activities.CocktailDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.NewCocktailActivity"
+            android:name="com.cocktail.application.cocktailindex.Activities.NewCocktailActivity"
             android:label="New Cocktail"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="com.cocktail.application.cocktailindex.Activities.MainActivity"
             android:label="Cocktail Index"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -57,7 +57,7 @@
         </activity>
 
         <provider
-            android:name=".Utility.GenericFileProvider"
+            android:name="com.cocktail.application.cocktailindex.Utility.GenericFileProvider"
             android:authorities="${applicationId}.my.package.name.provider"
             android:exported="false"
             android:grantUriPermissions="true">

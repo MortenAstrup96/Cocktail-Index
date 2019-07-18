@@ -60,7 +60,6 @@ public class NewCocktailActivity extends AppCompatActivity implements
                 if(selectedImage != null) fragmentName.addImageToList(selectedImage);
             }
         }
-
     }
 
     private void openImageIntent() {

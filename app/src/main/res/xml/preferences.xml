@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Preferences">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="metric"
+            android:summary="Check to use the metric system (mL) instead of imperial (oz.)"
+            android:title="Metric System" />
+    </PreferenceCategory>
+</PreferenceScreen>

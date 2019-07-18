@@ -15,9 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.cocktail.application.cocktailindex.Activities.SplashActivity"
+            android:name=".Activities.SplashActivity"
             android:theme="@style/SplashScreen">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,22 +24,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cocktail.application.cocktailindex.Activities.AboutActivity"
+            android:name=".Activities.AboutActivity"
             android:label="About Application"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.cocktail.application.cocktailindex.Activities.IdeaActivity"
+            android:name=".Activities.SettingsActivity"
+            android:label="Settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.IdeaActivity"
             android:label="Cocktail Idea"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.cocktail.application.cocktailindex.Activities.CocktailDetailsActivity"
+            android:name=".Activities.CocktailDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.cocktail.application.cocktailindex.Activities.NewCocktailActivity"
+            android:name=".Activities.NewCocktailActivity"
             android:label="New Cocktail"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.cocktail.application.cocktailindex.Activities.MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="Cocktail Index"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -57,7 +60,7 @@
         </activity>
 
         <provider
-            android:name="com.cocktail.application.cocktailindex.Utility.GenericFileProvider"
+            android:name=".Utility.GenericFileProvider"
             android:authorities="${applicationId}.my.package.name.provider"
             android:exported="false"
             android:grantUriPermissions="true">

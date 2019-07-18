@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,6 +13,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.cocktail.application.cocktailindex.Database.AppDatabase;
 import com.cocktail.application.cocktailindex.Fragments.FavoriteFragment;
@@ -61,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean metric = prefs.getBoolean("metric", false);
+
 
         cocktailSingleton = CocktailSingleton.getInstance();
         db = AppDatabase.getDatabase(this);
@@ -74,6 +81,14 @@ public class MainActivity extends AppCompatActivity implements
 
         setCurrentFragment(fragmentIndex);
     }
+
+     @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+         // Inflate the menu; this adds items to the action bar if it is present.
+         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+         return super.onCreateOptionsMenu(menu);
+     }
 
 
 
@@ -196,42 +211,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_search_bar, menu);
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-
-        // https://stackoverflow.com/questions/27378981/how-to-use-searchview-in-toolbar-android <--- Search view
-        final SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
-        // Searching and Cocktails references
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                Log.d("Search","Query Submitted: " + s);
-                if(s.isEmpty()) {
-                    cocktailSingleton.getIndexList().clear();
-                }
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if(fragmentIndex != null) {
-                    fragmentIndex.searchQuery(s.toLowerCase());
-                }
-
-                return false;
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -240,7 +219,8 @@ public class MainActivity extends AppCompatActivity implements
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
         else if(id == R.id.action_about) {
             Intent intent = new Intent(this, AboutActivity.class);
@@ -279,3 +259,41 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 }
+
+
+/** SEARCH CODE - CURRENTLY NOT USED
+ @Override
+ public boolean onCreateOptionsMenu(Menu menu) {
+ // Inflate the menu; this adds items to the action bar if it is present.
+ getMenuInflater().inflate(R.menu.menu_main, menu);
+
+ MenuInflater menuInflater = getMenuInflater();
+ menuInflater.inflate(R.menu.menu_search_bar, menu);
+ final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+ // https://stackoverflow.com/questions/27378981/how-to-use-searchview-in-toolbar-android <--- Search view
+ final SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+ // Searching and Cocktails references
+ SearchView searchView = (SearchView) searchItem.getActionView();
+ searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+ @Override
+ public boolean onQueryTextSubmit(String s) {
+ Log.d("Search","Query Submitted: " + s);
+ if(s.isEmpty()) {
+ cocktailSingleton.getIndexList().clear();
+ }
+
+ return false;
+ }
+
+ @Override
+ public boolean onQueryTextChange(String s) {
+ if(fragmentIndex != null) {
+ fragmentIndex.searchQuery(s.toLowerCase());
+ }
+
+ return false;
+ }
+ });
+ return super.onCreateOptionsMenu(menu);
+ } */

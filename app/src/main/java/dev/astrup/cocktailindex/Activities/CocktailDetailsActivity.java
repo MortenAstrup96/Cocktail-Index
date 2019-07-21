@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import androidx.annotation.Nullable;
+
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +38,7 @@ import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.RecyclerviewAdapters.IngredientDetailsAdapter;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.GdprHelper;
 
 import java.util.ArrayList;
 
@@ -59,12 +62,8 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cocktail_details);
         setStatusBarTranslucent(true);
 
-        mAdView = findViewById(R.id.admob_detailsbanner);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-
         db = AppDatabase.getDatabase(this);
+        serveAd();
 
         // Gets the specific cocktail
         Intent data = getIntent();
@@ -85,6 +84,21 @@ public class CocktailDetailsActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void serveAd() {
+        GdprHelper gdprHelper = new GdprHelper(getApplicationContext());
+        mAdView = findViewById(R.id.admob_detailsbanner);
+        AdRequest adRequest;
+        if(!gdprHelper.isConsent()){
+            Bundle extras = new Bundle();
+            extras.putString("npa", "1");
+            adRequest = new AdRequest.Builder().addNetworkExtrasBundle(AdMobAdapter.class, extras).build();
+        }
+        else{
+            adRequest = new AdRequest.Builder().build();
+        }
+        mAdView.loadAd(adRequest);
     }
 
     @Override

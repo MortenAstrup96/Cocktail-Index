@@ -5,6 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.google.ads.consent.ConsentForm;
+import com.google.ads.consent.ConsentFormListener;
+import com.google.ads.consent.ConsentInfoUpdateListener;
+import com.google.ads.consent.ConsentInformation;
+import com.google.ads.consent.ConsentStatus;
+import com.google.ads.mediation.admob.AdMobAdapter;
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
@@ -16,7 +24,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import dev.astrup.cocktailindex.Database.AppDatabase;
@@ -26,8 +36,11 @@ import dev.astrup.cocktailindex.Fragments.IndexFragment;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.GdprHelper;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static dev.astrup.cocktailindex.Activities.CocktailDetailsActivity.UPDATE_COCKTAIL_RECIPE;
 
@@ -64,13 +77,11 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Event.APP_OPEN, "App opened");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        GdprHelper gdprHelper = new GdprHelper(this);
+        gdprHelper.initialise();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean metric = prefs.getBoolean("metric", false);
-
 
         cocktailSingleton = CocktailSingleton.getInstance();
         db = AppDatabase.getDatabase(this);
@@ -85,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements
         setCurrentFragment(fragmentIndex);
     }
 
-     @Override
+    @Override
      public boolean onCreateOptionsMenu(Menu menu) {
          // Inflate the menu; this adds items to the action bar if it is present.
          getMenuInflater().inflate(R.menu.menu_main, menu);

@@ -25,6 +25,7 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -35,6 +36,7 @@ import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.RecyclerviewAdapters.ImageAddAdapter;
 import dev.astrup.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.GdprHelper;
 import dev.astrup.cocktailindex.Utility.Measurements;
 
 import java.util.ArrayList;
@@ -98,9 +100,7 @@ public class CreateCocktailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.addcocktail_fragment_details, container, false);
 
-        mAdView = view.findViewById(R.id.admob_addcocktailbanner);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        serveAd(view);
 
         temporaryCocktail = ((NewCocktailActivity)getActivity()).getEditableCocktail();
 
@@ -113,6 +113,21 @@ public class CreateCocktailFragment extends Fragment {
         //editName.requestFocus();
 
         return view;
+    }
+
+    private void serveAd(View view) {
+        GdprHelper gdprHelper = new GdprHelper(getContext());
+        mAdView = view.findViewById(R.id.admob_addcocktailbanner);
+        AdRequest adRequest;
+        if(!gdprHelper.isConsent()){
+            Bundle extras = new Bundle();
+            extras.putString("npa", "1");
+            adRequest = new AdRequest.Builder().addNetworkExtrasBundle(AdMobAdapter.class, extras).build();
+        }
+        else{
+            adRequest = new AdRequest.Builder().build();
+        }
+        mAdView.loadAd(adRequest);
     }
 
     private void fillEditableText() {

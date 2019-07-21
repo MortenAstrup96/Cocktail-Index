@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 
 public class IngredientConverter  {
-    @android.arch.persistence.room.TypeConverter
+    @androidx.room.TypeConverter
     public static ArrayList<String> fromString(String value) {
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
 
-    @android.arch.persistence.room.TypeConverter
+    @androidx.room.TypeConverter
     public static String fromArrayList(ArrayList<String> list) {
         Gson gson = new Gson();
         String json = gson.toJson(list);

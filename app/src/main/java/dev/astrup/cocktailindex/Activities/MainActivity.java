@@ -4,18 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Fragments.FavoriteFragment;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements
     // On Activity result codes
     public static final int NEW_COCKTAIL_RECIPE = 1;   // Created new cocktail from NewCocktailActivity
 
+
     private CocktailSingleton cocktailSingleton;
     private AppDatabase db;
 
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private FloatingActionButton fab;
 
+    // Analytics
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,11 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Event.APP_OPEN, "App opened");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean metric = prefs.getBoolean("metric", false);
@@ -108,11 +118,17 @@ public class MainActivity extends AppCompatActivity implements
 
             updateFragmentLists();
 
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, cocktail.name);
+            bundle.putString("IngredientSize", "" + cocktail.ingredients.size());
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
         } else if(requestCode == UPDATE_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {             // Object and Uri are retrieved from NewCocktailActivity
             cocktail = (Cocktail) data.getSerializableExtra("cocktail");
 
             cocktailSingleton.updateCocktail(cocktail, db);
         }
+
     }
 
     public void updateSpecificCocktailForResult(Cocktail cocktail) {

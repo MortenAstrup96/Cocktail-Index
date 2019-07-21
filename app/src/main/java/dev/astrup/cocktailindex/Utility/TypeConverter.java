@@ -3,7 +3,7 @@ package dev.astrup.cocktailindex.Utility;
 import java.util.ArrayList;
 
 public class TypeConverter  {
-    @android.arch.persistence.room.TypeConverter
+    @androidx.room.TypeConverter
     public String fromArray(ArrayList<String> strings) {
         if(!strings.isEmpty()) {
             String string = "";
@@ -15,7 +15,7 @@ public class TypeConverter  {
 
     }
 
-    @android.arch.persistence.room.TypeConverter
+    @androidx.room.TypeConverter
     public ArrayList<String> toArray(String concatenatedStrings) {
         ArrayList<String> myStrings = new ArrayList<>();
 

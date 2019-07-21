@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -41,12 +40,7 @@ import dev.astrup.cocktailindex.Utility.Measurements;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * AssignmentEnterNew is used when the user wants to add an assignment to the Task. This is a
- * popup window with a textview and two buttons.
- *
- * @author Morten Astrup
- */
+
 public class CreateCocktailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -65,9 +59,6 @@ public class CreateCocktailFragment extends Fragment {
     private EditText editRecipe;
     private EditText editComments;
     private Button addImageButton;
-    private ImageView testImage;
-
-    private boolean normal;
     private boolean idea;
     private boolean favourite;
 
@@ -88,10 +79,7 @@ public class CreateCocktailFragment extends Fragment {
 
     private Spinner measureTypeSpinner;
 
-    private Cocktail editableCocktail;
-
     // Container References for smoothscroll
-    private ConstraintLayout constraintName;
     private ConstraintLayout constraintIngredients;
     private ConstraintLayout imageLayout;
 
@@ -411,7 +399,6 @@ public class CreateCocktailFragment extends Fragment {
         cancel = view.findViewById(R.id.addCocktail_button_cancel);
         scrollView = view.findViewById(R.id.newCocktail_scroll);
         addImageButton = view.findViewById(R.id.addCocktail_button_addimage);
-        testImage = view.findViewById(R.id.recycler_view_add_image_imageview);
 
         // Edittexts
         editIngredients = view.findViewById(R.id.addCocktail_edittext_ingredient);
@@ -427,13 +414,11 @@ public class CreateCocktailFragment extends Fragment {
 
 
         // Constraint Layouts
-        constraintName = view.findViewById(R.id.ChooseName_container);
         constraintIngredients = view.findViewById(R.id.ChooseIngredients_container);
 
         // Buttons
         buttonAddIngredient = view.findViewById(R.id.addCocktail_addIngredient_button);
 
-        normal = false;
         idea = false;
         favourite = false;
     }

@@ -108,9 +108,13 @@ public class CreateCocktailFragment extends Fragment {
         setupRecyclerView(view);
         setupListeners();
 
-        if(temporaryCocktail != null) fillEditableText();
+        if(temporaryCocktail != null) {
+            fillEditableText();
+            if(temporaryCocktail.name == null) getActivity().setTitle("New Cocktail");
+            else getActivity().setTitle("Edit Cocktail");
+        }
 
-        //editName.requestFocus();
+
 
         return view;
     }

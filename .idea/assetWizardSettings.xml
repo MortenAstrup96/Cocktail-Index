@@ -147,11 +147,9 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="300" />
-                            <entry key="outputName" value="ic_nopicture" />
+                            <entry key="outputName" value="ic_round_wb_incandescent_24px" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="D:\Programmer\Android\CocktailIndex\Illustrations\NoPicture.svg" />
-                            <entry key="width" value="500" />
+                            <entry key="sourceFile" value="D:\Development\Android\CocktailIndex\Illustrations\round-wb_incandescent-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>

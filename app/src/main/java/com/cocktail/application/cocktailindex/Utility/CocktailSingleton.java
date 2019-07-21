@@ -207,7 +207,7 @@ public class CocktailSingleton {
             myExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    db.ingredientDBDao().delete(tempCocktailDetailsCocktail.ingredients);
+                    db.ingredientDBDao().delete(cocktail.ingredients);
 
                     db.cocktailDBDao().updateOne(cocktail);
                     db.ingredientDBDao().insertOne(cocktail.ingredients);

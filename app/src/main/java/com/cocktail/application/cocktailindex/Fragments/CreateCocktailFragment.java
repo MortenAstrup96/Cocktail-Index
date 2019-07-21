@@ -1,10 +1,12 @@
 package com.cocktail.application.cocktailindex.Fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +33,7 @@ import com.cocktail.application.cocktailindex.R;
 import com.cocktail.application.cocktailindex.RecyclerviewAdapters.ImageAddAdapter;
 import com.cocktail.application.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
 import com.cocktail.application.cocktailindex.Utility.CocktailSingleton;
+import com.cocktail.application.cocktailindex.Utility.Measurements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,30 +143,7 @@ public class CreateCocktailFragment extends Fragment {
         /** Spinner setup here */
         measureTypeSpinner = view.findViewById(R.id.addCocktail_spinner);
 
-
-        final List<String> arraySingle = new ArrayList<>();
-        arraySingle.add("oz.");
-        arraySingle.add("dash");
-        arraySingle.add("teaspoon");
-        arraySingle.add("sprig");
-        arraySingle.add("leaf");
-        arraySingle.add("cup");
-        arraySingle.add("drop");
-        arraySingle.add("mL.");
-        arraySingle.add(" ");
-
-        final List<String> arrayPlural = new ArrayList<>();
-        arrayPlural.add("oz.");
-        arrayPlural.add("dashes");
-        arrayPlural.add("teaspoons");
-        arrayPlural.add("sprigs");
-        arrayPlural.add("leaves");
-        arrayPlural.add("cups");
-        arrayPlural.add("drops");
-        arrayPlural.add("mL.");
-        arrayPlural.add(" ");
-
-        array.addAll(arraySingle);
+        array.addAll(getMeasurements(false));
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -187,16 +167,16 @@ public class CreateCocktailFragment extends Fragment {
                 if(amount != null) {
                     if(amount == 0 || amount > 1) {
                         getArray().clear();
-                        getArray().addAll(arrayPlural);
+                        getArray().addAll(getMeasurements(true));
                         adapter.notifyDataSetChanged();
                     } else {
                         getArray().clear();
-                        getArray().addAll(arraySingle);
+                        getArray().addAll(getMeasurements(false));
                         adapter.notifyDataSetChanged();
                     }
                 } else {
                     getArray().clear();
-                    getArray().addAll(arraySingle);
+                    getArray().addAll(getMeasurements(false));
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -224,6 +204,13 @@ public class CreateCocktailFragment extends Fragment {
         imageAddAdapter= new ImageAddAdapter(imagePaths, getContext());
         imageRecyclerView.setAdapter(imageAddAdapter);
 
+    }
+
+    private List<String> getMeasurements(boolean plural) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        boolean metric = prefs.getBoolean("metric", false);
+        Measurements measurements = new Measurements(metric);
+        return measurements.getMeasurements(plural);
     }
 
     private List<String> getArray() {

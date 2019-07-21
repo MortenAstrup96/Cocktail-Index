@@ -19,7 +19,7 @@ import dev.astrup.cocktailindex.BuildConfig;
 public class GdprHelper {
 
     private static final String PUBLISHER_ID = "pub-5419523232721664";
-    private static final String PRIVACY_URL = "https://stackoverflow.com/questions/51793345/android-material-and-appcompat-manifest-merger-failed";
+    private static final String PRIVACY_URL = "";
 
     private final Context context;
 

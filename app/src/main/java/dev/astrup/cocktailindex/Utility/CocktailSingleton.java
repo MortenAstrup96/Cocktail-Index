@@ -50,11 +50,6 @@ public class CocktailSingleton {
                 ingredientMap.put(i.getIngredient(), 1);
             }
         }
-
-        for(String key : ingredientMap.keySet())  {
-            Log.d("Ingredients", "Key: " + key);
-            Log.d("Ingredients", "Value: " + ingredientMap.get(key) + "\n");
-        }
     }
 
     public Map<String, Integer> getIngredientMap() {

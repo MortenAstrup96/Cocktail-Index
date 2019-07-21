@@ -9,4 +9,5 @@
     <color name="colorRed">#C21B11</color>
 
     <color name="black_overlay">#65000000</color>
+    <color name="greyUnfocus">#60000000</color>
 </resources>

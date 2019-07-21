@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_favorites"
-    tools:context=".Fragments.FavoriteFragment">
+    tools:context="dev.astrup.cocktailindex.Fragments.FavoriteFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/Favorite_RecyclerView"

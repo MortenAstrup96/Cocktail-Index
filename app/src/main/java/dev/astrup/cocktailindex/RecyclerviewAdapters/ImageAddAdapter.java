@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import dev.astrup.cocktailindex.Activities.NewCocktailActivity;
-import com.astrup.cocktailindex.cocktailindex.R;
+import dev.astrup.cocktailindex.R;
 
 import java.util.List;
 

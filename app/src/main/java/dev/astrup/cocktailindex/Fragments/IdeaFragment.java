@@ -15,7 +15,7 @@ import dev.astrup.cocktailindex.Activities.IdeaActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.OnItemLongClickListener;
-import com.astrup.cocktailindex.cocktailindex.R;
+import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.RecyclerviewAdapters.IdeaAdapter;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 

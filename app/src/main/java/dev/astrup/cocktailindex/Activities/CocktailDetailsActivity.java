@@ -26,11 +26,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import dev.astrup.cocktailindex.CustomPagerAdapter;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
-import com.astrup.cocktailindex.cocktailindex.R;
+import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.RecyclerviewAdapters.IngredientDetailsAdapter;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 
@@ -46,11 +49,19 @@ public class CocktailDetailsActivity extends AppCompatActivity {
     private AppDatabase db;
     private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
 
+    // Admob
+    private AdView mAdView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cocktail_details);
         setStatusBarTranslucent(true);
+
+        mAdView = findViewById(R.id.admob_detailsbanner);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 
         db = AppDatabase.getDatabase(this);

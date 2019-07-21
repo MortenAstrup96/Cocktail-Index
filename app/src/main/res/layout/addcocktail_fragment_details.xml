@@ -10,11 +10,23 @@
     android:background="#F9F9F9"
     >
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/admob_addcocktailbanner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ScrollView
         android:id="@+id/newCocktail_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/admob_addcocktailbanner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -212,13 +224,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Ingredient"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:maxEms="5"
                         android:paddingStart="12dp"
                         android:paddingTop="17dp"
                         android:paddingBottom="17dp"
-                        android:inputType="textCapWords"
                         android:singleLine="true"
-                        android:maxEms="5"
-                        android:imeOptions="actionNext"
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

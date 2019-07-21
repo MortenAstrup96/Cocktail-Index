@@ -17,7 +17,7 @@ import android.widget.TextView;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
-import com.astrup.cocktailindex.cocktailindex.R;
+import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.RecyclerviewAdapters.IngredientDetailsAdapter;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 

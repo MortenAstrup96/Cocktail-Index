@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import dev.astrup.cocktailindex.Fragments.CreateCocktailFragment;
 import dev.astrup.cocktailindex.Objects.Cocktail;
-import com.astrup.cocktailindex.cocktailindex.R;
+import dev.astrup.cocktailindex.R;
 
 import java.io.Serializable;
 
@@ -29,10 +32,13 @@ public class NewCocktailActivity extends AppCompatActivity implements
     private Cocktail temporaryCocktail;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_cocktail);
+
+
 
         setupFragments();
         if(getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);

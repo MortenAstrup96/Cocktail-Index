@@ -26,10 +26,13 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import dev.astrup.cocktailindex.Activities.NewCocktailActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
-import com.astrup.cocktailindex.cocktailindex.R;
+import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.RecyclerviewAdapters.ImageAddAdapter;
 import dev.astrup.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
@@ -92,6 +95,9 @@ public class CreateCocktailFragment extends Fragment {
     private ConstraintLayout constraintIngredients;
     private ConstraintLayout imageLayout;
 
+    // Admob
+    private AdView mAdView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +109,10 @@ public class CreateCocktailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.addcocktail_fragment_details, container, false);
+
+        mAdView = view.findViewById(R.id.admob_addcocktailbanner);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         temporaryCocktail = ((NewCocktailActivity)getActivity()).getEditableCocktail();
 

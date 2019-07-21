@@ -22,7 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.OnItemClickListener;
-import com.astrup.cocktailindex.cocktailindex.R;
+import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 import dev.astrup.cocktailindex.Utility.ImageUtilities;
 

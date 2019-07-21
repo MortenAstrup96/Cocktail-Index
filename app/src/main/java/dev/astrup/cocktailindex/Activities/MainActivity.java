@@ -22,7 +22,7 @@ import dev.astrup.cocktailindex.Fragments.FavoriteFragment;
 import dev.astrup.cocktailindex.Fragments.IdeaFragment;
 import dev.astrup.cocktailindex.Fragments.IndexFragment;
 import dev.astrup.cocktailindex.Objects.Cocktail;
-import com.astrup.cocktailindex.cocktailindex.R;
+import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 
 import java.io.Serializable;

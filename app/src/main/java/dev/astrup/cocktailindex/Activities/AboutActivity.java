@@ -9,7 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.astrup.cocktailindex.cocktailindex.R;
+import dev.astrup.cocktailindex.R;
+
 
 public class AboutActivity extends AppCompatActivity {
 

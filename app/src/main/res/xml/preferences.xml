@@ -9,4 +9,9 @@
             android:summary="Check to use the metric system (mL) instead of imperial (oz.)"
             android:title="Metric System" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Privacy">
+        <Preference android:title="Reset privacy settings"
+            android:key="@string/resetPrivacy"
+            android:summary="Resets your consent regarding personalised ads. Will re-open the consent dialog if you are inside the EEA (European Economic Area)"/>
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -6,13 +6,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/favourites_section_cardview"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -41,12 +41,11 @@
                     android:id="@+id/favourites_section_image_cocktail"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
-                    android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
@@ -59,9 +58,11 @@
                         android:id="@+id/favourites_section_header"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
                         android:text="Missing name"
                         android:textAlignment="textStart"
                         android:textColor="@color/colorGrey"
@@ -71,18 +72,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageButton
-                        android:id="@+id/favourites_section_imagebutton_settings"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/ic_settings_vertical"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:tint="@color/colorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="@+id/index_section_favourite"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/index_section_favourite" />
-
                     <CheckBox
                         android:id="@+id/index_section_favourite"
                         android:layout_width="30dp"
@@ -91,27 +80,31 @@
                         android:background="@drawable/selector_fav"
                         android:button="@color/colorPrimaryDark"
                         android:checked="true"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView"
-                        app:layout_constraintEnd_toStartOf="@+id/favourites_section_imagebutton_settings"
-                        app:layout_constraintTop_toTopOf="@+id/favourites_section_header" />
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/favourites_section_ingredients"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="Whisky, Lemon, Simple Syru..."
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:text="No Ingredients"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/index_section_favourite"
                         app:layout_constraintStart_toStartOf="@+id/favourites_section_header"
                         app:layout_constraintTop_toBottomOf="@+id/favourites_section_header" />
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.v7.widget.CardView>
-    </android.support.constraint.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

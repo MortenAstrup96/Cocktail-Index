@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.application.cocktailindex.Activities.MainActivity">
+    tools:context="dev.astrup.cocktailindex.Activities.MainActivity">
     <item
         android:id="@+id/favorites"
         android:icon="@drawable/ic_fav"
@@ -14,6 +14,6 @@
 
     <item
         android:id="@+id/ideas"
-        android:icon="@drawable/ic_locationtemp"
+        android:icon="@drawable/ic_round_wb_incandescent_24px"
         android:title="Ideas" />
 </menu>

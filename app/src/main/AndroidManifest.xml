@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.application.cocktailindex">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="dev.astrup.cocktailindex">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -13,44 +14,61 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+
         <activity
-            android:name=".Activities.CocktailDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name="dev.astrup.cocktailindex.Activities.SplashActivity"
+            android:theme="@style/SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.NewCocktailActivity"
+            android:name="dev.astrup.cocktailindex.Activities.AboutActivity"
+            android:label="About Application"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="dev.astrup.cocktailindex.Activities.SettingsActivity"
+            android:label="Settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="dev.astrup.cocktailindex.Activities.IdeaActivity"
+            android:label="Cocktail Idea"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="dev.astrup.cocktailindex.Activities.CocktailDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="dev.astrup.cocktailindex.Activities.NewCocktailActivity"
             android:label="New Cocktail"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="dev.astrup.cocktailindex.Activities.MainActivity"
             android:label="Cocktail Index"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
 
-        <provider
-            android:name=".Utility.GenericFileProvider"
-            android:authorities="${applicationId}.my.package.name.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5419523232721664~6297417139"/>
+
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
+
     </application>
 
 </manifest>

@@ -9,4 +9,7 @@
     <string name="title_activity_loading_screen">LoadingScreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="about_app">About App</string>
+    <string name="pref_previously_started">prevStarted</string>
+    <string name="resetPrivacy">resetPrivacy</string>
 </resources>

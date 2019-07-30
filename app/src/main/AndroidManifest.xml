@@ -18,7 +18,7 @@
 
 
         <activity
-            android:name="dev.astrup.cocktailindex.Activities.SplashActivity"
+            android:name=".Modules.Various.SplashActivity"
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,26 +26,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="dev.astrup.cocktailindex.Activities.AboutActivity"
+            android:name=".Modules.Various.AboutActivity"
             android:label="About Application"
             android:screenOrientation="portrait" />
         <activity
-            android:name="dev.astrup.cocktailindex.Activities.SettingsActivity"
+            android:name=".Modules.Various.SettingsActivity"
             android:label="Settings"
             android:screenOrientation="portrait" />
         <activity
-            android:name="dev.astrup.cocktailindex.Activities.IdeaActivity"
-            android:label="Cocktail Idea"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="dev.astrup.cocktailindex.Activities.CocktailDetailsActivity"
+            android:name=".Modules.Details.CocktailDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="dev.astrup.cocktailindex.Activities.NewCocktailActivity"
+            android:name=".Modules.Creation.NewCocktailActivity"
             android:label="New Cocktail"
             android:screenOrientation="portrait" />
         <activity
-            android:name="dev.astrup.cocktailindex.Activities.MainActivity"
+            android:name=".Modules.Index.MainActivity"
             android:label="Cocktail Index"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

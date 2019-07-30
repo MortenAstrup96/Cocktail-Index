@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9F9F9"
-    tools:context="dev.astrup.cocktailindex.Activities.NewCocktailActivity">
+    tools:context=".Modules.Creation.NewCocktailActivity">
     <!--- app:adUnitId="ca-app-pub-3940256099942544/6300978111" -->
     <com.google.android.gms.ads.AdView
         android:id="@+id/admob_addcocktailbanner"

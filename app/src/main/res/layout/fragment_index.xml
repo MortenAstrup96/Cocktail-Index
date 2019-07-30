@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/fragment_index"
     android:tag="indexFragment"
-    tools:context="dev.astrup.cocktailindex.Fragments.IndexFragment">
+    tools:context="dev.astrup.cocktailindex.Modules.Index.IndexFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/Index_RecyclerView"

@@ -5,7 +5,7 @@
     android:id="@+id/main_activity_coordinatorlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dev.astrup.cocktailindex.Activities.MainActivity">
+    tools:context=".Modules.Index.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

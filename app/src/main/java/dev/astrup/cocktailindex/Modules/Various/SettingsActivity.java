@@ -1,10 +1,8 @@
-package dev.astrup.cocktailindex.Activities;
+package dev.astrup.cocktailindex.Modules.Various;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-
-import dev.astrup.cocktailindex.Fragments.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
 

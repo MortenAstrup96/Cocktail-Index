@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.RecyclerviewAdapters;
+package dev.astrup.cocktailindex.Modules.Creation;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import dev.astrup.cocktailindex.Activities.NewCocktailActivity;
+
 import dev.astrup.cocktailindex.R;
 
 import java.util.List;

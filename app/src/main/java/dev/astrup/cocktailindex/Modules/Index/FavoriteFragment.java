@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.Fragments;
+package dev.astrup.cocktailindex.Modules.Index;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,11 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import dev.astrup.cocktailindex.Activities.CocktailDetailsActivity;
-import dev.astrup.cocktailindex.Activities.MainActivity;
+import dev.astrup.cocktailindex.Modules.Details.CocktailDetailsActivity;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
-import dev.astrup.cocktailindex.RecyclerviewAdapters.FavouriteAdapter;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;

@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.Activities;
+package dev.astrup.cocktailindex.Modules.Creation;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import dev.astrup.cocktailindex.Fragments.CreateCocktailFragment;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.R;
 

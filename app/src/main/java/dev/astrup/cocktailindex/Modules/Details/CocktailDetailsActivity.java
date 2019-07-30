@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.Activities;
+package dev.astrup.cocktailindex.Modules.Details;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,12 +31,12 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import dev.astrup.cocktailindex.Modules.Creation.NewCocktailActivity;
 import dev.astrup.cocktailindex.CustomPagerAdapter;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.RecyclerviewAdapters.IngredientDetailsAdapter;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 import dev.astrup.cocktailindex.Utility.GdprHelper;
 

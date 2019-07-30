@@ -5,7 +5,7 @@
     android:id="@+id/idea_constraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dev.astrup.cocktailindex.Activities.CocktailDetailsActivity">
+    tools:context=".Modules.Details.CocktailDetailsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

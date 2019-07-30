@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.RecyclerviewAdapters;
+package dev.astrup.cocktailindex.Modules.Creation;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import dev.astrup.cocktailindex.Objects.Ingredient;
@@ -20,23 +21,25 @@ import java.util.ArrayList;
  *
  * @author Morten Astrup
  */
-public class IngredientDetailsAdapter extends RecyclerView.Adapter<IngredientDetailsAdapter.MyViewHolder> {
+public class IngredientsAddAdapter extends RecyclerView.Adapter<IngredientsAddAdapter.MyViewHolder> {
 
     private Context context;
     private ArrayList<Ingredient> ingredients;
 
 
+
     // Initialises the string list
-    public IngredientDetailsAdapter(ArrayList<Ingredient> ingredients, Context context) {
+    public IngredientsAddAdapter(ArrayList<Ingredient> ingredients, Context context) {
         this.ingredients = ingredients;
         this.context = context;
     }
 
     @Override
     @NonNull
-    public IngredientDetailsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public IngredientsAddAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_view_showingredientdetails, parent, false);
+                .inflate(R.layout.recycler_view_addingredients_show, parent, false);
+
 
 
         return new MyViewHolder(itemView);
@@ -44,15 +47,25 @@ public class IngredientDetailsAdapter extends RecyclerView.Adapter<IngredientDet
 
     @Override
     @NonNull
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Ingredient ingredient = ingredients.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final Ingredient ingredient = ingredients.get(position);
         String name = ingredient.getIngredient();
         String amount = ingredient.getAmount();
         String measurement = ingredient.getMeasurement();
 
-
+        if(measurement.equals("Piece")) measurement = "";   // Piece means no text
         holder.name.setText(name);
         holder.amount.setText(amount + " " + measurement + " ");
+
+        holder.deleteIngredientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ingredients.remove(position);
+                notifyDataSetChanged();
+            }
+        });
+
+
     }
 
     @Override
@@ -67,11 +80,16 @@ public class IngredientDetailsAdapter extends RecyclerView.Adapter<IngredientDet
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView amount;
+        private ImageButton deleteIngredientButton;
 
         public MyViewHolder(final View view) {
             super(view);
-            name = view.findViewById(R.id.recyclerview_showingredientdetails_ingredient);
-            amount = view.findViewById(R.id.recyclerview_showingredientdetails_amount);
+            name = view.findViewById(R.id.recycler_view_addingredient_show_ingredient);
+            amount = view.findViewById(R.id.recycler_view_addingredient_show_amount);
+            deleteIngredientButton = view.findViewById(R.id.recyclerview_addingredients_delete);
+
+
+
 
 
         }

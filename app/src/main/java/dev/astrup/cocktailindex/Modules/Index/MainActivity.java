@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.Activities;
+package dev.astrup.cocktailindex.Modules.Index;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,13 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
-import com.google.ads.consent.ConsentForm;
-import com.google.ads.consent.ConsentFormListener;
-import com.google.ads.consent.ConsentInfoUpdateListener;
-import com.google.ads.consent.ConsentInformation;
-import com.google.ads.consent.ConsentStatus;
-import com.google.ads.mediation.admob.AdMobAdapter;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
@@ -24,25 +17,21 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import dev.astrup.cocktailindex.Modules.Creation.NewCocktailActivity;
+import dev.astrup.cocktailindex.Modules.Various.AboutActivity;
+import dev.astrup.cocktailindex.Modules.Various.SettingsActivity;
 import dev.astrup.cocktailindex.Database.AppDatabase;
-import dev.astrup.cocktailindex.Fragments.FavoriteFragment;
-import dev.astrup.cocktailindex.Fragments.IdeaFragment;
-import dev.astrup.cocktailindex.Fragments.IndexFragment;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 import dev.astrup.cocktailindex.Utility.GdprHelper;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import static dev.astrup.cocktailindex.Activities.CocktailDetailsActivity.UPDATE_COCKTAIL_RECIPE;
+import static dev.astrup.cocktailindex.Modules.Details.CocktailDetailsActivity.UPDATE_COCKTAIL_RECIPE;
 
 
 public class MainActivity extends AppCompatActivity implements

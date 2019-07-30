@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.Fragments;
+package dev.astrup.cocktailindex.Modules.Various;
 
 
 import android.os.Bundle;

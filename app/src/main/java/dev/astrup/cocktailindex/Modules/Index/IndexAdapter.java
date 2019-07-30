@@ -1,20 +1,31 @@
-package dev.astrup.cocktailindex.RecyclerviewAdapters;
+package dev.astrup.cocktailindex.Modules.Index;
 
 import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.OnItemLongClickListener;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.ImageUtilities;
 
 import java.util.List;
 
@@ -25,7 +36,7 @@ import java.util.List;
  *
  * @author Morten Astrup
  */
-public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> {
+public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder> {
 
 
     // The list containing all the objects with the required information for at piece.
@@ -35,12 +46,14 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
     private OnItemLongClickListener itemLongClickListener;
     private Context context;
 
+    private CheckBox checkBox;
+    private ImageUtilities imageUtilities = ImageUtilities.getInstance();
 
     // Database
     private AppDatabase db;
 
     // Initialises the string list
-    public IdeaAdapter(List<Cocktail> cocktailList, OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener, Context context) {
+    public IndexAdapter(List<Cocktail> cocktailList,  OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener, Context context) {
         this.cocktailList = cocktailList;
         this.itemClickListener = itemClickListener;
         this.itemLongClickListener = itemLongClickListener;
@@ -52,11 +65,10 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
 
     @Override
     @NonNull
-    public IdeaAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public IndexAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_view_idea, parent, false);
+                .inflate(R.layout.recycler_view_index, parent, false);
 
-        java.util.Collections.sort(cocktailList);
 
         return new MyViewHolder(itemView, itemClickListener, itemLongClickListener);
     }
@@ -64,27 +76,54 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
     @Override
     @NonNull
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        java.util.Collections.sort(cocktailList);
-        Cocktail cocktail = cocktailList.get(position);
+        final Cocktail cocktail = cocktailList.get(position);
         String name = cocktail.name;
         String displayIngredients = "";
 
         // Get image from internal storage
         holder.name.setText(name);
 
+        setImage(holder, cocktail);
+
+        holder.checkBox.setOnCheckedChangeListener(null);
+        holder.checkBox.setChecked(cocktail.favourite);
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    cocktail.favourite = b;
+                    CocktailSingleton.getInstance().setFavourite(cocktail, db);
+                }
+            });
+
 
         if(position >= 0) {
-            cocktail = cocktailList.get(position);
             if(cocktail.ingredients.size() > 0) {
                 displayIngredients = displayIngredients + cocktail.ingredients.get(0).getIngredient();
                 for(int i = 1; i < cocktail.ingredients.size(); i++) {
                     displayIngredients = displayIngredients + ", " + cocktail.ingredients.get(i).getIngredient();
                 }
             }
+
             holder.ingredients.setText(displayIngredients);
         }
     }
 
+    private void setImage(MyViewHolder holder, Cocktail cocktail) {
+        if(imageUtilities.hasFunctionalImage(cocktail)) {
+            Glide.with(context)
+                    .load(Uri.parse(cocktail.imagePath.get(0)))
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .override(250, 250)
+                    .circleCrop()
+                    .into(holder.imageView);
+        } else {
+            Glide.with(context)
+                    .load(R.drawable.ic_nopicture)
+                    .centerInside()
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.imageView);
+        }
+    }
 
 
     @Override
@@ -105,24 +144,32 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
         private OnItemClickListener itemClickListener;
         private OnItemLongClickListener itemLongClickListener;
         private TextView name;
+        private ImageView imageView;
         private TextView ingredients;
-
+        public CheckBox checkBox;
 
         public MyViewHolder(final View view, final OnItemClickListener itemClickListener, final OnItemLongClickListener itemLongClickListener) {
             super(view);
             this.itemClickListener = itemClickListener;
             this.itemLongClickListener = itemLongClickListener;
 
-            this.setIsRecyclable(true); // TODO: VERY BAD PRACTICE -> Fix: https://android.jlelse.eu/android-handling-checkbox-state-in-recycler-views-71b03f237022
-
-            name =  view.findViewById(R.id.idea_recycler_view_header);
-            ingredients = view.findViewById(R.id.idea_recycler_view_ingredients);
+            cocktailList = CocktailSingleton.getInstance().getIndexList();
+            name =  view.findViewById(R.id.index_section_header);
+            imageView =  view.findViewById(R.id.index_section_image_cocktail);
+            checkBox = view.findViewById(R.id.index_section_favourite);
+            ingredients = view.findViewById(R.id.index_section_details);
 
 
             view.setOnClickListener(this);
             view.setOnCreateContextMenuListener(this);
 
-            cocktailList = CocktailSingleton.getInstance().getIdeas();
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    shortVibration();
+                }
+            });
+
 
             view.setOnClickListener(this);
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -132,7 +179,6 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
                     return false;
                 }
             });
-
         }
         /**
          * Method to be invoked when clicking on a certain element
@@ -141,6 +187,18 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
         @Override
         public void onClick(View view) {
             itemClickListener.onItemClick(view, getAdapterPosition());
+        }
+
+
+        private void shortVibration() {
+            Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            // Vibrate for 500 milliseconds
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                v.vibrate(VibrationEffect.createOneShot(5, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                //deprecated in API 26
+                v.vibrate(5);
+            }
         }
 
 

@@ -15,10 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import dev.astrup.cocktailindex.Database.AppDatabase;
+import dev.astrup.cocktailindex.Modules.Creation.NewCocktailActivity;
+import dev.astrup.cocktailindex.Modules.Details.IngredientDetailsAdapter;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.RecyclerviewAdapters.IngredientDetailsAdapter;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 
 import java.util.ArrayList;

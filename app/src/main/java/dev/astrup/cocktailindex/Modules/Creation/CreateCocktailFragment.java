@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.Fragments;
+package dev.astrup.cocktailindex.Modules.Creation;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,12 +29,9 @@ import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import dev.astrup.cocktailindex.Activities.NewCocktailActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.RecyclerviewAdapters.ImageAddAdapter;
-import dev.astrup.cocktailindex.RecyclerviewAdapters.IngredientsAddAdapter;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 import dev.astrup.cocktailindex.Utility.GdprHelper;
 import dev.astrup.cocktailindex.Utility.Measurements;

@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.RecyclerviewAdapters;
+package dev.astrup.cocktailindex.Modules.Index;
 
 import android.content.Context;
 import android.net.Uri;

@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "699806865185",
+    "firebase_url": "https://cocktail-index.firebaseio.com",
+    "project_id": "cocktail-index",
+    "storage_bucket": "cocktail-index.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699806865185:android:15a46d7b17eb0661",
+        "android_client_info": {
+          "package_name": "dev.astrup.cocktailindex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699806865185-cggrkgbfgtnteajds3qgr2575ni2c75r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.astrup.cocktailindex",
+            "certificate_hash": "ae7966aaa615720e12a7cedaeacbc5722be9251f"
+          }
+        },
+        {
+          "client_id": "699806865185-lkh7qmoh71ubqlr0d94o3rfbnhj6llah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXZt_rGhDhMoXa6NiW7Sikh5u6fVVkIhA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699806865185-lkh7qmoh71ubqlr0d94o3rfbnhj6llah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-5419523232721664~6297417139"
+    }
+  ],
+  "configuration_version": "1"
+}

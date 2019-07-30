@@ -1,14 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
+// Version control
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+def versionBuild = 0
+
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "dev.astrup.cocktailindex"
         minSdkVersion 22
         targetSdkVersion 28
-        versionCode 1002
-        versionName '1.0.0.2'
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
     }

@@ -24,7 +24,7 @@ public class Ingredient implements Serializable, Comparable {
     @ColumnInfo(name = "number")
     private int number;
 
-    @ColumnInfo(name = "cocktail_fk")
+    @ColumnInfo(name = "cocktail_fk", index = true)
     private int cocktailIdFk;
 
     @ColumnInfo(name = "ingredient")

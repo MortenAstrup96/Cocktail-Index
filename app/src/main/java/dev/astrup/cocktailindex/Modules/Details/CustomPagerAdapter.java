@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex;
+package dev.astrup.cocktailindex.Modules.Details;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.ImageUtilities;
 
 import java.util.List;

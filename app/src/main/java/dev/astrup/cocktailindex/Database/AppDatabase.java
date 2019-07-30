@@ -8,7 +8,7 @@ import android.content.Context;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 
-@Database(entities = {Cocktail.class, Ingredient.class}, version = 1)
+@Database(entities = {Cocktail.class, Ingredient.class}, version = 1000)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract CocktailDBDao cocktailDBDao();
     public abstract IngredientDBDao ingredientDBDao();

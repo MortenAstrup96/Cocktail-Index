@@ -3,6 +3,7 @@ package dev.astrup.cocktailindex.Objects;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 import androidx.annotation.NonNull;
@@ -14,10 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(tableName = "cocktail")
+@Entity(tableName = "cocktail", indices = {@Index("id")})
 public class Cocktail implements Serializable, Comparable {
 
     @PrimaryKey
+    @ColumnInfo(name = "id")
     public int id;
 
     @ColumnInfo(name = "name")

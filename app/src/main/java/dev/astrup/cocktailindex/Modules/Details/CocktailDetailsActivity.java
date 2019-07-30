@@ -32,7 +32,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import dev.astrup.cocktailindex.Modules.Creation.NewCocktailActivity;
-import dev.astrup.cocktailindex.CustomPagerAdapter;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;

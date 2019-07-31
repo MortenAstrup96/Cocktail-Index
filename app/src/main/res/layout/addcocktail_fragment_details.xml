@@ -252,7 +252,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Amount"
-                        android:inputType="number|numberDecimal"
+                        android:inputType="numberDecimal"
+                        android:selectAllOnFocus="false"
                         android:singleLine="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -264,6 +265,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
+                    android:dropDownWidth="90dp"
                     app:layout_constraintBottom_toBottomOf="@+id/addCocktail_border_quantity"
                     app:layout_constraintStart_toEndOf="@+id/addCocktail_border_quantity"
                     app:layout_constraintTop_toTopOf="@+id/addCocktail_border_quantity" />

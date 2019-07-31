@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import dev.astrup.cocktailindex.Modules.Details.CocktailDetailsActivity;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
+import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.OnItemLongClickListener;
 import dev.astrup.cocktailindex.R;
@@ -72,7 +73,7 @@ public class IndexFragment extends Fragment {
 
                 // Scales up the new activity from the cardview clicked
                 Intent intent = new Intent(getActivity(), CocktailDetailsActivity.class);
-                intent.putExtra("cocktail", cocktailSingleton.getIndexList().get(position)); // TODO: Switch to using ID instead later
+                intent.putExtra("cocktail", savedCocktailList.get(position)); // TODO: Switch to using ID instead later
                 startActivity(intent);
             }
         };
@@ -81,7 +82,7 @@ public class IndexFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new IndexAdapter(cocktailSingleton.getIndexList(), listener, longClickListener, getContext());
+        mAdapter = new IndexAdapter(savedCocktailList, listener, longClickListener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -163,24 +164,24 @@ public class IndexFragment extends Fragment {
         return super.onContextItemSelected(item);
     }
 
-    public List<Cocktail> searchQuery(String s) {
-        cocktailSingleton.getIndexList().clear();
-        cocktailSingleton.getIndexList().addAll(savedCocktailList);
-        List<Cocktail> toRemove = new ArrayList<>();
+    public void searchQuery(String s) {
+        savedCocktailList.clear();
 
         for(Cocktail cocktail : cocktailSingleton.getIndexList()) {
+            boolean addCocktail = false;
             String name = cocktail.name.toLowerCase();
-           // String ingredients = cocktail.ingredients.toLowerCase();
 
-            if( !name.contains(s) /*&&
-                    !ingredients.contains(s)*/) {
-                toRemove.add(cocktail);
+            for(Ingredient i : cocktail.ingredients) {
+                if(i.getIngredient().toLowerCase().contains(s)) addCocktail = true;
             }
+            if(name.contains(s)) addCocktail = true;
+
+
+            if(addCocktail) savedCocktailList.add(cocktail);
+
         }
 
-        cocktailSingleton.getIndexList().removeAll(toRemove);
         mAdapter.notifyDataSetChanged();
-        return cocktailSingleton.getIndexList();
     }
 
     /** ==== STANDARD FRAGMENT METHODS ==== */

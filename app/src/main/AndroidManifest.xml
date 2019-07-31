@@ -41,6 +41,10 @@
             android:label="New Cocktail"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".Modules.Details.IdeaActivity"
+            android:label="Cocktail Idea"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Modules.Index.MainActivity"
             android:label="Cocktail Index"
             android:screenOrientation="portrait"

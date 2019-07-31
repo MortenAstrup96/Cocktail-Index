@@ -153,7 +153,6 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             this.itemClickListener = itemClickListener;
             this.itemLongClickListener = itemLongClickListener;
 
-            cocktailList = CocktailSingleton.getInstance().getIndexList();
             name =  view.findViewById(R.id.index_section_header);
             imageView =  view.findViewById(R.id.index_section_image_cocktail);
             checkBox = view.findViewById(R.id.index_section_favourite);

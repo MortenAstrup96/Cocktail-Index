@@ -1,4 +1,4 @@
-package dev.astrup.cocktailindex.Activities;
+package dev.astrup.cocktailindex.Modules.Details;
 
 import android.app.Activity;
 import android.content.Intent;

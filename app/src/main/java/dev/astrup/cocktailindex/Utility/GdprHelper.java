@@ -42,8 +42,6 @@ public class GdprHelper {
                 if (consentStatus == ConsentStatus.UNKNOWN
                         &&ConsentInformation.getInstance(context).isRequestLocationInEeaOrUnknown()) {
                     displayConsentForm();
-                } else {
-                    Toast.makeText(context, consentStatus.toString(), Toast.LENGTH_LONG).show();
                 }
             }
 

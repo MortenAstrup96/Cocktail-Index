@@ -166,7 +166,6 @@ public class IndexFragment extends Fragment {
 
     public void searchQuery(String s) {
         savedCocktailList.clear();
-
         for(Cocktail cocktail : cocktailSingleton.getIndexList()) {
             boolean addCocktail = false;
             String name = cocktail.name.toLowerCase();
@@ -175,10 +174,7 @@ public class IndexFragment extends Fragment {
                 if(i.getIngredient().toLowerCase().contains(s)) addCocktail = true;
             }
             if(name.contains(s)) addCocktail = true;
-
-
             if(addCocktail) savedCocktailList.add(cocktail);
-
         }
 
         mAdapter.notifyDataSetChanged();

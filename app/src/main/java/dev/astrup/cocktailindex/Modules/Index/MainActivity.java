@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements
     private IdeaFragment fragmentIdea;
 
     private FloatingActionButton fab;
+    private SearchManager searchManager;
+    private MenuItem searchItem;
 
     // Analytics
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -98,17 +100,24 @@ public class MainActivity extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuInflater menuInflater = getMenuInflater();
+        setupSearch(menu, menuInflater);
+        return super.onCreateOptionsMenu(menu);
+     }
+
+
+    private void setupSearch(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.menu_search_bar, menu);
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem = menu.findItem(R.id.action_search);
 
         // https://stackoverflow.com/questions/27378981/how-to-use-searchview-in-toolbar-android <--- Search view
-        final SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+        searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
         // Searching and Cocktails references
         SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setQueryHint("Search by cocktail or ingredient");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Log.d("Search","Query Submitted: " + s);
                 if(s.isEmpty()) {
                     cocktailSingleton.getIndexList().clear();
                 }
@@ -119,15 +128,13 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public boolean onQueryTextChange(String s) {
                 if(fragmentIndex != null) {
-                    fragmentIndex.searchQuery(s.toLowerCase());
+                    if(fragmentIndex.isVisible()) fragmentIndex.searchQuery(s.toLowerCase());
+                    if(fragmentFavorite.isVisible()) fragmentFavorite.searchQuery(s.toLowerCase());
                 }
-
                 return false;
             }
         });
-        return super.onCreateOptionsMenu(menu);
-     }
-
+    }
 
 
     /**
@@ -236,14 +243,19 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.favorites:
+                searchItem.setVisible(true);
+                searchItem.collapseActionView();
                 setCurrentFragment(fragmentFavorite);
                 fab.show();
                 break;
             case R.id.index:
+                searchItem.setVisible(true);
+                searchItem.collapseActionView();
                 setCurrentFragment(fragmentIndex);
                 fab.show();
                 break;
             case R.id.ideas:
+                searchItem.setVisible(false);
                 setCurrentFragment(fragmentIdea);
                 fab.show();
                 break;

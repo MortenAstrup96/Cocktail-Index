@@ -87,11 +87,6 @@ public class IngredientsAddAdapter extends RecyclerView.Adapter<IngredientsAddAd
             name = view.findViewById(R.id.recycler_view_addingredient_show_ingredient);
             amount = view.findViewById(R.id.recycler_view_addingredient_show_amount);
             deleteIngredientButton = view.findViewById(R.id.recyclerview_addingredients_delete);
-
-
-
-
-
         }
     }
 }

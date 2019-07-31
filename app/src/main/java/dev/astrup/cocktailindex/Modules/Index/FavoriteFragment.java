@@ -18,9 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import dev.astrup.cocktailindex.Modules.Details.CocktailDetailsActivity;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
+import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
@@ -32,7 +35,7 @@ public class FavoriteFragment extends Fragment {
     private OnItemClickListener listener;
 
     private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
-
+    private ArrayList<Cocktail> savedCocktailList;
     private FavouriteAdapter mAdapter;
     private Cocktail tempDeletion;
 
@@ -47,6 +50,8 @@ public class FavoriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite,container,false);
+        savedCocktailList = new ArrayList<>();
+        savedCocktailList.addAll(cocktailSingleton.getFavourites());
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -79,7 +84,7 @@ public class FavoriteFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new FavouriteAdapter(cocktailSingleton.getFavourites(), listener, getContext());
+        mAdapter = new FavouriteAdapter(savedCocktailList, listener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -177,6 +182,22 @@ public class FavoriteFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void searchQuery(String s) {
+        savedCocktailList.clear();
+        for(Cocktail cocktail : cocktailSingleton.getFavourites()) {
+            boolean addCocktail = false;
+            String name = cocktail.name.toLowerCase();
+
+            for(Ingredient i : cocktail.ingredients) {
+                if(i.getIngredient().toLowerCase().contains(s)) addCocktail = true;
+            }
+            if(name.contains(s)) addCocktail = true;
+            if(addCocktail) savedCocktailList.add(cocktail);
+        }
+
+        mAdapter.notifyDataSetChanged();
     }
 
     /**

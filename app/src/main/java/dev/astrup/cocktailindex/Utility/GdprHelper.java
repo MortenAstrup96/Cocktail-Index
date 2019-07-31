@@ -16,10 +16,11 @@ import java.net.URL;
 
 import dev.astrup.cocktailindex.BuildConfig;
 
+
 public class GdprHelper {
 
     private static final String PUBLISHER_ID = "pub-5419523232721664";
-    private static final String PRIVACY_URL = "";
+    private static final String PRIVACY_URL = "https://www.sqlite.org/queryplanner.html";
 
     private final Context context;
 

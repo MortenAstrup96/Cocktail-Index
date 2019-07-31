@@ -86,7 +86,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
     }
 
     private void serveAd() {
-        GdprHelper gdprHelper = new GdprHelper(getApplicationContext());
+        GdprHelper gdprHelper = new GdprHelper(this);
         mAdView = findViewById(R.id.admob_detailsbanner);
         AdRequest adRequest;
         if(!gdprHelper.isConsent()){

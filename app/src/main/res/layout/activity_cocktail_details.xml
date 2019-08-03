@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Modules.Details.CocktailDetailsActivity">
+    <!-- TEST: ca-app-pub-3940256099942544/6300978111 -->
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/admob_detailsbanner"
@@ -13,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:adUnitId="ca-app-pub-5419523232721664/2911392815"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

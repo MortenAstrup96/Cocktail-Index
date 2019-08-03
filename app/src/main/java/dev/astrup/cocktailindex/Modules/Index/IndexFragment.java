@@ -190,7 +190,6 @@ public class IndexFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateList();
         mAdapter.notifyDataSetChanged();
     }
 
@@ -207,7 +206,6 @@ public class IndexFragment extends Fragment {
 
 
     public void updateList() {
-        savedCocktailList = cocktailSingleton.getIndexList();
         if(mAdapter != null) mAdapter.notifyDataSetChanged();
     }
 

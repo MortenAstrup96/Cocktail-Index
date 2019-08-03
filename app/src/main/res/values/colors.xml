@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2C3235</color>
-    <color name="colorPrimaryDark">#2C3235</color>
+    <color name="colorPrimary">#1E2020</color>
+    <color name="colorPrimaryDark">#1E2020</color>
     <color name="colorPrimaryFaded">#96272f32</color>
     <color name="colorGrey">#444444</color>
     <color name="colorTransparentBlack">#23000000</color>
@@ -10,4 +10,11 @@
 
     <color name="black_overlay">#65000000</color>
     <color name="greyUnfocus">#60000000</color>
+    <color name="invisible">#00FFFFFF</color>
+
+    <color name="walkColor1">#D8DBE6</color>
+    <color name="walkColor2">#1E2020</color>
+    <color name="walkColor3">#FF4A29</color>
+
+
 </resources>

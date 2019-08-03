@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
@@ -27,6 +26,7 @@ import android.view.MenuItem;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import dev.astrup.cocktailindex.Modules.AppWalkthrough.WalkthroughActivity;
 import dev.astrup.cocktailindex.Modules.Creation.NewCocktailActivity;
 import dev.astrup.cocktailindex.Modules.Various.AboutActivity;
 import dev.astrup.cocktailindex.Modules.Various.SettingsActivity;
@@ -92,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements
         fragmentIdea = new IdeaFragment();
 
         setCurrentFragment(fragmentIndex);
+
+
+        Intent intent = new Intent(MainActivity.this, WalkthroughActivity.class);
+        startActivity(intent);
     }
 
     @Override

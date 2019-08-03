@@ -147,9 +147,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_round_wb_incandescent_24px" />
-                            <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="D:\Development\Android\CocktailIndex\Illustrations\round-wb_incandescent-24px.svg" />
+                            <entry key="outputName" value="ic_021_cocktails_19" />
+                            <entry key="sourceFile" value="D:\Development\Android\CocktailIndex\Illustrations\CocktailIcons\021-cocktails-19.svg" />
                           </map>
                         </option>
                       </PersistentState>

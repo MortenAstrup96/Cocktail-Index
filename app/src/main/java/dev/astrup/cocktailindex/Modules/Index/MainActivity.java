@@ -79,7 +79,9 @@ public class MainActivity extends AppCompatActivity implements
         gdprHelper.initialise();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean metric = prefs.getBoolean("metric", false);
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+
 
         cocktailSingleton = CocktailSingleton.getInstance();
         db = AppDatabase.getDatabase(this);
@@ -93,9 +95,14 @@ public class MainActivity extends AppCompatActivity implements
 
         setCurrentFragment(fragmentIndex);
 
+        // Check if we need to display our OnboardingFragment
+        if (!sharedPreferences.getBoolean(
+                "WalkthroughCompleted", false)) {
+            Intent intent = new Intent(MainActivity.this, WalkthroughActivity.class);
+            startActivity(intent);
+            sharedPreferences.edit().putBoolean("WalkthroughCompleted", true).commit();
+        }
 
-        Intent intent = new Intent(MainActivity.this, WalkthroughActivity.class);
-        startActivity(intent);
     }
 
     @Override

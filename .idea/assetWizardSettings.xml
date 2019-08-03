@@ -62,8 +62,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="2c3235" />
-                                      <entry key="foregroundImage" value="D:\Programmer\Android\CocktailIndex\Illustrations\logo_nobackground.svg" />
+                                      <entry key="backgroundColor" value="1e2020" />
+                                      <entry key="foregroundImage" value="D:\Development\Android\CocktailIndex\Illustrations\logo_nobackground.svg" />
                                     </map>
                                   </option>
                                 </PersistentState>

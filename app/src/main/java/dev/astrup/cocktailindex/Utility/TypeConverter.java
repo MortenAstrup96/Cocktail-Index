@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class TypeConverter  {
     @androidx.room.TypeConverter
     public String fromArray(ArrayList<String> strings) {
-        if(!strings.isEmpty()) {
+        if(strings != null && !strings.isEmpty()) {
             String string = "";
             for(String s : strings) string += (s + ",");
 
@@ -26,8 +26,6 @@ public class TypeConverter  {
             return myStrings;
         }
         return null;
-
-
 
     }
 

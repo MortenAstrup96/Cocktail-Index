@@ -130,6 +130,7 @@ public class FavoriteFragment extends Fragment {
         } else if(name.equals("Delete Cocktail")) {
             tempDeletion = cocktailSingleton.getFavourites().get(itemPosition);
             cocktailSingleton.removeByID(tempDeletion.id, AppDatabase.getDatabase(getContext()));
+            savedCocktailList.remove(itemPosition);
             mAdapter.notifyDataSetChanged();
             Snackbar.make(getView(), "Cocktail Deleted", Snackbar.LENGTH_LONG)
                     .setAction("UNDO", new View.OnClickListener() {

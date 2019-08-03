@@ -147,8 +147,8 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
             contextMenu.setHeaderTitle("Select Action");
-            contextMenu.add(0, view.getId(), 0, "Edit Cocktail");
-            contextMenu.add(0, view.getId(), 0, "Delete Cocktail");
+            contextMenu.add(0, view.getId(), 0, "Create Cocktail");
+            contextMenu.add(0, view.getId(), 0, "Delete Idea");
         }
     }
 

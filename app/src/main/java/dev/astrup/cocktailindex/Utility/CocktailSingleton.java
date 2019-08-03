@@ -134,6 +134,7 @@ public class CocktailSingleton {
                 return;
             }
         }
+        updateLists();
     }
 
     public List<Cocktail> getIdeas() {

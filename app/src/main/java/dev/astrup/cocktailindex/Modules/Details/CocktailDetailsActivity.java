@@ -33,6 +33,8 @@ import com.google.android.gms.ads.AdView;
 
 import dev.astrup.cocktailindex.Modules.Creation.NewCocktailActivity;
 import dev.astrup.cocktailindex.Database.AppDatabase;
+import dev.astrup.cocktailindex.Modules.Various.AboutActivity;
+import dev.astrup.cocktailindex.Modules.Various.SettingsActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
@@ -190,6 +192,32 @@ public class CocktailDetailsActivity extends AppCompatActivity {
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
+                        // Handle action bar item clicks here. The action bar will
+                        // automatically handle clicks on the Home/Up button, so long
+                        // as you specify a parent activity in AndroidManifest.xml.
+                        int id = item.getItemId();
+
+                        //noinspection SimplifiableIfStatement
+                        if (id == R.id.action_settings) {
+                            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                            startActivity(intent);
+                        }
+                        else if(id == R.id.action_about) {
+                            Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                            startActivity(intent);
+                        }
+                        else if(id == R.id.action_feedback) {
+                            /* Create the Intent */
+                            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+                            /* Fill it with Data */
+                            emailIntent.setType("plain/text");
+                            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"cocktail@astrup.dev"});
+                            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Feedback on CocktailIndex");
+
+                            /* Send it off to the Activity-Chooser */
+                            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                        }
 
                         return true;
                     }

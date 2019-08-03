@@ -8,9 +8,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Modules.Details.IdeaActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.OnItemClickListener;
@@ -31,6 +35,8 @@ public class IdeaFragment extends Fragment {
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
     private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
     private List<Cocktail> ideaList = new ArrayList<>();
+    private AppDatabase db;
+    private Cocktail tempDeletion = null;
 
     /**
      * Creates the Fragment and sets up listeners
@@ -43,6 +49,7 @@ public class IdeaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_idea,container,false);
+        db = AppDatabase.getDatabase(getContext());
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -68,6 +75,37 @@ public class IdeaFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        String name = item.getTitle().toString();
+        int itemPosition = mAdapter.getPosition();
+        Cocktail cocktail = cocktailSingleton.getIdeas().get(itemPosition);
+
+        if(name.equals("Create Cocktail")) {
+            ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
+
+        } else if(name.equals("Delete Idea")) {
+            tempDeletion = cocktailSingleton.getIdeas().get(itemPosition);
+            cocktailSingleton.removeCocktail(tempDeletion, db);
+            mAdapter.notifyDataSetChanged();
+
+            // Revert deletion
+            Snackbar.make(getView(), "Idea Deleted", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            cocktailSingleton.addCocktail(tempDeletion, db);
+                            mAdapter.notifyDataSetChanged();
+
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(R.color.colorAccent))
+                    .show();
+
+        }
+        return super.onContextItemSelected(item);
     }
 
     public void updateList() {

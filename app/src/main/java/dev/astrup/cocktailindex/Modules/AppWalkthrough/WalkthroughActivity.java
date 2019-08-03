@@ -2,6 +2,7 @@ package dev.astrup.cocktailindex.Modules.AppWalkthrough;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
@@ -23,5 +24,12 @@ public class WalkthroughActivity extends AppIntro  {
         addSlide(AppIntroFragment.newInstance(sliderPage));
 
         addSlide(new WalkthroughPreferencesFragment());
+        skipButtonEnabled = false;
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

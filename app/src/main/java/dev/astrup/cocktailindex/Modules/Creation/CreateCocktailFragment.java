@@ -30,6 +30,7 @@ import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import dev.astrup.cocktailindex.Modules.Index.MainActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
@@ -243,6 +244,19 @@ public class CreateCocktailFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(editName.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "Please specify a name",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(ingredients.isEmpty()) {
+                    Toast.makeText(getActivity(), "Add at least one ingredient",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(temporaryCocktail != null) {
                     updateExistingCocktail();
                 } else {
@@ -288,12 +302,13 @@ public class CreateCocktailFragment extends Fragment {
                     return;
                 }
 
-
                 if(ingredients.size() >= 20) {
                     Toast.makeText(getActivity(), "Ingredient limit reached",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+
 
 
                 Ingredient ingredientToAdd = new Ingredient(ingredientString, amountString, quantityString);
@@ -367,7 +382,6 @@ public class CreateCocktailFragment extends Fragment {
         for(int i = 0 ; i < temporaryCocktail.ingredients.size(); i++) {
             temporaryCocktail.ingredients.get(i).setNumber(i);
         }
-
     }
 
     private void createNewCocktailFromInformation() {

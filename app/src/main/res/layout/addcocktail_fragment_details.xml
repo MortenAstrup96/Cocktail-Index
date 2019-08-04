@@ -9,7 +9,8 @@
     android:background="#F9F9F9"
     tools:context=".Modules.Creation.NewCocktailActivity">
     <!-- TEST: ca-app-pub-3940256099942544/6300978111 -->
-    <!--- app:adUnitId="ca-app-pub-3940256099942544/6300978111" -->
+    <!-- PAID ADS: ca-app-pub-3940256099942544/6300978111 -->
+
     <com.google.android.gms.ads.AdView
         android:id="@+id/admob_addcocktailbanner"
         android:layout_width="0dp"
@@ -17,7 +18,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-5419523232721664/7780576111"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

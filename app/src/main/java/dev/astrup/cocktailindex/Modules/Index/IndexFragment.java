@@ -69,8 +69,6 @@ public class IndexFragment extends Fragment {
         listener = new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                java.util.Collections.sort(cocktailSingleton.getIndexList());
-
                 // Scales up the new activity from the cardview clicked
                 Intent intent = new Intent(getActivity(), CocktailDetailsActivity.class);
                 intent.putExtra("cocktail", savedCocktailList.get(position)); // TODO: Switch to using ID instead later
@@ -115,7 +113,6 @@ public class IndexFragment extends Fragment {
             }
         });
 
-        java.util.Collections.sort(cocktailSingleton.getIndexList());
         mAdapter.notifyDataSetChanged();
 
         // Inflate the layout for this fragment
@@ -190,7 +187,6 @@ public class IndexFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -206,7 +202,9 @@ public class IndexFragment extends Fragment {
 
 
     public void updateList() {
-        if(mAdapter != null) mAdapter.notifyDataSetChanged();
+     savedCocktailList.clear();
+     savedCocktailList.addAll(cocktailSingleton.getIndexList());
+     if(mAdapter != null) mAdapter.notifyDataSetChanged();
     }
 
     @Override

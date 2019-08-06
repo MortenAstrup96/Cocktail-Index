@@ -1,6 +1,8 @@
 package dev.astrup.cocktailindex.Modules.AppWalkthrough;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,6 +26,8 @@ public class WalkthroughActivity extends AppIntro  {
         super.onCreate(savedInstanceState);
 
         // Request permission to read storage before loading images
+
+        /**
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -31,7 +35,7 @@ public class WalkthroughActivity extends AppIntro  {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     3);
-        }
+        } */
 
         SliderPage sliderPage = new SliderPage();
         sliderPage.setTitle("Welcome to Cocktail Index");
@@ -47,9 +51,10 @@ public class WalkthroughActivity extends AppIntro  {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(fragment.isPredefinedList()) {
-                    new PopulateDatabase().populateDatabase(getApplicationContext(), fragment.isMetricChecked());
-                }
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("isMetric", fragment.isMetricChecked());
+                returnIntent.putExtra("shouldPrePopulate", fragment.isPredefinedList());
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
         });

@@ -43,9 +43,10 @@ import dev.astrup.cocktailindex.Utility.GdprHelper;
 
 import java.util.ArrayList;
 
+import static dev.astrup.cocktailindex.Modules.Index.MainActivity.UPDATE_COCKTAIL_RECIPE;
+
 public class CocktailDetailsActivity extends AppCompatActivity {
 
-    public static final int UPDATE_COCKTAIL_RECIPE = 2;
     private Cocktail cocktail;
 
     CustomPagerAdapter pagerAdapter;

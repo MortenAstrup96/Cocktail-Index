@@ -57,7 +57,6 @@ public class FavoriteFragment extends Fragment {
         listener = new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
                 // Scales up the new activity from the cardview clicked
                 Activity activity = getActivity();
                 Intent intent = new Intent(activity, CocktailDetailsActivity.class);
@@ -67,10 +66,6 @@ public class FavoriteFragment extends Fragment {
                 ActivityCompat.startActivity(activity, intent, options);
             }
         };
-
-
-
-
         // Gets the cocktailList
         setupRecyclerView(view);
 
@@ -151,7 +146,6 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         mAdapter.notifyDataSetChanged();
     }
 
@@ -164,6 +158,7 @@ public class FavoriteFragment extends Fragment {
 
 
     public void updateList() {
+
         if(mAdapter != null) mAdapter.notifyDataSetChanged();
 
     }

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 import dev.astrup.cocktailindex.Database.AppDatabase;
+import dev.astrup.cocktailindex.Modules.Index.MainActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
@@ -159,6 +160,7 @@ public class PopulateDatabase {
                 "Add all ingredients to a cocktail shaker and shake with ice. Strain into chilled cocktail coupe. Garnish with a lemon twist or rosemary.",
                 R.drawable.cocktail_beesknees,
                 beeskneesIngredients), db);
+
     }
     private void createMetricDb(Context context) {
         /** NEGRONI */

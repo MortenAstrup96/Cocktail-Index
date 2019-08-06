@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -39,8 +40,6 @@ import dev.astrup.cocktailindex.Utility.GdprHelper;
 
 import java.io.Serializable;
 
-import static dev.astrup.cocktailindex.Modules.Details.CocktailDetailsActivity.UPDATE_COCKTAIL_RECIPE;
-
 
 public class MainActivity extends AppCompatActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
@@ -51,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements
 
     // On Activity result codes
     public static final int NEW_COCKTAIL_RECIPE = 1;   // Created new cocktail from NewCocktailActivity
+    public static final int PRE_POPULATE = 0;
+    public static final int UPDATE_COCKTAIL_RECIPE = 2;
 
 
     private CocktailSingleton cocktailSingleton;
@@ -80,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements
         gdprHelper.initialise();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(this);
 
 
         cocktailSingleton = CocktailSingleton.getInstance();
@@ -97,13 +96,11 @@ public class MainActivity extends AppCompatActivity implements
         setCurrentFragment(fragmentIndex);
 
         // Check if we need to display our OnboardingFragment
-        if (!sharedPreferences.getBoolean(
+        if (!prefs.getBoolean(
                 "WalkthroughCompleted", false)) {
             Intent intent = new Intent(MainActivity.this, WalkthroughActivity.class);
-            startActivity(intent);
-            sharedPreferences.edit().putBoolean("WalkthroughCompleted", true).apply();
+            startActivityForResult(intent, PRE_POPULATE);
         }
-
     }
 
     @Override
@@ -164,6 +161,28 @@ public class MainActivity extends AppCompatActivity implements
         final Cocktail cocktail;
 
         //Detects request codes
+        if (requestCode == PRE_POPULATE) {
+            if(resultCode == Activity.RESULT_OK) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                prefs.edit().putBoolean("WalkthroughCompleted", true).apply();
+
+                boolean isMetric = data.getBooleanExtra("isMetric", false);
+                boolean shouldPrePopulate = data.getBooleanExtra("shouldPrePopulate", false);
+
+                if(shouldPrePopulate) {
+                    new PopulateDatabase().populateDatabase(getApplicationContext(), isMetric);
+                }
+                prefs.edit().putBoolean("metric", isMetric).apply();
+
+            } else {
+                Intent intent = new Intent(MainActivity.this, WalkthroughActivity.class);
+                startActivityForResult(intent, PRE_POPULATE);
+                Toast.makeText(this, "Please complete the introduction",
+                        Toast.LENGTH_SHORT).show();
+            }
+            updateFragmentLists();
+
+        }
         if (requestCode == NEW_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {
 
             // Cocktail is retrieved from NewCocktailActivity
@@ -210,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewCocktailActivity.class);
                 startActivityForResult(intent, NEW_COCKTAIL_RECIPE);
+
             }
         });
     }
@@ -232,7 +252,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        updateFragmentLists();
     }
 
     /**
@@ -256,13 +275,11 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
             case R.id.favorites:
                 searchItem.setVisible(true);
-                searchItem.collapseActionView();
                 setCurrentFragment(fragmentFavorite);
                 fab.show();
                 break;
             case R.id.index:
                 searchItem.setVisible(true);
-                searchItem.collapseActionView();
                 setCurrentFragment(fragmentIndex);
                 fab.show();
                 break;

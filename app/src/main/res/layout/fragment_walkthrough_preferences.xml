@@ -115,14 +115,14 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:checkedButton="@id/radioButton4"
+            android:checkedButton="@id/appwalkthrough_metric_radio_metric"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8">
 
             <RadioButton
-                android:id="@+id/radioButton4"
+                android:id="@+id/appwalkthrough_metric_radio_metric"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
                 android:layout_margin="10dp"
@@ -136,7 +136,7 @@
                 android:textStyle="bold" />
 
             <RadioButton
-                android:id="@+id/radioButton5"
+                android:id="@+id/appwalkthrough_metric_radio_imperial"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
                 android:layout_margin="10dp"

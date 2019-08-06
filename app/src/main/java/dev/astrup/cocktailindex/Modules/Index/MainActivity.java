@@ -26,6 +26,7 @@ import android.view.MenuItem;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import dev.astrup.cocktailindex.Modules.AppWalkthrough.PopulateDatabase;
 import dev.astrup.cocktailindex.Modules.AppWalkthrough.WalkthroughActivity;
 import dev.astrup.cocktailindex.Modules.Creation.NewCocktailActivity;
 import dev.astrup.cocktailindex.Modules.Various.AboutActivity;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements
                 "WalkthroughCompleted", false)) {
             Intent intent = new Intent(MainActivity.this, WalkthroughActivity.class);
             startActivity(intent);
-            sharedPreferences.edit().putBoolean("WalkthroughCompleted", true).commit();
+            sharedPreferences.edit().putBoolean("WalkthroughCompleted", true).apply();
         }
 
     }

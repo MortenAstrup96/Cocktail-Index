@@ -9,25 +9,22 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import dev.astrup.cocktailindex.R;
 
 
 public class WalkthroughPreferencesFragment extends Fragment {
+    private RadioButton radio_prelist;
+    private RadioButton metric_prelist;
 
 
     public WalkthroughPreferencesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WalkthroughPreferencesFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static WalkthroughPreferencesFragment newInstance(String param1, String param2) {
         WalkthroughPreferencesFragment fragment = new WalkthroughPreferencesFragment();
@@ -41,11 +38,22 @@ public class WalkthroughPreferencesFragment extends Fragment {
 
     }
 
+    public boolean isPredefinedList() {
+        return radio_prelist.isChecked();
+    }
+
+    public boolean isMetricChecked() {
+        return metric_prelist.isChecked();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_walkthrough_preferences, container, false);
+        radio_prelist = view.findViewById(R.id.appwalkthrough_predefined);
+        metric_prelist = view.findViewById(R.id.appwalkthrough_metric_radio_metric);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_walkthrough_preferences, container, false);
+        return view;
     }
 
 

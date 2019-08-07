@@ -16,11 +16,10 @@ import android.widget.TextView;
 
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Modules.Creation.NewCocktailActivity;
-import dev.astrup.cocktailindex.Modules.Details.IngredientDetailsAdapter;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 
 import java.util.ArrayList;
 
@@ -30,7 +29,7 @@ public class IdeaActivity extends AppCompatActivity {
     private Cocktail cocktail;
 
     private AppDatabase db;
-    private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
+    private CocktailController cocktailController = CocktailController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public class IdeaActivity extends AppCompatActivity {
         // Gets the specific cocktail
         Intent data = getIntent();
         cocktail = (Cocktail) data.getSerializableExtra("cocktail");
-        cocktailSingleton.cocktailDetailsCocktail(cocktail);
+        cocktailController.cocktailDetailsCocktail(cocktail);
 
         setupViews();
     }
@@ -104,7 +103,7 @@ public class IdeaActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == UPDATE_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {
             cocktail = (Cocktail) data.getSerializableExtra("cocktail");
-            cocktailSingleton.updateCocktail(cocktail, db);
+            cocktailController.updateCocktail(cocktail, db);
             setupViews();
         }
     }

@@ -14,7 +14,7 @@ import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.OnItemLongClickListener;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 
 import java.util.List;
 
@@ -122,7 +122,7 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
             view.setOnClickListener(this);
             view.setOnCreateContextMenuListener(this);
 
-            cocktailList = CocktailSingleton.getInstance().getIdeas();
+            cocktailList = CocktailController.getInstance().getIdeas();
 
             view.setOnClickListener(this);
             view.setOnLongClickListener(new View.OnLongClickListener() {

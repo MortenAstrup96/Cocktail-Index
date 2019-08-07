@@ -1,25 +1,19 @@
 package dev.astrup.cocktailindex.Modules.Various;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import dev.astrup.cocktailindex.Modules.Index.MainActivity;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +21,7 @@ import java.util.ConcurrentModificationException;
 
 public class SplashActivity extends AppCompatActivity {
     private AppDatabase db;
-    private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
+    private CocktailController cocktailController = CocktailController.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,18 +38,18 @@ public class SplashActivity extends AppCompatActivity {
     private class PreloadDatabase extends AsyncTask<Context, Void, String> {
         @Override
         protected String doInBackground(Context... contexts) {
-            cocktailSingleton.setCocktailList(db.cocktailDBDao().getAll());
-            cocktailSingleton.setIngredientList(db.ingredientDBDao().getAll());
+            cocktailController.setCocktailList(db.cocktailDBDao().getAll());
+            cocktailController.setIngredientList(db.ingredientDBDao().getAll());
 
             try {
-                for(Cocktail c : cocktailSingleton.getCocktailList()) {
+                for(Cocktail c : cocktailController.getCocktailList()) {
                     c.setIngredients((ArrayList<Ingredient>)db.ingredientDBDao().findById(c.id));
                 }
             } catch (ConcurrentModificationException e) {
                 Log.e("Concurrent", "Concurrent Error!!");
             }
 
-            for(Cocktail cocktail : cocktailSingleton.getIndexList()) {
+            for(Cocktail cocktail : cocktailController.getIndexList()) {
                 Collections.sort(cocktail.ingredients);
             }
             return null;

@@ -1,7 +1,6 @@
 package dev.astrup.cocktailindex.Modules.Index;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -26,14 +25,14 @@ import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 import dev.astrup.cocktailindex.Utility.SearchableFragment;
 
 
 public class FavoriteFragment extends Fragment implements SearchableFragment {
     private OnItemClickListener listener;
 
-    private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
+    private CocktailController cocktailController = CocktailController.getInstance();
     private ArrayList<Cocktail> savedCocktailList;
     private FavouriteAdapter mAdapter;
     private Cocktail tempDeletion;
@@ -50,7 +49,7 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite,container,false);
         savedCocktailList = new ArrayList<>();
-        savedCocktailList.addAll(cocktailSingleton.getFavourites());
+        savedCocktailList.addAll(cocktailController.getFavourites());
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -61,7 +60,7 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
                 Intent intent = new Intent(activity, CocktailDetailsActivity.class);
                 Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                         view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
-                intent.putExtra("cocktail", cocktailSingleton.getFavourites().get(position));
+                intent.putExtra("cocktail", cocktailController.getFavourites().get(position));
                 ActivityCompat.startActivity(activity, intent, options);
             }
         };
@@ -116,22 +115,22 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
         int itemPosition = mAdapter.getPosition();
-        final Cocktail cocktail = cocktailSingleton.getIndexList().get(itemPosition);
+        final Cocktail cocktail = cocktailController.getIndexList().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
             ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
 
         } else if(name.equals("Delete Cocktail")) {
-            tempDeletion = cocktailSingleton.getFavourites().get(itemPosition);
-            cocktailSingleton.removeByID(tempDeletion.id, AppDatabase.getDatabase(getContext()));
+            tempDeletion = cocktailController.getFavourites().get(itemPosition);
+            cocktailController.removeByID(tempDeletion.id, AppDatabase.getDatabase(getContext()));
             savedCocktailList.remove(itemPosition);
             mAdapter.notifyDataSetChanged();
             Snackbar.make(getView(), "Cocktail Deleted", Snackbar.LENGTH_LONG)
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            cocktailSingleton.getIndexList().add(tempDeletion);
-                            cocktailSingleton.getFavourites().add(tempDeletion);
+                            cocktailController.getIndexList().add(tempDeletion);
+                            cocktailController.getFavourites().add(tempDeletion);
                             mAdapter.notifyDataSetChanged();
                         }
                     })
@@ -164,7 +163,7 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
 
     public void searchQuery(String s) {
         savedCocktailList.clear();
-        for(Cocktail cocktail : cocktailSingleton.getFavourites()) {
+        for(Cocktail cocktail : cocktailController.getFavourites()) {
             boolean addCocktail = false;
             String name = cocktail.name.toLowerCase();
 

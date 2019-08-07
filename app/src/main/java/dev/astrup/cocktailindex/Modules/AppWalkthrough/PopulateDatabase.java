@@ -11,20 +11,19 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 import dev.astrup.cocktailindex.Database.AppDatabase;
-import dev.astrup.cocktailindex.Modules.Index.MainActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 
 public class PopulateDatabase {
     private boolean hasBeenPopulated;
     private AppDatabase db;
-    private CocktailSingleton cocktailSingleton;
+    private CocktailController cocktailController;
 
     public PopulateDatabase() {
         hasBeenPopulated = false;
-        cocktailSingleton = CocktailSingleton.getInstance();
+        cocktailController = CocktailController.getInstance();
     }
     public void populateDatabase(Context context, boolean metric) {
         hasBeenPopulated = true;
@@ -42,7 +41,7 @@ public class PopulateDatabase {
         negroniIngredients.add(new Ingredient("Gin", "1", "oz."));
         negroniIngredients.add(new Ingredient("Campari", "1", "oz."));
         negroniIngredients.add(new Ingredient("Sweet Vermouth", "1", "oz."));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Negroni",
                 "Add all items to a rocks glass with a big ice cube. Garnish with an orange twist",
                 R.drawable.cocktail_negroni,
@@ -54,7 +53,7 @@ public class PopulateDatabase {
         martinezIngredients.add(new Ingredient("Sweet Vermouth", "1.5", "oz."));
         martinezIngredients.add(new Ingredient("Luxardo Maraschino", "0.25", "oz."));
         martinezIngredients.add(new Ingredient("Orange Bitters", "2", "dashes"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Martinez",
                 "Stir all ingredients with ice and strain into a chilled coupe. Garnish with an orange twist.",
                 R.drawable.cocktail_martinez,
@@ -67,7 +66,7 @@ public class PopulateDatabase {
         cloverclubIngredients.add(new Ingredient("Lemon Juice", "0.75", "oz."));
         cloverclubIngredients.add(new Ingredient("Simple Syrup", "0.75", "oz."));
         cloverclubIngredients.add(new Ingredient("Fresh Raspberries", "5", ""));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Clover Club",
                 "Shake all ingredients together with ice and strain into a chilled coupe. Garnish with fresh raspberries",
                 R.drawable.cocktail_cloverclub,
@@ -81,7 +80,7 @@ public class PopulateDatabase {
         amarettosourIngredients.add(new Ingredient("Lemon Juice", "1", "oz."));
         amarettosourIngredients.add(new Ingredient("Rich Simple Syrup", "1", "tsp."));
         amarettosourIngredients.add(new Ingredient("Egg White", "0.5", "oz."));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Amaretto Sour",
                 "Lightly beat the egg white. Add all ingredients to a cocktail shaker and shake without ice. Add ice and shake again. Strain into a rocks glass and garnish with a lemon peel and cherries.",
                 R.drawable.cocktail_amarettosour,
@@ -94,7 +93,7 @@ public class PopulateDatabase {
         mojitoIngredients.add(new Ingredient("Lime Juice", "1", "oz."));
         mojitoIngredients.add(new Ingredient("Simple Syrup", "0.75", "oz."));
         mojitoIngredients.add(new Ingredient("Mint", "10", "leaves"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Mojito",
                 "Gently muddle the mint and simple syrup. Add the remaining ingredients and top with crushed ice and stir until the glass is frosty. Garnish with a mint sprig.",
                 R.drawable.cocktail_mojito,
@@ -106,7 +105,7 @@ public class PopulateDatabase {
         daiquiriIngredients.add(new Ingredient("Rum", "2", "oz."));
         daiquiriIngredients.add(new Ingredient("Lime Juice", "0.75", "oz."));
         daiquiriIngredients.add(new Ingredient("Simple Syrup", "0.75", "oz."));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Daiquiri",
                 "Add all the items to the cocktail shaker. Shake with ice and double strain into a chilled cocktail coupe.",
                 R.drawable.cocktail_daiquiri,
@@ -118,7 +117,7 @@ public class PopulateDatabase {
         gimletIngredients.add(new Ingredient("Gin", "2", "oz."));
         gimletIngredients.add(new Ingredient("Lime Cordial", "0.75", "oz."));
         gimletIngredients.add(new Ingredient("Lime Juice", "0.75", "oz."));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Gimlet",
                 "Add all items to the cocktail shaker and shake with ice. Double strain into a chilled cocktail coupe.",
                 R.drawable.cocktail_gimlet,
@@ -131,7 +130,7 @@ public class PopulateDatabase {
         manhattanIngredients.add(new Ingredient("Sweet Vermouth", "1", "oz."));
         manhattanIngredients.add(new Ingredient("Angostura Bitters", "2", "dashes"));
         manhattanIngredients.add(new Ingredient("Orange Bitters", "1", "dashes"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Manhattan",
                 "Add all items to a mixing glass and stir with ice. Strain into a chilled cocktail coupe and garnish with brandied cherries.",
                 R.drawable.cocktail_manhattan,
@@ -143,7 +142,7 @@ public class PopulateDatabase {
         oldfashionedIngredients.add(new Ingredient("Rye", "3", "oz."));
         oldfashionedIngredients.add(new Ingredient("Simple Syrup", "1", "tsp."));
         oldfashionedIngredients.add(new Ingredient("Angostura Bitters", "3", "dashes"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Old Fashioned",
                 "Stir ingredients in a mixing glass with ice. Strain into a rocks glass with a large ice cube and express an orange or lemon peel.",
                 R.drawable.cocktail_oldfashioned,
@@ -155,7 +154,7 @@ public class PopulateDatabase {
         beeskneesIngredients.add(new Ingredient("Gin", "2", "oz."));
         beeskneesIngredients.add(new Ingredient("Honey Syrup", "0.75", "oz."));
         beeskneesIngredients.add(new Ingredient("Lemon Juice", "0.75", "oz."));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Bee's Knees",
                 "Add all ingredients to a cocktail shaker and shake with ice. Strain into chilled cocktail coupe. Garnish with a lemon twist or rosemary.",
                 R.drawable.cocktail_beesknees,
@@ -168,7 +167,7 @@ public class PopulateDatabase {
         negroniIngredients.add(new Ingredient("Gin", "30", "mL"));
         negroniIngredients.add(new Ingredient("Campari", "30", "mL"));
         negroniIngredients.add(new Ingredient("Sweet Vermouth", "30", "mL"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Negroni",
                 "Add all items to a rocks glass with a big ice cube. Garnish with an orange twist",
                 R.drawable.cocktail_negroni,
@@ -180,7 +179,7 @@ public class PopulateDatabase {
         martinezIngredients.add(new Ingredient("Sweet Vermouth", "45", "mL"));
         martinezIngredients.add(new Ingredient("Luxardo Maraschino", "7.5", "mL"));
         martinezIngredients.add(new Ingredient("Orange Bitters", "2", "dashes"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Martinez",
                 "Stir all ingredients with ice and strain into a chilled coupe. Garnish with an orange twist.",
                 R.drawable.cocktail_martinez,
@@ -193,7 +192,7 @@ public class PopulateDatabase {
         cloverclubIngredients.add(new Ingredient("Lemon Juice", "22.5", "mL"));
         cloverclubIngredients.add(new Ingredient("Simple Syrup", "22.5", "mL"));
         cloverclubIngredients.add(new Ingredient("Fresh Raspberries", "5", ""));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Clover Club",
                 "Shake all ingredients together with ice and strain into a chilled coupe. Garnish with fresh raspberries",
                 R.drawable.cocktail_cloverclub,
@@ -207,7 +206,7 @@ public class PopulateDatabase {
         amarettosourIngredients.add(new Ingredient("Lemon Juice", "30", "mL"));
         amarettosourIngredients.add(new Ingredient("Rich Simple Syrup", "5", "mL"));
         amarettosourIngredients.add(new Ingredient("Egg White", "15", "mL"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Amaretto Sour",
                 "Lightly beat the egg white. Add all ingredients to a cocktail shaker and shake without ice. Add ice and shake again. Strain into a rocks glass and garnish with a lemon peel and cherries.",
                 R.drawable.cocktail_amarettosour,
@@ -220,7 +219,7 @@ public class PopulateDatabase {
         mojitoIngredients.add(new Ingredient("Lime Juice", "30", "mL"));
         mojitoIngredients.add(new Ingredient("Simple Syrup", "22.5", "mL"));
         mojitoIngredients.add(new Ingredient("Mint", "10", "leaves"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Mojito",
                 "Gently muddle the mint and simple syrup. Add the remaining ingredients and top with crushed ice and stir until the glass is frosty. Garnish with a mint sprig.",
                 R.drawable.cocktail_mojito,
@@ -232,7 +231,7 @@ public class PopulateDatabase {
         daiquiriIngredients.add(new Ingredient("Rum", "60", "mL"));
         daiquiriIngredients.add(new Ingredient("Lime Juice", "22.5", "mL"));
         daiquiriIngredients.add(new Ingredient("Simple Syrup", "22.5", "mL"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Daiquiri",
                 "Add all the items to the cocktail shaker. Shake with ice and double strain into a chilled cocktail coupe.",
                 R.drawable.cocktail_daiquiri,
@@ -244,7 +243,7 @@ public class PopulateDatabase {
         gimletIngredients.add(new Ingredient("Gin", "60", "mL"));
         gimletIngredients.add(new Ingredient("Lime Cordial", "22.5", "mL"));
         gimletIngredients.add(new Ingredient("Lime Juice", "22.5", "mL"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Gimlet",
                 "Add all items to the cocktail shaker and shake with ice. Double strain into a chilled cocktail coupe.",
                 R.drawable.cocktail_gimlet,
@@ -257,7 +256,7 @@ public class PopulateDatabase {
         manhattanIngredients.add(new Ingredient("Sweet Vermouth", "30", "mL"));
         manhattanIngredients.add(new Ingredient("Angostura Bitters", "2", "dashes"));
         manhattanIngredients.add(new Ingredient("Orange Bitters", "1", "dashes"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Manhattan",
                 "Add all items to a mixing glass and stir with ice. Strain into a chilled cocktail coupe and garnish with brandied cherries.",
                 R.drawable.cocktail_manhattan,
@@ -269,7 +268,7 @@ public class PopulateDatabase {
         oldfashionedIngredients.add(new Ingredient("Rye", "90", "mL"));
         oldfashionedIngredients.add(new Ingredient("Simple Syrup", "5", "mL"));
         oldfashionedIngredients.add(new Ingredient("Angostura Bitters", "3", "dashes"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Old Fashioned",
                 "Stir ingredients in a mixing glass with ice. Strain into a rocks glass with a large ice cube and express an orange or lemon peel.",
                 R.drawable.cocktail_oldfashioned,
@@ -281,7 +280,7 @@ public class PopulateDatabase {
         beeskneesIngredients.add(new Ingredient("Gin", "60", "mL"));
         beeskneesIngredients.add(new Ingredient("Honey Syrup", "22.5", "mL"));
         beeskneesIngredients.add(new Ingredient("Lemon Juice", "22.5", "mL"));
-        cocktailSingleton.addCocktail(createCocktail(context,
+        cocktailController.addCocktail(createCocktail(context,
                 "Bee's Knees",
                 "Add all ingredients to a cocktail shaker and shake with ice. Strain into chilled cocktail coupe. Garnish with a lemon twist or rosemary.",
                 R.drawable.cocktail_beesknees,

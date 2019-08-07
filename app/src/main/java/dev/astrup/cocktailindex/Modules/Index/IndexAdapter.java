@@ -24,7 +24,7 @@ import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.OnItemLongClickListener;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 import dev.astrup.cocktailindex.Utility.ImageUtilities;
 
 import java.util.List;
@@ -91,7 +91,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     cocktail.favourite = b;
-                    CocktailSingleton.getInstance().setFavourite(cocktail, db);
+                    CocktailController.getInstance().setFavourite(cocktail, db);
                 }
             });
 

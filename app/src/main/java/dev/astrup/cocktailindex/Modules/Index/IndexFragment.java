@@ -1,6 +1,5 @@
 package dev.astrup.cocktailindex.Modules.Index;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -22,7 +21,7 @@ import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.OnItemLongClickListener;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 import dev.astrup.cocktailindex.Utility.SearchableFragment;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class IndexFragment extends Fragment implements SearchableFragment {
     private OnItemLongClickListener longClickListener;
 
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
-    private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
+    private CocktailController cocktailController = CocktailController.getInstance();
     private List<Cocktail> savedCocktailList;
 
     private IndexAdapter mAdapter;
@@ -59,7 +58,7 @@ public class IndexFragment extends Fragment implements SearchableFragment {
         View view = inflater.inflate(R.layout.fragment_index,container,false);
 
         savedCocktailList = new ArrayList<>();
-        savedCocktailList.addAll(cocktailSingleton.getIndexList());
+        savedCocktailList.addAll(cocktailController.getIndexList());
 
         // Setup of database
         db = AppDatabase.getDatabase(view.getContext());
@@ -132,14 +131,14 @@ public class IndexFragment extends Fragment implements SearchableFragment {
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
         int itemPosition = mAdapter.getPosition();
-        Cocktail cocktail = cocktailSingleton.getIndexList().get(itemPosition);
+        Cocktail cocktail = cocktailController.getIndexList().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
             ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
 
         } else if(name.equals("Delete Cocktail")) {
-            tempDeletion = cocktailSingleton.getIndexList().get(itemPosition);
-            cocktailSingleton.removeCocktail(tempDeletion, db);
+            tempDeletion = cocktailController.getIndexList().get(itemPosition);
+            cocktailController.removeCocktail(tempDeletion, db);
             savedCocktailList.remove(tempDeletion);
             mAdapter.notifyDataSetChanged();
 
@@ -148,7 +147,7 @@ public class IndexFragment extends Fragment implements SearchableFragment {
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            cocktailSingleton.addCocktail(tempDeletion, db);
+                            cocktailController.addCocktail(tempDeletion, db);
                             savedCocktailList.add(tempDeletion);
                             mAdapter.notifyDataSetChanged();
 
@@ -163,7 +162,7 @@ public class IndexFragment extends Fragment implements SearchableFragment {
 
     public void searchQuery(String s) {
         savedCocktailList.clear();
-        for(Cocktail cocktail : cocktailSingleton.getIndexList()) {
+        for(Cocktail cocktail : cocktailController.getIndexList()) {
             boolean addCocktail = false;
             String name = cocktail.name.toLowerCase();
 
@@ -186,7 +185,7 @@ public class IndexFragment extends Fragment implements SearchableFragment {
 
     public void updateList() {
      savedCocktailList.clear();
-     savedCocktailList.addAll(cocktailSingleton.getIndexList());
+     savedCocktailList.addAll(cocktailController.getIndexList());
      if(mAdapter != null) mAdapter.notifyDataSetChanged();
     }
 

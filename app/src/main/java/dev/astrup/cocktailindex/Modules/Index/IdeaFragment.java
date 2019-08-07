@@ -1,6 +1,5 @@
 package dev.astrup.cocktailindex.Modules.Index;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -20,7 +19,7 @@ import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.OnItemLongClickListener;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class IdeaFragment extends Fragment {
 
     private IdeaAdapter mAdapter;
     // Field variables for RecyclerView - The taskList will be shown in RecyclerView
-    private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
+    private CocktailController cocktailController = CocktailController.getInstance();
     private List<Cocktail> ideaList = new ArrayList<>();
     private AppDatabase db;
     private Cocktail tempDeletion = null;
@@ -54,11 +53,11 @@ public class IdeaFragment extends Fragment {
         listener = new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                java.util.Collections.sort(cocktailSingleton.getIdeas());
+                java.util.Collections.sort(cocktailController.getIdeas());
 
                 // Scales up the new activity from the cardview clicked
                 Intent intent = new Intent(getActivity(), IdeaActivity.class);
-                intent.putExtra("cocktail", cocktailSingleton.getIdeas().get(position)); // TODO: Switch to using ID instead later
+                intent.putExtra("cocktail", cocktailController.getIdeas().get(position)); // TODO: Switch to using ID instead later
                 startActivity(intent);
             }
         };
@@ -69,7 +68,7 @@ public class IdeaFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter = new IdeaAdapter(cocktailSingleton.getIdeas(), listener, longClickListener, getContext());
+        mAdapter = new IdeaAdapter(cocktailController.getIdeas(), listener, longClickListener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment
@@ -80,14 +79,14 @@ public class IdeaFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
         int itemPosition = mAdapter.getPosition();
-        Cocktail cocktail = cocktailSingleton.getIdeas().get(itemPosition);
+        Cocktail cocktail = cocktailController.getIdeas().get(itemPosition);
 
         if(name.equals("Create Cocktail")) {
             ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
 
         } else if(name.equals("Delete Idea")) {
-            tempDeletion = cocktailSingleton.getIdeas().get(itemPosition);
-            cocktailSingleton.removeCocktail(tempDeletion, db);
+            tempDeletion = cocktailController.getIdeas().get(itemPosition);
+            cocktailController.removeCocktail(tempDeletion, db);
             mAdapter.notifyDataSetChanged();
 
             // Revert deletion
@@ -95,7 +94,7 @@ public class IdeaFragment extends Fragment {
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            cocktailSingleton.addCocktail(tempDeletion, db);
+                            cocktailController.addCocktail(tempDeletion, db);
                             mAdapter.notifyDataSetChanged();
 
                         }

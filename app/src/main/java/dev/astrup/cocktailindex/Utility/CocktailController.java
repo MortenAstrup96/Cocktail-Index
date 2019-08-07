@@ -1,7 +1,5 @@
 package dev.astrup.cocktailindex.Utility;
 
-import android.util.Log;
-
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
@@ -13,10 +11,10 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class CocktailSingleton {
-    private static final CocktailSingleton ourInstance = new CocktailSingleton();
+public class CocktailController {
+    private static final CocktailController ourInstance = new CocktailController();
 
-    public static CocktailSingleton getInstance() {
+    public static CocktailController getInstance() {
         return ourInstance;
     }
     private List<Cocktail> cocktailList;
@@ -28,7 +26,7 @@ public class CocktailSingleton {
 
     private Cocktail tempCocktailDetailsCocktail;
 
-    private CocktailSingleton() {
+    private CocktailController() {
         cocktailList = new ArrayList<>();
         favourites = new ArrayList<>();
         ideas = new ArrayList<>();

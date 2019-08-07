@@ -23,7 +23,7 @@ import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 import dev.astrup.cocktailindex.Utility.ImageUtilities;
 
 import java.util.List;
@@ -162,7 +162,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
                     final Cocktail cocktail = cocktailList.get(getAdapterPosition());
                     cocktail.favourite = b;
 
-                    CocktailSingleton.getInstance().setFavourite(cocktail, db);
+                    CocktailController.getInstance().setFavourite(cocktail, db);
                 }
             });
 

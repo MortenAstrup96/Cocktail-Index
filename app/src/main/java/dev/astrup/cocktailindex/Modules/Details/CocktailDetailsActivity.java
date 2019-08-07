@@ -38,7 +38,7 @@ import dev.astrup.cocktailindex.Modules.Various.SettingsActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
-import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.CocktailController;
 import dev.astrup.cocktailindex.Utility.GdprHelper;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
     CustomPagerAdapter pagerAdapter;
 
     private AppDatabase db;
-    private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
+    private CocktailController cocktailController = CocktailController.getInstance();
 
     // Admob
     private AdView mAdView;
@@ -70,7 +70,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         // Gets the specific cocktail
         Intent data = getIntent();
         cocktail = (Cocktail) data.getSerializableExtra("cocktail");
-        cocktailSingleton.cocktailDetailsCocktail(cocktail);
+        cocktailController.cocktailDetailsCocktail(cocktail);
 
         setupViews();
 
@@ -135,7 +135,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 shortVibration();
 
-                cocktailSingleton.setFavouriteById(cocktail.id, db, b);
+                cocktailController.setFavouriteById(cocktail.id, db, b);
             }
         });
 
@@ -245,7 +245,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == UPDATE_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {
             cocktail = (Cocktail) data.getSerializableExtra("cocktail");
-            cocktailSingleton.updateCocktail(cocktail, db);
+            cocktailController.updateCocktail(cocktail, db);
             setupViews();
         }
     }

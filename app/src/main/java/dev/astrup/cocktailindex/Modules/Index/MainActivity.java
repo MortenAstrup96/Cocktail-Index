@@ -12,9 +12,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import androidx.appcompat.widget.Toolbar;
@@ -37,15 +34,13 @@ import dev.astrup.cocktailindex.Objects.Cocktail;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
 import dev.astrup.cocktailindex.Utility.GdprHelper;
+import dev.astrup.cocktailindex.Utility.SearchableFragment;
 
 import java.io.Serializable;
 
 
 public class MainActivity extends AppCompatActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
-        IndexFragment.OnFragmentInteractionListener,
-        FavoriteFragment.OnFragmentInteractionListener,
-        IdeaFragment.OnFragmentInteractionListener,
         Serializable {
 
     // On Activity result codes
@@ -57,13 +52,9 @@ public class MainActivity extends AppCompatActivity implements
     private CocktailSingleton cocktailSingleton;
     private AppDatabase db;
 
-    // Fragments
-    private IndexFragment fragmentIndex;
-    private FavoriteFragment fragmentFavorite;
-    private IdeaFragment fragmentIdea;
+    MainFragmentController fragmentController;
 
     private FloatingActionButton fab;
-    private SearchManager searchManager;
     private MenuItem searchItem;
 
     // Analytics
@@ -88,12 +79,7 @@ public class MainActivity extends AppCompatActivity implements
 
         SetupViews();
 
-        // Instantiates the 3 base fragments (Index, Favourite & Idea)
-        fragmentIndex = new IndexFragment();
-        fragmentFavorite = new FavoriteFragment();
-        fragmentIdea = new IdeaFragment();
-
-        setCurrentFragment(fragmentIndex);
+        fragmentController = new MainFragmentController(getSupportFragmentManager());
 
         // Check if we need to display our OnboardingFragment
         if (!prefs.getBoolean(
@@ -119,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements
         searchItem = menu.findItem(R.id.action_search);
 
         // https://stackoverflow.com/questions/27378981/how-to-use-searchview-in-toolbar-android <--- Search view
-        searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
         // Searching and Cocktails references
         SearchView searchView = (SearchView) searchItem.getActionView();
 
@@ -136,10 +121,7 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public boolean onQueryTextChange(String s) {
-                if(fragmentIndex != null) {
-                    if(fragmentIndex.isVisible()) fragmentIndex.searchQuery(s.toLowerCase());
-                    if(fragmentFavorite.isVisible()) fragmentFavorite.searchQuery(s.toLowerCase());
-                }
+                ((SearchableFragment)fragmentController.getCurrentFragment()).searchQuery(s.toLowerCase());
                 return false;
             }
         });
@@ -163,16 +145,7 @@ public class MainActivity extends AppCompatActivity implements
         //Detects request codes
         if (requestCode == PRE_POPULATE) {
             if(resultCode == Activity.RESULT_OK) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                prefs.edit().putBoolean("WalkthroughCompleted", true).apply();
-
-                boolean isMetric = data.getBooleanExtra("isMetric", false);
-                boolean shouldPrePopulate = data.getBooleanExtra("shouldPrePopulate", false);
-
-                if(shouldPrePopulate) {
-                    new PopulateDatabase().populateDatabase(getApplicationContext(), isMetric);
-                }
-                prefs.edit().putBoolean("metric", isMetric).apply();
+                prePopulateDatabase(data);
 
             } else {
                 Intent intent = new Intent(MainActivity.this, WalkthroughActivity.class);
@@ -180,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements
                 Toast.makeText(this, "Please complete the introduction",
                         Toast.LENGTH_SHORT).show();
             }
-            updateFragmentLists();
+            fragmentController.updateFragments();
 
         }
         if (requestCode == NEW_COCKTAIL_RECIPE && resultCode == Activity.RESULT_OK) {
@@ -189,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements
             cocktail = (Cocktail) data.getSerializableExtra("cocktail");
             cocktailSingleton.addCocktail(cocktail, db);
 
-            updateFragmentLists();
+            fragmentController.updateFragments();
 
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, cocktail.name);
@@ -202,6 +175,19 @@ public class MainActivity extends AppCompatActivity implements
             cocktailSingleton.updateCocktail(cocktail, db);
         }
 
+    }
+
+    private void prePopulateDatabase(Intent data) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putBoolean("WalkthroughCompleted", true).apply();
+
+        boolean isMetric = data.getBooleanExtra("isMetric", false);
+        boolean shouldPrePopulate = data.getBooleanExtra("shouldPrePopulate", false);
+
+        if(shouldPrePopulate) {
+            new PopulateDatabase().populateDatabase(getApplicationContext(), isMetric);
+        }
+        prefs.edit().putBoolean("metric", isMetric).apply();
     }
 
     public void updateSpecificCocktailForResult(Cocktail cocktail) {
@@ -234,34 +220,11 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    /**
-     * Switches the current fragment with the parameter fragment
-     * @param fragment  The fragment to be switched to
-     */
-    private void setCurrentFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
-    }
-
     public void setFabVisibility(boolean isVisible) {
         if(isVisible) fab.show();
         else fab.hide();
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
-    /**
-     * Attempts to update all the fragment lists, some will be null
-     */
-    public void updateFragmentLists() {
-        if(fragmentFavorite != null) fragmentFavorite.updateList();
-        if(fragmentIndex != null) fragmentIndex.updateList();
-        if(fragmentIdea != null) fragmentIdea.updateList();
-    }
 
     /**
      * Bottom Navigation Bar
@@ -275,17 +238,17 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
             case R.id.favorites:
                 searchItem.setVisible(true);
-                setCurrentFragment(fragmentFavorite);
+                fragmentController.showFavouriteFragment();
                 fab.show();
                 break;
             case R.id.index:
                 searchItem.setVisible(true);
-                setCurrentFragment(fragmentIndex);
+                fragmentController.showIndexFragment();
                 fab.show();
                 break;
             case R.id.ideas:
                 searchItem.setVisible(false);
-                setCurrentFragment(fragmentIdea);
+                fragmentController.showIdeaFragment();
                 fab.show();
                 break;
             default:
@@ -326,22 +289,6 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-
-    /** The following methods can be called from fragments, doing specific tasks (not in use)*/
-    @Override
-    public void indexFragmentInteractionListener(String task) {
-
-    }
-
-    @Override
-    public void favoriteFragmentInteractionListener(String task) {
-
-    }
-
-    @Override
-    public void ideaFragmentInteractionListener(String task) {
-
-    }
 }
 
 

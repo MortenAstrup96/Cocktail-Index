@@ -23,13 +23,13 @@ import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.OnItemLongClickListener;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.SearchableFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class IndexFragment extends Fragment {
-    OnFragmentInteractionListener mListener;
+public class IndexFragment extends Fragment implements SearchableFragment {
 
 
     private OnItemClickListener listener;
@@ -184,44 +184,10 @@ public class IndexFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-
     public void updateList() {
      savedCocktailList.clear();
      savedCocktailList.addAll(cocktailSingleton.getIndexList());
      if(mAdapter != null) mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void indexFragmentInteractionListener(String task);
     }
 
 

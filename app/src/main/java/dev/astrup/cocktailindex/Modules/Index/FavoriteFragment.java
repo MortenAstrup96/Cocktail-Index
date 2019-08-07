@@ -27,11 +27,10 @@ import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.OnItemClickListener;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailSingleton;
+import dev.astrup.cocktailindex.Utility.SearchableFragment;
 
 
-public class FavoriteFragment extends Fragment {
-    OnFragmentInteractionListener mListener;
-
+public class FavoriteFragment extends Fragment implements SearchableFragment {
     private OnItemClickListener listener;
 
     private CocktailSingleton cocktailSingleton = CocktailSingleton.getInstance();
@@ -163,23 +162,6 @@ public class FavoriteFragment extends Fragment {
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     public void searchQuery(String s) {
         savedCocktailList.clear();
         for(Cocktail cocktail : cocktailSingleton.getFavourites()) {
@@ -194,16 +176,5 @@ public class FavoriteFragment extends Fragment {
         }
 
         mAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void favoriteFragmentInteractionListener(String task);
     }
 }

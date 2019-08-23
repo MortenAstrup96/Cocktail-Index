@@ -45,8 +45,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="D:\Morten\Android\cocktail-index\Illustrations\cocktail.png" />
-                                      <entry key="outputName" value="ic_cocktail_bee" />
+                                      <entry key="imageAsset" value="D:\Development\Android\CocktailIndex\Illustrations\cocktails\cocktail_daiquiri.jpg" />
+                                      <entry key="outputName" value="cocktail_daiquiri" />
                                       <entry key="theme" value="HOLO_DARK" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>

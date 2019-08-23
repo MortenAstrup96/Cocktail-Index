@@ -73,20 +73,6 @@ public class PopulateDatabase {
                 cloverclubIngredients), db);
 
 
-        /** AMARETTO SOUR CLUB */
-        ArrayList<Ingredient> amarettosourIngredients = new ArrayList<>();
-        amarettosourIngredients.add(new Ingredient("Amaretto", "1.5", "oz."));
-        amarettosourIngredients.add(new Ingredient("Bourbon", "0.75", "oz."));
-        amarettosourIngredients.add(new Ingredient("Lemon Juice", "1", "oz."));
-        amarettosourIngredients.add(new Ingredient("Rich Simple Syrup", "1", "tsp."));
-        amarettosourIngredients.add(new Ingredient("Egg White", "0.5", "oz."));
-        cocktailController.addCocktail(createCocktail(context,
-                "Amaretto Sour",
-                "Lightly beat the egg white. Add all ingredients to a cocktail shaker and shake without ice. Add ice and shake again. Strain into a rocks glass and garnish with a lemon peel and cherries.",
-                R.drawable.cocktail_amarettosour,
-                amarettosourIngredients), db);
-
-
         /** MOJITO */
         ArrayList<Ingredient> mojitoIngredients = new ArrayList<>();
         mojitoIngredients.add(new Ingredient("White Rum", "2", "oz."));
@@ -149,7 +135,7 @@ public class PopulateDatabase {
                 oldfashionedIngredients), db);
 
 
-        /** OLD FASHIONED */
+        /** BEES KNEES */
         ArrayList<Ingredient> beeskneesIngredients = new ArrayList<>();
         beeskneesIngredients.add(new Ingredient("Gin", "2", "oz."));
         beeskneesIngredients.add(new Ingredient("Honey Syrup", "0.75", "oz."));
@@ -159,6 +145,62 @@ public class PopulateDatabase {
                 "Add all ingredients to a cocktail shaker and shake with ice. Strain into chilled cocktail coupe. Garnish with a lemon twist or rosemary.",
                 R.drawable.cocktail_beesknees,
                 beeskneesIngredients), db);
+
+
+        /** GIN BASIL SMASH */
+        ArrayList<Ingredient> ginbasilsmashIngredients = new ArrayList<>();
+        ginbasilsmashIngredients.add(new Ingredient("Gin", "2", "oz."));
+        ginbasilsmashIngredients.add(new Ingredient("Lemon Juice", "1", "oz."));
+        ginbasilsmashIngredients.add(new Ingredient("Simple Syrup", "0.75", "oz."));
+        ginbasilsmashIngredients.add(new Ingredient("Basil", "10", "leaves"));
+        cocktailController.addCocktail(createCocktail(context,
+                "Gin Basil Smash",
+                "Gently muddle basil leaves in a cocktail shaker. Add the other ingredients and shake with ice. Double strain into an old fashioned glass and garnish with basil leaves..",
+                R.drawable.cocktail_ginbasilsmash,
+                ginbasilsmashIngredients), db);
+
+
+        /** MAI TAI */
+        ArrayList<Ingredient> maitaiIngredients = new ArrayList<>();
+        maitaiIngredients.add(new Ingredient("Rum", "2", "oz."));
+        maitaiIngredients.add(new Ingredient("Curacao", "0.5", "oz."));
+        maitaiIngredients.add(new Ingredient("Lime Juice", "0.75", "oz."));
+        maitaiIngredients.add(new Ingredient("Orgeat", "0.25", "oz."));
+        maitaiIngredients.add(new Ingredient("Simple Syrup", "0.25", "oz."));
+        cocktailController.addCocktail(createCocktail(context,
+                "Mai Tai",
+                "Add all ingredients to a cocktail shaker and shake with ice. Strain into a rocks glass or tiki mug. Garnish with lots of mint.",
+                R.drawable.cocktail_maitai,
+                maitaiIngredients), db);
+
+
+        /** MARTINI */
+        ArrayList<Ingredient> martiniIngredients = new ArrayList<>();
+        martiniIngredients.add(new Ingredient("Gin", "2", "oz."));
+        martiniIngredients.add(new Ingredient("Dry Vermouth", "1", "oz."));
+        martiniIngredients.add(new Ingredient("Orange Bitters", "1", "dash"));
+        Cocktail martinicocktail = createCocktail(context,
+                "Martini",
+                "Add ingredients to a mixing glass and stir with ice. Strain into chilled coupe and garnish with lemon twist.",
+                R.drawable.cocktail_martini,
+                martiniIngredients);
+        martinicocktail.comments = "Reduce or increase the amount of vermouth if you prefer a more dry or more wet martini.";
+        cocktailController.addCocktail(martinicocktail, db);
+
+
+
+        /** WHISKY SOUR */
+        ArrayList<Ingredient> whiskysourIngredients = new ArrayList<>();
+        whiskysourIngredients.add(new Ingredient("Whisky", "2", "oz."));
+        whiskysourIngredients.add(new Ingredient("Lemon Juice", "0.75", "oz."));
+        whiskysourIngredients.add(new Ingredient("Simple Syrup", "0.75", "oz."));
+        whiskysourIngredients.add(new Ingredient("Egg White", "0.5", "oz."));
+        cocktailController.addCocktail(createCocktail(context,
+                "Whisky Sour",
+                "Add all ingredients to a cocktail shaker and shake without ice. Add ice and shake for a short time. Strain into a rocks glass. Garnish with an orange twist.",
+                R.drawable.cocktail_whiskysour,
+                whiskysourIngredients), db);
+
 
     }
     private void createMetricDb(Context context) {
@@ -198,19 +240,6 @@ public class PopulateDatabase {
                 R.drawable.cocktail_cloverclub,
                 cloverclubIngredients), db);
 
-
-        /** AMARETTO SOUR CLUB */
-        ArrayList<Ingredient> amarettosourIngredients = new ArrayList<>();
-        amarettosourIngredients.add(new Ingredient("Amaretto", "45", "mL"));
-        amarettosourIngredients.add(new Ingredient("Bourbon", "22.5", "mL"));
-        amarettosourIngredients.add(new Ingredient("Lemon Juice", "30", "mL"));
-        amarettosourIngredients.add(new Ingredient("Rich Simple Syrup", "5", "mL"));
-        amarettosourIngredients.add(new Ingredient("Egg White", "15", "mL"));
-        cocktailController.addCocktail(createCocktail(context,
-                "Amaretto Sour",
-                "Lightly beat the egg white. Add all ingredients to a cocktail shaker and shake without ice. Add ice and shake again. Strain into a rocks glass and garnish with a lemon peel and cherries.",
-                R.drawable.cocktail_amarettosour,
-                amarettosourIngredients), db);
 
 
         /** MOJITO */
@@ -275,7 +304,7 @@ public class PopulateDatabase {
                 oldfashionedIngredients), db);
 
 
-        /** OLD FASHIONED */
+        /** BEES KNEES */
         ArrayList<Ingredient> beeskneesIngredients = new ArrayList<>();
         beeskneesIngredients.add(new Ingredient("Gin", "60", "mL"));
         beeskneesIngredients.add(new Ingredient("Honey Syrup", "22.5", "mL"));
@@ -285,8 +314,66 @@ public class PopulateDatabase {
                 "Add all ingredients to a cocktail shaker and shake with ice. Strain into chilled cocktail coupe. Garnish with a lemon twist or rosemary.",
                 R.drawable.cocktail_beesknees,
                 beeskneesIngredients), db);
+
+
+
+        /** GIN BASIL SMASH */
+        ArrayList<Ingredient> ginbasilsmashIngredients = new ArrayList<>();
+        ginbasilsmashIngredients.add(new Ingredient("Gin", "60", "mL"));
+        ginbasilsmashIngredients.add(new Ingredient("Lemon Juice", "30", "mL"));
+        ginbasilsmashIngredients.add(new Ingredient("Simple Syrup", "22.5", "mL"));
+        ginbasilsmashIngredients.add(new Ingredient("Basil", "10", "leaves"));
+        cocktailController.addCocktail(createCocktail(context,
+                "Gin Basil Smash",
+                "Gently muddle basil leaves in a cocktail shaker. Add the other ingredients and shake with ice. Double strain into an old fashioned glass and garnish with basil leaves..",
+                R.drawable.cocktail_ginbasilsmash,
+                ginbasilsmashIngredients), db);
+
+
+        /** MAI TAI */
+        ArrayList<Ingredient> maitaiIngredients = new ArrayList<>();
+        maitaiIngredients.add(new Ingredient("Rum", "60", "mL"));
+        maitaiIngredients.add(new Ingredient("Curacao", "15", "mL"));
+        maitaiIngredients.add(new Ingredient("Lime Juice", "22.5", "mL"));
+        maitaiIngredients.add(new Ingredient("Orgeat", "7.5", "mL"));
+        maitaiIngredients.add(new Ingredient("Simple Syrup", "7.5", "mL"));
+        cocktailController.addCocktail(createCocktail(context,
+                "Mai Tai",
+                "Add all ingredients to a cocktail shaker and shake with ice. Strain into a rocks glass or tiki mug. Garnish with lots of mint.",
+                R.drawable.cocktail_maitai,
+                maitaiIngredients), db);
+
+
+        /** MARTINI */
+        ArrayList<Ingredient> martiniIngredients = new ArrayList<>();
+        martiniIngredients.add(new Ingredient("Gin", "60", "mL"));
+        martiniIngredients.add(new Ingredient("Dry Vermouth", "30", "mL"));
+        martiniIngredients.add(new Ingredient("Orange Bitters", "30", "dash"));
+        Cocktail martinicocktail = createCocktail(context,
+                "Martini",
+                "Add ingredients to a mixing glass and stir with ice. Strain into chilled coupe and garnish with lemon twist.",
+                R.drawable.cocktail_martini,
+                martiniIngredients);
+        martinicocktail.comments = "Reduce or increase the amount of vermouth if you prefer a more dry or more wet martini.";
+        cocktailController.addCocktail(martinicocktail, db);
+
+
+
+        /** WHISKY SOUR */
+        ArrayList<Ingredient> whiskysourIngredients = new ArrayList<>();
+        whiskysourIngredients.add(new Ingredient("Whisky", "60", "mL"));
+        whiskysourIngredients.add(new Ingredient("Lemon Juice", "22.5", "mL"));
+        whiskysourIngredients.add(new Ingredient("Simple Syrup", "22.5", "mL"));
+        whiskysourIngredients.add(new Ingredient("Egg White", "15", "mL"));
+        cocktailController.addCocktail(createCocktail(context,
+                "Whisky Sour",
+                "Add all ingredients to a cocktail shaker and shake without ice. Add ice and shake for a short time. Strain into a rocks glass. Garnish with an orange twist.",
+                R.drawable.cocktail_whiskysour,
+                whiskysourIngredients), db);
     }
 
+    
+    
 
     private static Cocktail createCocktail(Context context, String name, String recipe, int drawable, ArrayList<Ingredient> ingredients) {
         ArrayList<String> images = new ArrayList();

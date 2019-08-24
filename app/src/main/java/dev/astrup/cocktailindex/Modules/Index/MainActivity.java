@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements
                 fab.show();
                 break;
             case R.id.ideas:
+                searchItem.collapseActionView();
                 searchItem.setVisible(false);
                 fragmentController.showIdeaFragment();
                 fab.show();
@@ -208,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
+
 
         // Setup of FAB
         fab = findViewById(R.id.fab);

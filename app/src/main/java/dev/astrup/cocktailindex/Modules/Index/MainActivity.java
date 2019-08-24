@@ -3,6 +3,7 @@ package dev.astrup.cocktailindex.Modules.Index;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
@@ -115,15 +116,10 @@ public class MainActivity extends AppCompatActivity implements
         }
         else if(id == R.id.action_feedback) {
             /* Create the Intent */
-            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-
-            /* Fill it with Data */
-            emailIntent.setType("plain/text");
-            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"cocktail@astrup.dev"});
-            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Feedback on CocktailIndex");
-
-            /* Send it off to the Activity-Chooser */
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto","cocktail@astrup.dev", null));
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback on Cocktail Index");
+            startActivity(Intent.createChooser(intent, "Choose an Email client :"));
         }
 
         return super.onOptionsItemSelected(item);
@@ -209,12 +205,12 @@ public class MainActivity extends AppCompatActivity implements
     }
     private void SetupViews() {
         // Navigation in the bottom
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation_view);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
 
         // Setup of FAB
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements
     private void preliminarySetup() {
         // User Interface
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Analytics and Data

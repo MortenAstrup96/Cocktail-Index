@@ -11,13 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 
 import dev.astrup.cocktailindex.R;
 
 
 public class WalkthroughPreferencesFragment extends Fragment {
-    private RadioButton radio_prelist;
-    private RadioButton metric_prelist;
+    private Switch radio_prelist;
+    private Switch metric_prelist;
 
 
     public WalkthroughPreferencesFragment() {
@@ -50,9 +51,12 @@ public class WalkthroughPreferencesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_walkthrough_preferences, container, false);
-        radio_prelist = view.findViewById(R.id.appwalkthrough_predefined);
-        metric_prelist = view.findViewById(R.id.appwalkthrough_metric_radio_metric);
-        // Inflate the layout for this fragment
+        radio_prelist = view.findViewById(R.id.walkthrough_switch_premade);
+        metric_prelist = view.findViewById(R.id.walkthrough_switch_metric);
+
+        radio_prelist.setChecked(true);
+        metric_prelist.setChecked(true);
+        /// Inflate the layout for this fragment
         return view;
     }
 

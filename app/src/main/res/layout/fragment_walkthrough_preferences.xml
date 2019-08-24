@@ -11,42 +11,51 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
 
+        <Switch
+            android:id="@+id/walkthrough_switch_premade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+        <Switch
+            android:id="@+id/walkthrough_switch_metric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView7" />
+
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
-            android:text="Preferences"
-            android:textColor="@android:color/white"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
-            android:text="Pre-defined Cocktail list"
+            android:text="Preferences"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView10"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
-            android:text="Please choose the following preferences. You will be able to change both in settings."
+            android:text="Please choose the following preferences:"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,100 +63,52 @@
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:text="Measurement System"
+            android:layout_marginTop="48dp"
+            android:text="Include list of premade cocktails?"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="19sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appwalkthrough_predefined_radiogroup" />
+            app:layout_constraintStart_toStartOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-        <RadioGroup
-            android:id="@+id/appwalkthrough_predefined_radiogroup"
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Includes a list of 13 premade cocktails with pictures, ingredients and directions. These cannot be added later."
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@+id/walkthrough_switch_metric"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="All types of measurements will still be avaliable. Can be changed later in settings."
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@+id/walkthrough_switch_metric"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <TextView
+            android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:checkedButton="@id/appwalkthrough_predefined"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7">
+            android:layout_marginTop="32dp"
+            android:text="Using metric system?"
+            android:textColor="@android:color/white"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-            <RadioButton
-                android:id="@+id/appwalkthrough_predefined"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:layout_margin="10dp"
-                android:layout_weight="2"
-                android:background="@drawable/appwalkthrough_radio_selector"
-                android:button="@color/invisible"
-                android:text="Include cocktails"
-                android:textAlignment="center"
-                android:textColor="@color/appwalkthrough_radio_text_selector"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <RadioButton
-                android:id="@+id/appwalkthrough_fromscratch"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/appwalkthrough_radio_selector"
-                android:button="@color/invisible"
-                android:text="Start from scratch"
-                android:textAlignment="center"
-                android:textColor="@color/appwalkthrough_radio_text_selector"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:id="@+id/appwalkthrough_metric_radiogroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:checkedButton="@id/appwalkthrough_metric_radio_metric"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8">
-
-            <RadioButton
-                android:id="@+id/appwalkthrough_metric_radio_metric"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:layout_margin="10dp"
-                android:layout_weight="2"
-                android:background="@drawable/appwalkthrough_radio_selector"
-                android:textColor="@color/appwalkthrough_radio_text_selector"
-                android:button="@color/invisible"
-                android:text="Metric"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <RadioButton
-                android:id="@+id/appwalkthrough_metric_radio_imperial"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/appwalkthrough_radio_selector"
-                android:textColor="@color/appwalkthrough_radio_text_selector"
-                android:button="@color/invisible"
-                android:text="US Imperial"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

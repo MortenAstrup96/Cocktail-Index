@@ -33,6 +33,7 @@ import com.google.android.gms.ads.AdView;
 
 import dev.astrup.cocktailindex.Modules.Creation.NewCocktailActivity;
 import dev.astrup.cocktailindex.Database.AppDatabase;
+import dev.astrup.cocktailindex.Modules.Index.MainActivity;
 import dev.astrup.cocktailindex.Modules.Various.AboutActivity;
 import dev.astrup.cocktailindex.Modules.Various.SettingsActivity;
 import dev.astrup.cocktailindex.Objects.Cocktail;
@@ -80,7 +81,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
             pagerAdapter = new CustomPagerAdapter(getApplicationContext(), cocktail.imagePath);
             pager.setAdapter(pagerAdapter);
             if(pagerAdapter.getCount() > 1) {
-                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
+                TabLayout tabLayout = findViewById(R.id.tabDots);
                 tabLayout.setupWithViewPager(pager, true);
                 tabLayout.setClickable(false);
             }
@@ -129,6 +130,7 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         Button buttonEdit = findViewById(R.id.cocktaildetails_button_edit);
         CheckBox favourite = findViewById(R.id.details_section_image_favourite);
 
+
         favourite.setChecked(cocktail.favourite);
         favourite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -161,6 +163,12 @@ public class CocktailDetailsActivity extends AppCompatActivity {
         iconRecipe.setVisibility(cocktail.recipe.isEmpty() ? View.INVISIBLE : View.VISIBLE);
         iconComments.setVisibility(cocktail.comments.isEmpty() ? View.INVISIBLE : View.VISIBLE);
 
+        findViewById(R.id.cocktail_details_sharebutton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareRecipe(cocktail);
+            }
+        });
 
         ImageButton exitButton = findViewById(R.id.details_section_imagebutton_exit);
         exitButton.setOnClickListener(new View.OnClickListener() {
@@ -248,6 +256,30 @@ public class CocktailDetailsActivity extends AppCompatActivity {
             cocktailController.updateCocktail(cocktail, db);
             setupViews();
         }
+    }
+
+    public void shareRecipe(Cocktail cocktail) {
+        // Building recipe
+        StringBuilder builder = new StringBuilder();
+        builder.append(cocktail.name + " recipe: \n\n");
+        for(Ingredient ingredient : cocktail.ingredients) {
+            String stringIngredient = String.format("%s %s       %s", ingredient.getAmount(), ingredient.getMeasurement(), ingredient.getIngredient() + "\n");
+            builder.append(stringIngredient);
+        }
+        builder.append("\n" + cocktail.recipe);
+
+        if(!cocktail.comments.isEmpty()) {
+            builder.append("\n \n" + cocktail.comments);
+        }
+
+        String recipe = builder.toString();
+
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, recipe);
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 
     /**

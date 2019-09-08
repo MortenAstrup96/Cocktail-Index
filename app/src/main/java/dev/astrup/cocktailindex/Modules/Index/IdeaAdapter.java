@@ -113,8 +113,6 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
             this.itemClickListener = itemClickListener;
             this.itemLongClickListener = itemLongClickListener;
 
-            this.setIsRecyclable(true); // TODO: VERY BAD PRACTICE -> Fix: https://android.jlelse.eu/android-handling-checkbox-state-in-recycler-views-71b03f237022
-
             name =  view.findViewById(R.id.idea_recycler_view_header);
             ingredients = view.findViewById(R.id.idea_recycler_view_ingredients);
 
@@ -148,6 +146,7 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.MyViewHolder> 
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
             contextMenu.setHeaderTitle("Select Action");
             contextMenu.add(0, view.getId(), 0, "Create Cocktail");
+            contextMenu.add(0, view.getId(), 0, "Share Recipe");
             contextMenu.add(0, view.getId(), 0, "Delete Idea");
         }
     }

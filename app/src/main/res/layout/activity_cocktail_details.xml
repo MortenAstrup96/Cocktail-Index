@@ -195,6 +195,19 @@
                         app:layout_constraintStart_toEndOf="@+id/details_section_ingredients_icon"
                         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
+                    <ImageButton
+                        android:id="@+id/cocktail_details_sharebutton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/ic_share"
+                        android:backgroundTint="@color/browser_actions_title_color"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:layout_constraintBottom_toBottomOf="@+id/details_section_header"
+                        app:layout_constraintStart_toEndOf="@+id/details_section_header"
+                        app:layout_constraintTop_toTopOf="@+id/details_section_header" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </ScrollView>

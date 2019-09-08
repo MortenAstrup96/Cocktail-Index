@@ -57,6 +57,7 @@ public class IndexFragment extends Fragment implements SearchableFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_index,container,false);
 
+
         savedCocktailList = new ArrayList<>();
         savedCocktailList.addAll(cocktailController.getIndexList());
 
@@ -75,7 +76,7 @@ public class IndexFragment extends Fragment implements SearchableFragment {
             }
         };
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.Index_RecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.Index_RecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -114,8 +115,21 @@ public class IndexFragment extends Fragment implements SearchableFragment {
 
         mAdapter.notifyDataSetChanged();
 
+        showIconIfEmpty(view);
+
+
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void showIconIfEmpty(View view) {
+        if(mAdapter.getItemCount() <= 0) {
+            view.findViewById(R.id.index_emptylist_text).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.index_emptrylist_icon).setVisibility(View.VISIBLE);
+        } else {
+            view.findViewById(R.id.index_emptylist_text).setVisibility(View.GONE);
+            view.findViewById(R.id.index_emptrylist_icon).setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -156,6 +170,8 @@ public class IndexFragment extends Fragment implements SearchableFragment {
                     .setActionTextColor(getResources().getColor(R.color.colorAccent))
                     .show();
 
+        } else if(name.equals("Share Recipe")) {
+            ((MainActivity)getActivity()).shareRecipe(cocktail);
         }
         return super.onContextItemSelected(item);
     }
@@ -181,6 +197,12 @@ public class IndexFragment extends Fragment implements SearchableFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        showIconIfEmpty(getView());
+        super.onResume();
     }
 
     public void updateList() {

@@ -205,6 +205,7 @@ public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.MyViewHolder
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
             contextMenu.setHeaderTitle("Select Action");
             contextMenu.add(0, view.getId(), 0, "Edit Cocktail");
+            contextMenu.add(0, view.getId(), 0, "Share Recipe");
             contextMenu.add(0, view.getId(), 0, "Delete Cocktail");
         }
     }

@@ -7,6 +7,37 @@
     android:id="@+id/fragment_favorites"
     tools:context="dev.astrup.cocktailindex.Modules.Index.FavoriteFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/favorite_emptrylist_icon"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/ic_fav"
+            android:backgroundTint="@color/colorGrey"
+            android:visibility="invisible"
+            android:scaleType="fitStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/favorite_emptylist_text"
+            app:layout_constraintStart_toStartOf="@+id/favorite_emptylist_text"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/favorite_emptylist_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No favorites yet. \n Mark your favorite cocktails on the index page."
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/favorite_emptrylist_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/Favorite_RecyclerView"
         android:layout_width="match_parent"

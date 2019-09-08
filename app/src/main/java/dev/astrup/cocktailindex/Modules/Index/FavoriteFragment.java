@@ -67,13 +67,25 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
         // Gets the cocktailList
         setupRecyclerView(view);
 
+        showIconIfEmpty(view);
+
         return view;
+    }
+
+    private void showIconIfEmpty(View view) {
+        if(mAdapter.getItemCount() <= 0) {
+            view.findViewById(R.id.favorite_emptylist_text).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.favorite_emptrylist_icon).setVisibility(View.VISIBLE);
+        } else {
+            view.findViewById(R.id.favorite_emptylist_text).setVisibility(View.GONE);
+            view.findViewById(R.id.favorite_emptrylist_icon).setVisibility(View.GONE);
+        }
     }
 
 
     private void setupRecyclerView(View view) {
         // Recyclerview setup
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.Favorite_RecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.Favorite_RecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -115,7 +127,7 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
     public boolean onContextItemSelected(MenuItem item) {
         String name = item.getTitle().toString();
         int itemPosition = mAdapter.getPosition();
-        final Cocktail cocktail = cocktailController.getIndexList().get(itemPosition);
+        final Cocktail cocktail = cocktailController.getFavourites().get(itemPosition);
 
         if(name.equals("Edit Cocktail")) {
             ((MainActivity)getActivity()).updateSpecificCocktailForResult(cocktail);
@@ -137,12 +149,15 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
                     .setActionTextColor(getResources().getColor(R.color.colorAccent))
                     .show();
 
+        }else if(name.equals("Share Recipe")) {
+            ((MainActivity)getActivity()).shareRecipe(cocktail);
         }
         return super.onContextItemSelected(item);
     }
 
     @Override
     public void onResume() {
+        showIconIfEmpty(getView());
         super.onResume();
         mAdapter.notifyDataSetChanged();
     }

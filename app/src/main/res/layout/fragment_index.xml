@@ -8,6 +8,37 @@
     android:tag="indexFragment"
     tools:context="dev.astrup.cocktailindex.Modules.Index.IndexFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/index_emptrylist_icon"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/ic_index"
+            android:backgroundTint="@color/colorGrey"
+            android:scaleType="fitStart"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/index_emptylist_text"
+            app:layout_constraintStart_toStartOf="@+id/index_emptylist_text"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/index_emptylist_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to Cocktail Index. You can now start adding your favorite cocktail recipes."
+            android:textAlignment="center"
+            android:visibility="invisible"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/index_emptrylist_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/Index_RecyclerView"
         android:layout_width="match_parent"

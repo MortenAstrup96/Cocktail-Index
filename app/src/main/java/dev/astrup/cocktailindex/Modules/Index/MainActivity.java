@@ -30,6 +30,7 @@ import dev.astrup.cocktailindex.Modules.Various.AboutActivity;
 import dev.astrup.cocktailindex.Modules.Various.SettingsActivity;
 import dev.astrup.cocktailindex.Database.AppDatabase;
 import dev.astrup.cocktailindex.Objects.Cocktail;
+import dev.astrup.cocktailindex.Objects.Ingredient;
 import dev.astrup.cocktailindex.R;
 import dev.astrup.cocktailindex.Utility.CocktailController;
 import dev.astrup.cocktailindex.Utility.GdprHelper;
@@ -124,6 +125,30 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void shareRecipe(Cocktail cocktail) {
+        // Building recipe
+        StringBuilder builder = new StringBuilder();
+        builder.append(cocktail.name + " recipe: \n\n");
+        for(Ingredient ingredient : cocktail.ingredients) {
+            String stringIngredient = String.format("%s %s       %s", ingredient.getAmount(), ingredient.getMeasurement(), ingredient.getIngredient() + "\n");
+            builder.append(stringIngredient);
+        }
+        builder.append("\n" + cocktail.recipe);
+
+        if(!cocktail.comments.isEmpty()) {
+            builder.append("\n \n" + cocktail.comments);
+        }
+
+        String recipe = builder.toString();
+
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, recipe);
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 
     @Override

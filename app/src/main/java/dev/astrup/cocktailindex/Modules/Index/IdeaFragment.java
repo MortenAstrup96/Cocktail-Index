@@ -63,7 +63,7 @@ public class IdeaFragment extends Fragment {
         };
 
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.idea_fragment_recyclerview);
+        RecyclerView recyclerView = view.findViewById(R.id.idea_fragment_recyclerview);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -71,8 +71,26 @@ public class IdeaFragment extends Fragment {
         mAdapter = new IdeaAdapter(cocktailController.getIdeas(), listener, longClickListener, getContext());
         recyclerView.setAdapter(mAdapter);
 
+        showIconIfEmpty(view);
+
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void showIconIfEmpty(View view) {
+        if(mAdapter.getItemCount() <= 0) {
+            view.findViewById(R.id.idea_emptylist_text).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.idea_emptrylist_icon).setVisibility(View.VISIBLE);
+        } else {
+            view.findViewById(R.id.idea_emptylist_text).setVisibility(View.GONE);
+            view.findViewById(R.id.idea_emptrylist_icon).setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        showIconIfEmpty(getView());
+        super.onResume();
     }
 
     @Override
@@ -102,6 +120,8 @@ public class IdeaFragment extends Fragment {
                     .setActionTextColor(getResources().getColor(R.color.colorAccent))
                     .show();
 
+        }else if(name.equals("Share Recipe")) {
+            ((MainActivity)getActivity()).shareRecipe(cocktail);
         }
         return super.onContextItemSelected(item);
     }

@@ -82,7 +82,7 @@ public class CocktailController {
         return cocktailList;
     }
 
-    public List<Cocktail> getFavourites() {
+    public List<Cocktail> updateAndGetFavourites() {
         favourites.clear();
 
         for(Cocktail cocktail : cocktailList) {
@@ -91,6 +91,10 @@ public class CocktailController {
             }
         }
         java.util.Collections.sort(favourites);
+        return favourites;
+    }
+
+    public List<Cocktail> getFavourites() {
         return favourites;
     }
 

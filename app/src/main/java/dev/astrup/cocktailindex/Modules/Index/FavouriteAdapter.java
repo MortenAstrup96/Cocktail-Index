@@ -40,6 +40,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     // The list containing all the objects with the required information for at piece.
     private List<Cocktail> cocktailList;
     private OnItemClickListener itemClickListener;
+    private OnItemClickListener checkboxClickListener;
     private Context context;
 
 
@@ -48,9 +49,10 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
     private ImageUtilities imageUtilities = ImageUtilities.getInstance();
 
     // Initialises the string list
-    public FavouriteAdapter(List<Cocktail> cocktailList, OnItemClickListener itemClickListener, Context context) {
+    public FavouriteAdapter(List<Cocktail> cocktailList, OnItemClickListener itemClickListener, OnItemClickListener checkboxClickListener, Context context) {
         this.cocktailList = cocktailList;
         this.itemClickListener = itemClickListener;
+        this.checkboxClickListener = checkboxClickListener;
         this.context = context;
 
         // Setup of database
@@ -63,7 +65,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_favourites, parent, false);
 
-        return new MyViewHolder(itemView, itemClickListener);
+        return new MyViewHolder(itemView, itemClickListener, checkboxClickListener);
     }
 
 
@@ -128,7 +130,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         private CheckBox favourite;
 
 
-        public MyViewHolder(final View view, final OnItemClickListener itemClickListener) {
+        public MyViewHolder(final View view, final OnItemClickListener itemClickListener, final OnItemClickListener checkboxClickListener) {
             super(view);
             this.itemClickListener = itemClickListener;
             name =  view.findViewById(R.id.favourites_section_header);
@@ -161,8 +163,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     final Cocktail cocktail = cocktailList.get(getAdapterPosition());
                     cocktail.favourite = b;
-
                     CocktailController.getInstance().setFavourite(cocktail, db);
+                    // checkboxClickListener.onItemClick(view, getAdapterPosition());
                 }
             });
 

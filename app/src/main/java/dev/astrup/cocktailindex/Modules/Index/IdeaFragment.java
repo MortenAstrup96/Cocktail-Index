@@ -113,6 +113,7 @@ public class IdeaFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             cocktailController.addCocktail(tempDeletion, db);
+                            java.util.Collections.sort(ideaList);
                             mAdapter.notifyDataSetChanged();
 
                         }

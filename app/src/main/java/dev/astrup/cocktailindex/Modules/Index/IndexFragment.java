@@ -163,6 +163,7 @@ public class IndexFragment extends Fragment implements SearchableFragment {
                         public void onClick(View view) {
                             cocktailController.addCocktail(tempDeletion, db);
                             savedCocktailList.add(tempDeletion);
+                            java.util.Collections.sort(savedCocktailList);
                             mAdapter.notifyDataSetChanged();
 
                         }

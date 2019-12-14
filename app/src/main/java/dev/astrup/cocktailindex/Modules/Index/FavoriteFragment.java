@@ -31,6 +31,7 @@ import dev.astrup.cocktailindex.Utility.SearchableFragment;
 
 public class FavoriteFragment extends Fragment implements SearchableFragment {
     private OnItemClickListener listener;
+    private OnItemClickListener checkboxClickListener;
 
     private CocktailController cocktailController = CocktailController.getInstance();
     private ArrayList<Cocktail> savedCocktailList;
@@ -49,7 +50,7 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite,container,false);
         savedCocktailList = new ArrayList<>();
-        savedCocktailList.addAll(cocktailController.getFavourites());
+        savedCocktailList.addAll(cocktailController.updateAndGetFavourites());
 
         // Item click listener
         listener = new OnItemClickListener() {
@@ -64,6 +65,14 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
                 ActivityCompat.startActivity(activity, intent, options);
             }
         };
+
+        checkboxClickListener = new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // updateList();
+            }
+        };
+
         // Gets the cocktailList
         setupRecyclerView(view);
 
@@ -89,7 +98,7 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new FavouriteAdapter(savedCocktailList, listener, getContext());
+        mAdapter = new FavouriteAdapter(savedCocktailList, listener, checkboxClickListener, getContext());
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -141,8 +150,10 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            cocktailController.getIndexList().add(tempDeletion);
-                            cocktailController.getFavourites().add(tempDeletion);
+                            cocktailController.addCocktail(tempDeletion, AppDatabase.getDatabase(getContext()));
+                            cocktailController.updateAndGetFavourites().add(tempDeletion);
+                            savedCocktailList.add(tempDeletion);
+                            java.util.Collections.sort(savedCocktailList);
                             mAdapter.notifyDataSetChanged();
                         }
                     })
@@ -164,15 +175,12 @@ public class FavoriteFragment extends Fragment implements SearchableFragment {
 
     /** ==== STANDARD FRAGMENT METHODS ==== */
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-
     public void updateList() {
-
-        if(mAdapter != null) mAdapter.notifyDataSetChanged();
+        if(savedCocktailList != null) {
+            savedCocktailList.clear();
+            savedCocktailList.addAll(cocktailController.getFavourites());
+            mAdapter.notifyDataSetChanged();
+        }
 
     }
 

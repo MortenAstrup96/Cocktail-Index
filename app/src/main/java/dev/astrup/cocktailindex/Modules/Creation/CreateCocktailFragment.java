@@ -453,8 +453,10 @@ public class CreateCocktailFragment extends Fragment {
     }
 
     public void addImageToList(Uri image) {
-        imagePaths.add(image);
-        imageAddAdapter.notifyDataSetChanged();
+        if(imagePaths != null) {
+            imagePaths.add(image);
+            imageAddAdapter.notifyDataSetChanged();
+        }
     }
 
     public void removeImageFromList(int position) {
